@@ -1,0 +1,8 @@
+{
+	"*.{ts,json,md,html}": [
+		"./node_modules/.bin/prettier --config ./.prettierrc --write"
+	],
+	"*.ts": [
+		"./node_modules/.bin/tslint --fix -p ./tsconfig.json -c ./tslint.json"
+	]
+}
