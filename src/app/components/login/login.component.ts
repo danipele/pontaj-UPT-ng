@@ -28,13 +28,14 @@ export class LoginComponent implements OnInit {
       password: this.formGroup.controls.userPassword.value
     };
 
-    this.loginService.login(params).subscribe(
-      () => {},
-      (response) => {
-        this.error = response.data;
+    this.loginService.login(params).subscribe((result) => {
+      if (result.success === 'true') {
+        if (result.type === 'admin') {
+          this.router.navigate(['/dashboard']);
+        }
+      } else {
+        this.error = result.message;
       }
-    );
-
-    this.router.navigate(['/dashboard']);
+    });
   }
 }

@@ -6,7 +6,11 @@ import { Observable } from 'rxjs';
 export class LoginService {
   constructor(private http: HttpClient) {}
 
-  login(params: { email: any; password: any }): Observable<any> {
-    return this.http.post('http://localhost:8000/path_to_login', params);
+  login(params: {}): Observable<any> {
+    return this.http.post('http://localhost:8000/api/v1/users/login', { user: params });
+  }
+
+  logout(): Observable<any> {
+    return this.http.post('http://localhost:8000/api/v1/users/logout', {});
   }
 }

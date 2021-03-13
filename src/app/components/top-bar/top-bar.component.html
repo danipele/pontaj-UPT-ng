@@ -1,11 +1,12 @@
 <div class="top-bar">
-  <div class="container-fluid">
-    <div class="display-flex">
-      <div class="display-flex">
-        <a [routerLink]="['']" title="Pontaj UPT" class="navbar-brand">
-          <div class="community-logo"><span>Pontaj UPT</span></div>
-        </a>
+  <a [routerLink]="['/dashboard']" title="Pontaj UPT" class="navbar-brand">
+    <div class="upt-logo"><span>Pontaj UPT</span></div>
+  </a>
+  <div class="logout">
+    <a (click)="logout()" title="Iesi din cont" class="navbar-brand">
+      <div class="logout">
+        <span><u>Iesi din cont</u></span>
       </div>
-    </div>
+    </a>
   </div>
 </div>

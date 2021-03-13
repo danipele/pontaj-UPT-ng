@@ -43,8 +43,10 @@
               Autentificare
             </button>
           </div>
+          <div class="errorContainer" *ngIf="error !== ''">
+            <span>{{ this.error }}</span>
+          </div>
         </form>
-        <div class="errorContainer" *ngIf="error !== ''"></div>
       </div>
     </div>
   </div>
