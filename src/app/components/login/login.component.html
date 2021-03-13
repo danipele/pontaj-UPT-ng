@@ -1,0 +1,51 @@
+<div class="formWrapper">
+  <div class="text-center">
+    <div class="container__full-width">
+      <div class="upt-logo-container">
+        <img class="upt-logo" src="../../../assets/images/upt_logo_vertical.jpg" alt="UPT" />
+      </div>
+      <div class="formContainer">
+        <form [formGroup]="formGroup" role="form" name="loginForm">
+          <h2>Autentificare cu email UPT</h2>
+          <div class="form-group">
+            <label class="formLabel" for="userEmail">Adresa de email</label>
+            <input
+              appFocusOnParent=""
+              id="userEmail"
+              name="email"
+              class="form-control"
+              type="email"
+              formControlName="userEmail"
+              required="required"
+            />
+          </div>
+          <div class="form-group">
+            <label class="formLabel" for="userPassword">Parola</label>
+            <input
+              appFocusOnParent=""
+              id="userPassword"
+              name="password"
+              class="form-control"
+              type="password"
+              formControlName="userPassword"
+              required="required"
+            />
+          </div>
+          <div class="form-group-button">
+            <button
+              data-style="slide-left"
+              data-spinner-size="25"
+              data-test="loginButton"
+              class="login-btn"
+              [ladda]="requestInProgress"
+              (click)="login()"
+            >
+              Autentificare
+            </button>
+          </div>
+        </form>
+        <div class="errorContainer" *ngIf="error !== ''"></div>
+      </div>
+    </div>
+  </div>
+</div>

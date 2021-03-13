@@ -1,0 +1,39 @@
+.toolbar__action
+  height: 32px
+  padding: 0 17px
+  border-radius: 4px
+  background-color: #020aab
+  color: #fff
+  margin-top: 8px
+  margin-bottom: 8px
+  text-decoration: none
+  border: 0px
+  span, i
+    line-height: 32px
+    font-weight: 450
+    color: #fff
+  .counter
+    background: #fff
+    color: #020aab !important
+    min-width: 24px
+    font-size: 13px
+    text-align: center
+    float: right!important
+    border-radius: 16px
+    height: 24px
+    padding: 0px
+    line-height: 24px!important
+    margin: 4px 0px 0px 8px
+  &:hover, &:focus
+    text-decoration: none
+    outline: none
+    color: #fff!important
+    span, i
+      color: #fff!important
+  &.grayedOut
+    &:hover, &:focus
+      color: #8a8a8a !important
+    .title, i.com-icon, span
+      color: #8a8a8a !important
+    .badge
+      background-color: #8a8a8a !important
