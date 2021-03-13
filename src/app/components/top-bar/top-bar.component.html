@@ -1,12 +1,12 @@
 <div class="top-bar">
-  <a [routerLink]="['/dashboard']" title="Pontaj UPT" class="navbar-brand">
-    <div class="upt-logo"><span>Pontaj UPT</span></div>
+  <a [routerLink]="['/dashboard']" title="Pontaj UPT" class="navbar-brand no-margin">
+    <div class="upt-logo-container">
+      <img class="upt-logo" src="../../../assets/images/upt_logo_top_bar.jpg" alt="UPT" />
+    </div>
   </a>
   <div class="logout">
-    <a (click)="logout()" title="Iesi din cont" class="navbar-brand">
-      <div class="logout">
-        <span><u>Iesi din cont</u></span>
-      </div>
+    <a (click)="logout()" title="Iesi din cont" class="navbar-brand logout">
+      <span><u>Iesi din cont</u></span>
     </a>
   </div>
 </div>
