@@ -7,8 +7,12 @@
     <span>\></span>
   </button>
 
-  <button class="upt-btn" style="float: left" (click)="executeSetWeekly()" *ngIf="isDaily">
-    <span>Saptamanal</span>
+  <button class="upt-btn weekly-btn" (click)="executeSetWeekly()" *ngIf="isDaily">
+    <span>Vezi toata saptamana</span>
+  </button>
+
+  <button class="upt-btn go-to-today-btn" (click)="executeGoToToday()" *ngIf="!isTodayVisible">
+    <span>Du-te la Astazi</span>
   </button>
 
   <div class="current-date">

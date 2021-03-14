@@ -43,6 +43,14 @@ export class DashboardComponent implements OnInit {
     this.date = tomorrow;
   }
 
+  goToToday(): void {
+    let today = moment();
+    if (this.isWeekly()) {
+      today = today.startOf('week');
+    }
+    this.date = today.toDate();
+  }
+
   setWeekInterval(event: any): void {
     this.date = event.period.start;
   }
@@ -50,5 +58,17 @@ export class DashboardComponent implements OnInit {
   setDay(event: any): void {
     this.viewType = 'Zilnic';
     this.date = event.day.date;
+  }
+
+  isTodayVisible(): boolean {
+    if (this.isDaily()) {
+      const today = moment(new Date());
+      const selectedDay = moment(this.date);
+      return selectedDay.isSame(today, 'date');
+    } else {
+      const startDay = moment(new Date()).startOf('week');
+      const selectedDay = moment(this.date);
+      return selectedDay.isSame(startDay, 'date');
+    }
   }
 }
