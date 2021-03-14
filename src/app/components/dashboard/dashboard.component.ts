@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { AddTimelineModalService } from '../../services/add-timeline-modal.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +11,7 @@ export class DashboardComponent implements OnInit {
   viewType: string;
   date: Date;
 
-  constructor() {
+  constructor(private addTimelineModalService: AddTimelineModalService) {
     this.viewType = 'Saptamanal';
   }
 
@@ -70,5 +71,9 @@ export class DashboardComponent implements OnInit {
       const selectedDay = moment(this.date);
       return selectedDay.isSame(startDay, 'date');
     }
+  }
+
+  openAddTimelineModal(event: any): void {
+    this.addTimelineModalService.open(event.date);
   }
 }

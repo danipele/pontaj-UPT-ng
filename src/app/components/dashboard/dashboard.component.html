@@ -20,13 +20,25 @@
         class="calendar"
         [dayStartHour]="8"
         [dayEndHour]="22"
+        [hourSegments]="1"
+        [hourSegmentHeight]="40"
         (dayHeaderClicked)="setDay($event)"
         (beforeViewRender)="setWeekInterval($event)"
+        (hourSegmentClicked)="openAddTimelineModal($event)"
       ></mwl-calendar-week-view>
     </div>
 
     <div *ngIf="isDaily()">
-      <mwl-calendar-day-view [viewDate]="date" locale="ro" class="calendar" [dayStartHour]="8" [dayEndHour]="22"></mwl-calendar-day-view>
+      <mwl-calendar-day-view
+        [viewDate]="date"
+        locale="ro"
+        class="calendar"
+        [dayStartHour]="8"
+        [dayEndHour]="22"
+        [hourSegments]="1"
+        [hourSegmentHeight]="40"
+        (hourSegmentClicked)="openAddTimelineModal($event)"
+      ></mwl-calendar-day-view>
     </div>
   </div>
 </div>

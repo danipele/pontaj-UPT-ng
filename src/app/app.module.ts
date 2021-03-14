@@ -17,6 +17,8 @@ import { LaddaModule } from 'angular2-ladda';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
 import { LOCALE_ID } from '@angular/core';
+import { AddTimelineModalComponent } from './components/add-timeline-modal/add-timeline-modal.component';
+import { AddTimelineModalService } from './services/add-timeline-modal.service';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -24,7 +26,7 @@ export function momentAdapterFactory(): DateAdapter {
 }
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TopBarComponent, CalendarHeaderComponent, LoginComponent],
+  declarations: [AppComponent, DashboardComponent, TopBarComponent, CalendarHeaderComponent, LoginComponent, AddTimelineModalComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -35,6 +37,7 @@ export function momentAdapterFactory(): DateAdapter {
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
+    { provide: AddTimelineModalService, useClass: AddTimelineModalService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]
