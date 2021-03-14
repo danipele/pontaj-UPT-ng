@@ -13,7 +13,7 @@
   <div class="calendar-body">
     <div *ngIf="isWeekly()">
       <mwl-calendar-week-view
-        [viewDate]="viewDate"
+        [viewDate]="date"
         locale="ro"
         class="calendar"
         [dayStartHour]="8"
@@ -24,13 +24,7 @@
     </div>
 
     <div *ngIf="isDaily()">
-      <mwl-calendar-day-view
-        [viewDate]="viewDate"
-        locale="ro"
-        class="calendar"
-        [dayStartHour]="8"
-        [dayEndHour]="22"
-      ></mwl-calendar-day-view>
+      <mwl-calendar-day-view [viewDate]="date" locale="ro" class="calendar" [dayStartHour]="8" [dayEndHour]="22"></mwl-calendar-day-view>
     </div>
   </div>
 </div>

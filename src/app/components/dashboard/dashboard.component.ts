@@ -7,12 +7,10 @@ import * as moment from 'moment';
   styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit {
-  viewDate: Date;
   viewType: string;
   date: Date;
 
   constructor() {
-    this.viewDate = new Date();
     this.viewType = 'Saptamanal';
   }
 
@@ -30,11 +28,20 @@ export class DashboardComponent implements OnInit {
 
   setWeekly(): void {
     this.viewType = 'Saptamanal';
+    this.date = moment(this.date).startOf('week').toDate();
   }
 
-  goBackwards(): void {}
+  goBackwards(): void {
+    const yesterday = new Date(this.date);
+    yesterday.setDate(this.date.getDate() - (this.isWeekly() ? 7 : 1));
+    this.date = yesterday;
+  }
 
-  goForwards(): void {}
+  goForwards(): void {
+    const tomorrow = new Date(this.date);
+    tomorrow.setDate(this.date.getDate() + (this.isWeekly() ? 7 : 1));
+    this.date = tomorrow;
+  }
 
   setWeekInterval(event: any): void {
     this.date = event.period.start;

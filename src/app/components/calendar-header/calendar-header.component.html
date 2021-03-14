@@ -1,13 +1,13 @@
 <div class="calendar-header center">
-  <button class="header-btn go-to-last" (click)="executeGoBackwards($event)">
+  <button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
     <span>\<</span>
   </button>
 
-  <button class="header-btn go-to-next" (click)="executeGoForwards($event)">
+  <button class="upt-btn go-to-next" (click)="executeGoForwards()">
     <span>\></span>
   </button>
 
-  <button class="header-btn" style="float: left" (click)="executeSetWeekly($event)" *ngIf="isDaily">
+  <button class="upt-btn" style="float: left" (click)="executeSetWeekly()" *ngIf="isDaily">
     <span>Saptamanal</span>
   </button>
 

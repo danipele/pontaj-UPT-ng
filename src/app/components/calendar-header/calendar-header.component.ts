@@ -19,16 +19,16 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {}
 
-  executeGoBackwards(event: Event): void {
-    this.goBackwards.emit(event);
+  executeGoBackwards(): void {
+    this.goBackwards.emit();
   }
 
-  executeGoForwards(event: Event): void {
-    this.goForwards.emit(event);
+  executeGoForwards(): void {
+    this.goForwards.emit();
   }
 
-  executeSetWeekly(event: Event): void {
-    this.setWeekly.emit(event);
+  executeSetWeekly(): void {
+    this.setWeekly.emit();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
