@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { LaddaModule } from 'angular2-ladda';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
+import { LOCALE_ID } from '@angular/core';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -32,7 +33,10 @@ export function momentAdapterFactory(): DateAdapter {
     LaddaModule,
     HttpClientModule
   ],
-  providers: [{ provide: LoginService, useClass: LoginService }],
+  providers: [
+    { provide: LoginService, useClass: LoginService },
+    { provide: LOCALE_ID, useValue: 'ro-RO' }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

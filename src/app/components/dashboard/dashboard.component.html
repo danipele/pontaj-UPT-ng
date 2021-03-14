@@ -1,26 +1,36 @@
 <app-top-bar></app-top-bar>
 
-<app-calendar-header
-  (setMonthly)="setMonthly()"
-  (setWeekly)="setWeekly()"
-  (setDaily)="setDaily()"
-  [isMonthly]="isMonthly()"
-  [isWeekly]="isWeekly()"
-  [isDaily]="isDaily()"
-  (goBackwards)="goBackwards()"
-  (goForwards)="goForwards()"
-></app-calendar-header>
-
-<div>
-  <div *ngIf="isMonthly()">
-    <mwl-calendar-month-view [viewDate]="viewDate" locale="ro"></mwl-calendar-month-view>
+<div class="calendar-container">
+  <div class="calendar-header">
+    <app-calendar-header
+      (goBackwards)="goBackwards()"
+      (goForwards)="goForwards()"
+      (setWeekly)="setWeekly()"
+      [isDaily]="isDaily()"
+      [date]="date"
+    ></app-calendar-header>
   </div>
+  <div class="calendar-body">
+    <div *ngIf="isWeekly()">
+      <mwl-calendar-week-view
+        [viewDate]="viewDate"
+        locale="ro"
+        class="calendar"
+        [dayStartHour]="8"
+        [dayEndHour]="22"
+        (dayHeaderClicked)="setDay($event)"
+        (beforeViewRender)="setWeekInterval($event)"
+      ></mwl-calendar-week-view>
+    </div>
 
-  <div *ngIf="isWeekly()">
-    <mwl-calendar-week-view [viewDate]="viewDate" locale="ro"></mwl-calendar-week-view>
-  </div>
-
-  <div *ngIf="isDaily()">
-    <mwl-calendar-day-view [viewDate]="viewDate" locale="ro"></mwl-calendar-day-view>
+    <div *ngIf="isDaily()">
+      <mwl-calendar-day-view
+        [viewDate]="viewDate"
+        locale="ro"
+        class="calendar"
+        [dayStartHour]="8"
+        [dayEndHour]="22"
+      ></mwl-calendar-day-view>
+    </div>
   </div>
 </div>

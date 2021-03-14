@@ -1,21 +1,18 @@
-<div style.align-items="center">
-  <button class="toolbar__action" (click)="executeGoBackwards($event)" style.float="left">
-    <span>Inapoi</span>
+<div class="calendar-header center">
+  <button class="header-btn go-to-last" (click)="executeGoBackwards($event)">
+    <span>\<</span>
   </button>
 
-  <button class="toolbar__action" (click)="executeSetMonthly($event)" [class.grayedOut]="isMonthly">
-    <span>Lunar</span>
+  <button class="header-btn go-to-next" (click)="executeGoForwards($event)">
+    <span>\></span>
   </button>
 
-  <button class="toolbar__action" (click)="executeSetWeekly($event)" [class.grayedOut]="isWeekly">
+  <button class="header-btn" style="float: left" (click)="executeSetWeekly($event)" *ngIf="isDaily">
     <span>Saptamanal</span>
   </button>
 
-  <button class="toolbar__action" (click)="executeSetDaily($event)" [class.grayedOut]="isDaily">
-    <span>Zilnic</span>
-  </button>
-
-  <button class="toolbar__action" (click)="executeGoForwards($event)" style.float="right">
-    <span>Inainte</span>
-  </button>
+  <div class="current-date">
+    <span>{{ date | date: format | titlecase }}</span>
+    <span *ngIf="!isDaily"> - {{ endWeekDay | date: format | titlecase }}</span>
+  </div>
 </div>

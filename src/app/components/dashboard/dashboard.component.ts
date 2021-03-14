@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-dashboard',
@@ -8,16 +9,15 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 export class DashboardComponent implements OnInit {
   viewDate: Date;
   viewType: string;
+  date: Date;
 
-  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  constructor() {
     this.viewDate = new Date();
-    this.viewType = 'Lunar';
+    this.viewType = 'Saptamanal';
   }
 
-  ngOnInit(): void {}
-
-  isMonthly(): boolean {
-    return this.viewType === 'Lunar';
+  ngOnInit(): void {
+    this.date = moment().startOf('week').toDate();
   }
 
   isWeekly(): boolean {
@@ -28,27 +28,20 @@ export class DashboardComponent implements OnInit {
     return this.viewType === 'Zilnic';
   }
 
-  setMonthly(): void {
-    this.viewType = 'Lunar';
-  }
-
   setWeekly(): void {
     this.viewType = 'Saptamanal';
   }
 
-  setDaily(): void {
+  goBackwards(): void {}
+
+  goForwards(): void {}
+
+  setWeekInterval(event: any): void {
+    this.date = event.period.start;
+  }
+
+  setDay(event: any): void {
     this.viewType = 'Zilnic';
-  }
-
-  goBackwards(): void {
-    this.viewDate.setMonth(this.viewDate.getMonth() - 1);
-
-    this.changeDetectorRef.detectChanges();
-  }
-
-  goForwards(): void {
-    this.viewDate.setMonth(this.viewDate.getMonth() + 1);
-
-    this.changeDetectorRef.detectChanges();
+    this.date = event.day.date;
   }
 }
