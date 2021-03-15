@@ -10,7 +10,8 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() goForwards = new EventEmitter();
   @Output() setWeekly = new EventEmitter();
   @Output() goToToday = new EventEmitter();
-  @Input() isDaily: boolean;
+  @Output() goToDay = new EventEmitter<Date>();
+  @Input() isWeekly: boolean;
   @Input() isTodayVisible: boolean;
   @Input() date: Date;
 
@@ -38,12 +39,16 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.isDaily) {
-      this.format = 'EEEE, dd MMM yyyy';
-    } else {
+    if (this.isWeekly) {
       this.format = 'dd MMM yyyy';
       this.endWeekDay = new Date(this.date);
       this.endWeekDay.setDate(this.date.getDate() + 6);
+    } else {
+      this.format = 'EEEE, dd MMM yyyy';
     }
+  }
+
+  goToSelectedDay(event: any): void {
+    this.goToDay.emit(event.value);
   }
 }

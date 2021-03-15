@@ -16,9 +16,11 @@ interface Data {
   styleUrls: ['./add-timeline-dialog.component.sass']
 })
 export class AddTimelineDialogComponent {
-  selectedStartHour: number;
-  selectedEndHour: number;
+  startHour: number;
+  endHour: number;
   allDay: boolean;
+  activity: string;
+  subactivity: string | undefined;
 
   HOURS: Hour[] = [
     { displayValue: '8:00', value: 8 },
@@ -38,9 +40,12 @@ export class AddTimelineDialogComponent {
     { displayValue: '22:00', value: 22 }
   ];
 
+  ACTIVITIES: string[] = ['Curs', 'Proiect', 'Concediu', 'Alta activitate'];
+  SUBACTIVITIES: string[] = ['Curs', 'Seminar', 'Laborator', 'Proiect', 'Examen'];
+
   constructor(public dialogRef: MatDialogRef<AddTimelineDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
-    this.selectedStartHour = data.date.getHours();
-    this.selectedEndHour = this.selectedStartHour + 1;
+    this.startHour = data.date.getHours();
+    this.endHour = this.startHour + 1;
   }
 
   cancel(): void {
@@ -52,7 +57,7 @@ export class AddTimelineDialogComponent {
   }
 
   endHours(): Hour[] {
-    return this.HOURS.slice(this.selectedStartHour - 7, this.HOURS.length);
+    return this.HOURS.slice(this.startHour - 7, this.HOURS.length);
   }
 
   setAllDay(event: any): void {
@@ -62,9 +67,15 @@ export class AddTimelineDialogComponent {
   sendData(): {} {
     return {
       date: this.data.date,
-      startHour: this.selectedStartHour,
-      endHour: this.selectedEndHour,
-      allDay: this.allDay
+      startHour: this.startHour,
+      endHour: this.endHour,
+      allDay: this.allDay,
+      activity: this.activity,
+      subactivity: this.subactivity
     };
+  }
+
+  resetSubactivity(): void {
+    this.subactivity = undefined;
   }
 }

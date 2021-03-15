@@ -25,8 +25,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { AddTimelineDialogComponent } from './dialogs/add-timeline-dialog/add-timeline-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -50,7 +51,9 @@ export function momentAdapterFactory(): DateAdapter {
     MatSelectModule,
     MatOptionModule,
     MatCheckboxModule,
+    MatDatepickerModule,
     BrowserAnimationsModule,
+    MatNativeDateModule,
     FormsModule
   ],
   providers: [

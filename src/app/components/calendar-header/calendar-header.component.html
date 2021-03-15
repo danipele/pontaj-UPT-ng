@@ -1,22 +1,33 @@
-<div class="calendar-header center">
-  <button mat-raised-button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
-    <span>Inapoi</span>
-  </button>
-
+<div class="calendar-header text-center">
   <button mat-raised-button class="upt-btn go-to-next" (click)="executeGoForwards()">
     <span>Inainte</span>
   </button>
 
-  <button mat-raised-button class="upt-btn weekly-btn" (click)="executeSetWeekly()" *ngIf="isDaily">
-    <span>Vezi toata saptamana</span>
-  </button>
-
-  <button mat-raised-button class="upt-btn go-to-today-btn" (click)="executeGoToToday()" *ngIf="!isTodayVisible">
+  <button mat-raised-button class="upt-primary-btn go-to-today-btn" (click)="executeGoToToday()" [disabled]="isTodayVisible">
     <span>Du-te la Astazi</span>
   </button>
 
+  <button mat-raised-button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
+    <span>Inapoi</span>
+  </button>
+
   <div class="current-date">
+    <!--    <span>{{ date | date: format | titlecase }}</span>-->
+    <!--    <span *ngIf="!isDaily"> - {{ endWeekDay | date: format | titlecase }}</span>-->
+    <mat-form-field appearance="fill" class="date-picker-field">
+      <mat-label>Alege o data</mat-label>
+      <input matInput [matDatepicker]="picker" [value]="date" (dateChange)="goToSelectedDay($event)" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button class="upt-primary-btn weekly-btn" (click)="executeSetWeekly()" [disabled]="isWeekly">
+    <span>Vezi toata saptamana</span>
+  </button>
+
+  <div class="date-label">
     <span>{{ date | date: format | titlecase }}</span>
-    <span *ngIf="!isDaily"> - {{ endWeekDay | date: format | titlecase }}</span>
+    <span *ngIf="isWeekly"> - {{ endWeekDay | date: format | titlecase }}</span>
   </div>
 </div>

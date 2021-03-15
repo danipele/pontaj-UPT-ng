@@ -5,29 +5,67 @@
   <button mat-flat-button class="close-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
-  <div class="date">
+  <div>
     <h6>
       <span>{{ data.date | date: 'EEEE, dd MMM yyyy' | titlecase }}</span>
     </h6>
   </div>
-  <mat-form-field appearance="fill" class="hour-field">
-    <mat-label>Ora de inceput</mat-label>
-    <mat-select [(ngModel)]="selectedStartHour" name="startHour" [disabled]="allDay">
-      <mat-option *ngFor="let hour of startHours()" [value]="hour.value">
-        {{ hour.displayValue }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <span class="hours-delimiter">-</span>
-  <mat-form-field appearance="fill" class="hour-field">
-    <mat-label>Ora de sfarsit</mat-label>
-    <mat-select [(ngModel)]="selectedEndHour" name="endHour" [disabled]="allDay">
-      <mat-option *ngFor="let hour of endHours()" [value]="hour.value">
-        {{ hour.displayValue }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-checkbox class="check-all-day" [checked]="allDay" [color]="'primary'" (change)="setAllDay($event.checked)">Toata ziua</mat-checkbox>
+  <div>
+    <mat-form-field appearance="fill" class="hour-field">
+      <mat-label>Ora de inceput</mat-label>
+      <mat-select [(ngModel)]="startHour" name="startHour" [disabled]="allDay">
+        <mat-option *ngFor="let hour of startHours()" [value]="hour.value">
+          {{ hour.displayValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <span class="hours-delimiter">-</span>
+    <mat-form-field appearance="fill" class="hour-field">
+      <mat-label>Ora de sfarsit</mat-label>
+      <mat-select [(ngModel)]="endHour" name="endHour" [disabled]="allDay">
+        <mat-option *ngFor="let hour of endHours()" [value]="hour.value">
+          {{ hour.displayValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-checkbox class="check-all-day" [checked]="allDay" [color]="'primary'" (change)="setAllDay($event.checked)"
+      >Toata ziua</mat-checkbox
+    >
+  </div>
+  <div class="choose-activity">
+    <h6>
+      <span>Alege o activitate</span>
+    </h6>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" class="activity-field">
+      <mat-label>Tipul activitatii</mat-label>
+      <mat-select [(ngModel)]="activity" name="activity" (selectionChange)="resetSubactivity()">
+        <mat-option *ngFor="let activity of ACTIVITIES" [value]="activity">
+          {{ activity }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="sub-activity-field" *ngIf="activity != undefined">
+      <mat-label>Subtipul activitatii</mat-label>
+      <mat-select [(ngModel)]="subactivity" name="subactivity">
+        <mat-option *ngFor="let subactivity of SUBACTIVITIES" [value]="subactivity">
+          {{ subactivity }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="choose-activity">
+    <h6>
+      <span>Descrierea activitatii desfasurate</span>
+    </h6>
+  </div>
+  <div>
+    <mat-form-field class="description-field">
+      <mat-label>Descriere</mat-label>
+      <textarea matInput class="description-textarea"></textarea>
+    </mat-form-field>
+  </div>
 </div>
 <div class="modal-footer">
   <button mat-raised-button class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>Confirm</button>

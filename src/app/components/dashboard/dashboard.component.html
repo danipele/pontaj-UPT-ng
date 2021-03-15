@@ -7,7 +7,8 @@
       (goForwards)="goForwards()"
       (setWeekly)="setWeekly()"
       (goToToday)="goToToday()"
-      [isDaily]="isDaily()"
+      (goToDay)="goToDay($event)"
+      [isWeekly]="isWeekly()"
       [isTodayVisible]="isTodayVisible()"
       [date]="date"
     ></app-calendar-header>
