@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { AddTimelineModalService } from '../../services/add-timeline-modal.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddTimelineDialogComponent } from '../../dialogs/add-timeline-dialog/add-timeline-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ export class DashboardComponent implements OnInit {
   viewType: string;
   date: Date;
 
-  constructor(private addTimelineModalService: AddTimelineModalService) {
+  constructor(public dialog: MatDialog) {
     this.viewType = 'Saptamanal';
   }
 
@@ -74,6 +75,11 @@ export class DashboardComponent implements OnInit {
   }
 
   openAddTimelineModal(event: any): void {
-    this.addTimelineModalService.open(event.date);
+    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+      width: '40%',
+      data: { date: this.date }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 }

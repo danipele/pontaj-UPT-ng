@@ -17,8 +17,13 @@ import { LaddaModule } from 'angular2-ladda';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
 import { LOCALE_ID } from '@angular/core';
-import { AddTimelineModalComponent } from './components/add-timeline-modal/add-timeline-modal.component';
-import { AddTimelineModalService } from './services/add-timeline-modal.service';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { AddTimelineDialogComponent } from './dialogs/add-timeline-dialog/add-timeline-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -26,18 +31,23 @@ export function momentAdapterFactory(): DateAdapter {
 }
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TopBarComponent, CalendarHeaderComponent, LoginComponent, AddTimelineModalComponent],
+  declarations: [AppComponent, DashboardComponent, TopBarComponent, CalendarHeaderComponent, LoginComponent, AddTimelineDialogComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: momentAdapterFactory }),
     ReactiveFormsModule,
     LaddaModule,
-    HttpClientModule
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDialogModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
-    { provide: AddTimelineModalService, useClass: AddTimelineModalService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

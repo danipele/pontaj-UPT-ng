@@ -7,34 +7,18 @@
       <div class="formContainer">
         <form [formGroup]="formGroup" role="form" name="loginForm">
           <h2>Autentificare cu email UPT</h2>
-          <div class="form-group">
-            <label class="formLabel" for="userEmail">Adresa de email</label>
-            <input
-              appFocusOnParent=""
-              id="userEmail"
-              name="email"
-              class="form-control"
-              type="email"
-              formControlName="userEmail"
-              required="required"
-            />
-          </div>
-          <div class="form-group">
-            <label class="formLabel" for="userPassword">Parola</label>
-            <input
-              appFocusOnParent=""
-              id="userPassword"
-              name="password"
-              class="form-control"
-              type="password"
-              formControlName="userPassword"
-              required="required"
-            />
-          </div>
+          <mat-form-field class="form-field">
+            <mat-label for="userEmail">Adresa de email</mat-label>
+            <input matInput id="userEmail" name="email" type="email" formControlName="userEmail" required="required" />
+            <mat-icon class="icon" aria-hidden="false" aria-label="email">email</mat-icon>
+          </mat-form-field>
+          <mat-form-field class="form-field">
+            <mat-label for="userPassword">Parola</mat-label>
+            <input matInput id="userPassword" name="password" type="password" formControlName="userPassword" required="required" />
+            <mat-icon class="icon" aria-hidden="false" aria-label="password">password</mat-icon>
+          </mat-form-field>
           <div class="form-group-button">
-            <button data-style="slide-left" data-spinner-size="25" class="login-btn" [ladda]="requestInProgress" (click)="login()">
-              Autentificare
-            </button>
+            <button mat-raised-button (click)="login()" class="upt-btn">Autentificare</button>
           </div>
           <div class="errorContainer" *ngIf="error !== ''">
             <span>{{ this.error }}</span>

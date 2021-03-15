@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 interface Hour {
   displayValue: string;
   value: number;
 }
 
-@Component({
-  selector: 'app-add-timeline-modal',
-  templateUrl: './add-timeline-modal.component.html',
-  styleUrls: ['./add-timeline-modal.component.sass']
-})
-export class AddTimelineModalComponent implements OnInit {
+interface Data {
   date: Date;
+}
+
+@Component({
+  selector: 'app-add-timeline-dialog',
+  templateUrl: './add-timeline-dialog.component.html',
+  styleUrls: ['./add-timeline-dialog.component.sass']
+})
+export class AddTimelineDialogComponent {
   selectedStartHour: string;
 
   HOURS: Hour[] = [
@@ -33,17 +36,9 @@ export class AddTimelineModalComponent implements OnInit {
     { displayValue: '22:00', value: 22 }
   ];
 
-  constructor(private activeModal: NgbActiveModal) {}
+  constructor(public dialogRef: MatDialogRef<AddTimelineDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {}
 
-  ngOnInit(): void {}
-
-  cancel(e: any): void {
-    e.stopPropagation();
-    this.activeModal.dismiss({});
-  }
-
-  confirm(e: any): void {
-    e.stopPropagation();
-    this.activeModal.close({});
+  cancel(): void {
+    this.dialogRef.close();
   }
 }
