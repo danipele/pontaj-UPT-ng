@@ -1,0 +1,15 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span>Proiectele mele</span>
+  </h5>
+  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+</div>
+<div class="modal-body"></div>
+<div class="modal-footer">
+  <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa proiecte</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">Descarca template</button>
+    <button mat-menu-item (click)="importFile()" class="upt-secondary-btn">Importa fisier</button>
+  </mat-menu>
+  <button mat-raised-button class="upt-btn" [mat-dialog-close]="addProject()" cdkFocusInitial>Adauga proiect</button>
+</div>

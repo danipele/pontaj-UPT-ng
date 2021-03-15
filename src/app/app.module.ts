@@ -28,6 +28,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { CoursesDialogComponent } from './dialogs/courses-dialog/courses-dialog.component';
+import { ProjectsDialogComponent } from './dialogs/projects-dialog/projects-dialog.component';
+import { MatMenuModule } from '@angular/material/menu';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -35,7 +38,16 @@ export function momentAdapterFactory(): DateAdapter {
 }
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, TopBarComponent, CalendarHeaderComponent, LoginComponent, AddTimelineDialogComponent],
+  declarations: [
+    AppComponent,
+    DashboardComponent,
+    TopBarComponent,
+    CalendarHeaderComponent,
+    LoginComponent,
+    AddTimelineDialogComponent,
+    CoursesDialogComponent,
+    ProjectsDialogComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -54,6 +66,7 @@ export function momentAdapterFactory(): DateAdapter {
     MatDatepickerModule,
     BrowserAnimationsModule,
     MatNativeDateModule,
+    MatMenuModule,
     FormsModule
   ],
   providers: [

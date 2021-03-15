@@ -77,14 +77,10 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openAddTimelineModal(event: any): void {
+  openAddTimelineDialog(event: any): void {
     const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
       width: '40%',
       data: { date: event.date }
-    });
-
-    dialogRef.afterOpened().subscribe((result) => {
-      const a = result;
     });
 
     dialogRef.afterClosed().subscribe((result) => {

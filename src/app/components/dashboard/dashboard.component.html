@@ -25,7 +25,7 @@
         [hourSegmentHeight]="40"
         (dayHeaderClicked)="setDay($event)"
         (beforeViewRender)="setWeekInterval($event)"
-        (hourSegmentClicked)="openAddTimelineModal($event)"
+        (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
       ></mwl-calendar-week-view>
     </div>
@@ -39,7 +39,7 @@
         [dayEndHour]="22"
         [hourSegments]="1"
         [hourSegmentHeight]="40"
-        (hourSegmentClicked)="openAddTimelineModal($event)"
+        (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
       ></mwl-calendar-day-view>
     </div>
