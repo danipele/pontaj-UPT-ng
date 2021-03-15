@@ -58,4 +58,13 @@ export class AddTimelineDialogComponent {
   setAllDay(event: any): void {
     this.allDay = event;
   }
+
+  sendData(): {} {
+    return {
+      date: this.data.date,
+      startHour: this.selectedStartHour,
+      endHour: this.selectedEndHour,
+      allDay: this.allDay
+    };
+  }
 }
