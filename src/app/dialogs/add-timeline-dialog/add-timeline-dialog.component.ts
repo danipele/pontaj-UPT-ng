@@ -16,7 +16,9 @@ interface Data {
   styleUrls: ['./add-timeline-dialog.component.sass']
 })
 export class AddTimelineDialogComponent {
-  selectedStartHour: string;
+  selectedStartHour: number;
+  selectedEndHour: number;
+  allDay: boolean;
 
   HOURS: Hour[] = [
     { displayValue: '8:00', value: 8 },
@@ -36,9 +38,24 @@ export class AddTimelineDialogComponent {
     { displayValue: '22:00', value: 22 }
   ];
 
-  constructor(public dialogRef: MatDialogRef<AddTimelineDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {}
+  constructor(public dialogRef: MatDialogRef<AddTimelineDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
+    this.selectedStartHour = data.date.getHours();
+    this.selectedEndHour = this.selectedStartHour + 1;
+  }
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  startHours(): Hour[] {
+    return this.HOURS.slice(0, this.HOURS.length - 1);
+  }
+
+  endHours(): Hour[] {
+    return this.HOURS.slice(this.selectedStartHour - 7, this.HOURS.length);
+  }
+
+  setAllDay(event: any): void {
+    this.allDay = event;
   }
 }

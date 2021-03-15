@@ -6,8 +6,28 @@
 </div>
 <div class="modal-body">
   <div class="date">
-    <span>{{ data.date | date: 'EEEE, dd MMM yyyy' | titlecase }}</span>
+    <h6>
+      <span>{{ data.date | date: 'EEEE, dd MMM yyyy' | titlecase }}</span>
+    </h6>
   </div>
+  <mat-form-field appearance="fill" class="hour-field">
+    <mat-label>Ora de inceput</mat-label>
+    <mat-select [(ngModel)]="selectedStartHour" name="startHour" [disabled]="allDay">
+      <mat-option *ngFor="let hour of startHours()" [value]="hour.value">
+        {{ hour.displayValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <span class="hours-delimiter">-</span>
+  <mat-form-field appearance="fill" class="hour-field">
+    <mat-label>Ora de sfarsit</mat-label>
+    <mat-select [(ngModel)]="selectedEndHour" name="endHour" [disabled]="allDay">
+      <mat-option *ngFor="let hour of endHours()" [value]="hour.value">
+        {{ hour.displayValue }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-checkbox class="check-all-day" [checked]="allDay" [color]="'primary'" (change)="setAllDay($event.checked)">Toata ziua</mat-checkbox>
 </div>
 <div class="modal-footer">
   <button mat-raised-button class="upt-btn" [mat-dialog-close]="data" cdkFocusInitial>Confirm</button>

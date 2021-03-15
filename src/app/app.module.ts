@@ -12,7 +12,7 @@ import localeRo from '@angular/common/locales/ro';
 import { registerLocaleData } from '@angular/common';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LaddaModule } from 'angular2-ladda';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
@@ -24,6 +24,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AddTimelineDialogComponent } from './dialogs/add-timeline-dialog/add-timeline-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -44,7 +47,11 @@ export function momentAdapterFactory(): DateAdapter {
     MatButtonModule,
     MatIconModule,
     MatDialogModule,
-    BrowserAnimationsModule
+    MatSelectModule,
+    MatOptionModule,
+    MatCheckboxModule,
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
