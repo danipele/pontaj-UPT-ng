@@ -1,9 +1,19 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker';
+import { WeekPickerStrategy } from '../../helpers/week-picker-strategy';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 
 @Component({
   selector: 'app-calendar-header',
   templateUrl: './calendar-header.component.html',
-  styleUrls: ['./calendar-header.component.sass']
+  styleUrls: ['./calendar-header.component.sass'],
+  providers: [
+    { provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: WeekPickerStrategy },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: DateAdapter, useClass: CustomDateAdapter }
+  ]
 })
 export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() goBackwards = new EventEmitter();
@@ -17,6 +27,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   format: string;
   endWeekDay: Date;
+  range: FormGroup;
 
   constructor() {}
 
@@ -40,11 +51,8 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isWeekly) {
-      this.format = 'dd MMM yyyy';
       this.endWeekDay = new Date(this.date);
       this.endWeekDay.setDate(this.date.getDate() + 6);
-    } else {
-      this.format = 'EEEE, dd MMM yyyy';
     }
   }
 

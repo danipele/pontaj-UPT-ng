@@ -110,7 +110,6 @@ export class DashboardComponent implements OnInit {
   }
 
   goToDay(event: any): void {
-    this.viewType = 'Zilnic';
     this.date = event;
   }
 }

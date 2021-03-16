@@ -12,10 +12,17 @@
   </button>
 
   <div class="current-date">
-    <!--    <span>{{ date | date: format | titlecase }}</span>-->
-    <!--    <span *ngIf="!isDaily"> - {{ endWeekDay | date: format | titlecase }}</span>-->
-    <mat-form-field appearance="fill" class="date-picker-field">
-      <mat-label>Alege o data</mat-label>
+    <mat-form-field appearance="fill" class="date-picker-field" *ngIf="isWeekly">
+      <mat-label>Alege saptamana</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [value]="date" (dateChange)="goToSelectedDay($event)" />
+        <input matEndDate [value]="endWeekDay" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="date-picker-field" *ngIf="!isWeekly">
+      <mat-label>Alege ziua</mat-label>
       <input matInput [matDatepicker]="picker" [value]="date" (dateChange)="goToSelectedDay($event)" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -27,7 +34,7 @@
   </button>
 
   <div class="date-label">
-    <span>{{ date | date: format | titlecase }}</span>
-    <span *ngIf="isWeekly"> - {{ endWeekDay | date: format | titlecase }}</span>
+    <span>Calendarul meu</span>
+    <span *ngIf="!isWeekly"> - {{ date | date: 'EEEE, dd MMM yyyy' | titlecase }}</span>
   </div>
 </div>
