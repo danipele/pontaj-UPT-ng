@@ -31,6 +31,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { CoursesDialogComponent } from './dialogs/courses-dialog/courses-dialog.component';
 import { ProjectsDialogComponent } from './dialogs/projects-dialog/projects-dialog.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { PersonalInformationDialogComponent } from './dialogs/personal-information-dialog/personal-information-dialog.component';
+import { UserService } from './services/user.service';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -46,7 +48,8 @@ export function momentAdapterFactory(): DateAdapter {
     LoginComponent,
     AddTimelineDialogComponent,
     CoursesDialogComponent,
-    ProjectsDialogComponent
+    ProjectsDialogComponent,
+    PersonalInformationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -71,6 +74,7 @@ export function momentAdapterFactory(): DateAdapter {
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
+    { provide: UserService, useClass: UserService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

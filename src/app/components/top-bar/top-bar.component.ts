@@ -4,6 +4,9 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { CoursesDialogComponent } from '../../dialogs/courses-dialog/courses-dialog.component';
 import { ProjectsDialogComponent } from '../../dialogs/projects-dialog/projects-dialog.component';
+import { PersonalInformationDialogComponent } from '../../dialogs/personal-information-dialog/personal-information-dialog.component';
+import { IUser } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-top-bar',
@@ -11,7 +14,7 @@ import { ProjectsDialogComponent } from '../../dialogs/projects-dialog/projects-
   styleUrls: ['./top-bar.component.sass']
 })
 export class TopBarComponent implements OnInit {
-  constructor(private loginService: LoginService, private router: Router, public dialog: MatDialog) {}
+  constructor(private loginService: LoginService, private router: Router, public dialog: MatDialog, private userService: UserService) {}
 
   ngOnInit(): void {}
 
@@ -22,30 +25,31 @@ export class TopBarComponent implements OnInit {
   }
 
   openCoursesDialog(): void {
-    const dialogRef = this.dialog.open(CoursesDialogComponent, {
+    this.dialog.open(CoursesDialogComponent, {
       position: {
         top: '100px'
       },
       width: '80%',
       data: {}
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      // do staff
     });
   }
 
   openProjectsDialog(): void {
-    const dialogRef = this.dialog.open(ProjectsDialogComponent, {
+    this.dialog.open(ProjectsDialogComponent, {
       position: {
         top: '100px'
       },
       width: '80%',
       data: {}
     });
+  }
 
-    dialogRef.afterClosed().subscribe((result) => {
-      // do staff
+  openPersonalInfoDialog(): void {
+    this.userService.getAuthenticatedUser().subscribe((user: IUser) => {
+      this.dialog.open(PersonalInformationDialogComponent, {
+        width: '50%',
+        data: { user }
+      });
     });
   }
 }

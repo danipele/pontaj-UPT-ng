@@ -1,0 +1,37 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span> Informatii personale </span>
+  </h5>
+  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+</div>
+<div class="modal-body">
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field class="name-field-width">
+        <mat-label>Prenume</mat-label>
+        <input matInput placeholder="Prenume" [value]="data.user.first_name" />
+      </mat-form-field>
+    </div>
+    <div class="col-md-6">
+      <mat-form-field class="name-field-width">
+        <mat-label>Nume</mat-label>
+        <input matInput placeholder="Nume" [value]="data.user.last_name" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="margin-top">
+    <mat-form-field class="field-width">
+      <mat-label>Email</mat-label>
+      <input matInput [value]="data.user.email" disabled />
+    </mat-form-field>
+  </div>
+  <div class="margin-top">
+    <mat-form-field class="field-width">
+      <mat-label>Tipul utilizatorului</mat-label>
+      <input matInput [value]="data.user.type" disabled />
+    </mat-form-field>
+  </div>
+</div>
+<div class="modal-footer">
+  <button mat-raised-button class="upt-btn" [mat-dialog-close]="saveUser()" cdkFocusInitial>Confirm</button>
+</div>
