@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   formGroup: FormGroup;
-  requestInProgress = false;
   error = '';
+  resetPassOn = false;
 
   constructor(private loginService: LoginService, private router: Router) {
     this.formGroup = new FormGroup({
@@ -37,5 +37,15 @@ export class LoginComponent implements OnInit {
         this.error = result.message;
       }
     });
+  }
+
+  resetPassword(): void {
+    this.resetPassOn = true;
+  }
+
+  sendEmail(): void {
+    this.resetPassOn = false;
+    const email = this.formGroup.controls.userEmail.value;
+    this.loginService.resetPassword(email).subscribe();
   }
 }

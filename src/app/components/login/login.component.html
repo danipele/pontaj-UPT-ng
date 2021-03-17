@@ -12,16 +12,24 @@
             <input matInput id="userEmail" name="email" type="email" formControlName="userEmail" required="required" />
             <mat-icon class="icon" aria-hidden="false" aria-label="email">email</mat-icon>
           </mat-form-field>
-          <mat-form-field class="form-field">
+          <mat-form-field class="form-field" [hidden]="resetPassOn">
             <mat-label for="userPassword">Parola</mat-label>
             <input matInput id="userPassword" name="password" type="password" formControlName="userPassword" required="required" />
             <mat-icon class="icon" aria-hidden="false" aria-label="password">password</mat-icon>
           </mat-form-field>
-          <div class="form-group-button">
+          <div class="form-group-button" [hidden]="resetPassOn">
             <button mat-raised-button (click)="login()" class="upt-btn">Autentificare</button>
           </div>
-          <div class="errorContainer" *ngIf="error !== ''">
+          <div class="errorContainer" *ngIf="error !== ''" [hidden]="resetPassOn">
             <span>{{ this.error }}</span>
+          </div>
+          <div>
+            <button (click)="resetPassword()" class="upt-btn reset-password-btn" [hidden]="resetPassOn">Resetare parola</button>
+          </div>
+          <div>
+            <button mat-raised-button (click)="sendEmail()" class="upt-btn" [hidden]="!resetPassOn">
+              Trimite email de resetare a parolei
+            </button>
           </div>
         </form>
       </div>

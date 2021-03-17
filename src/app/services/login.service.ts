@@ -13,4 +13,8 @@ export class LoginService {
   logout(): Observable<any> {
     return this.http.post('http://localhost:8000/api/v1/users/logout', {});
   }
+
+  resetPassword(email: string): Observable<any> {
+    return this.http.post('http://localhost:8000/api/v1/users/reset_password', { email });
+  }
 }
