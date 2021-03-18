@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   error = '';
   resetPassOn = false;
 
-  constructor(private loginService: LoginService, private router: Router) {
+  constructor(private loginService: LoginService, private router: Router, private userService: UserService) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
       userPassword: new FormControl()
@@ -29,13 +30,7 @@ export class LoginComponent implements OnInit {
     };
 
     this.loginService.login(params).subscribe((result) => {
-      if (result.success === 'true') {
-        if (result.type === 'admin') {
-          this.router.navigate(['/dashboard']);
-        }
-      } else {
-        this.error = result.message;
-      }
+      this.router.navigate(['/dashboard']);
     });
   }
 
@@ -46,6 +41,6 @@ export class LoginComponent implements OnInit {
   sendEmail(): void {
     this.resetPassOn = false;
     const email = this.formGroup.controls.userEmail.value;
-    this.loginService.resetPassword(email).subscribe();
+    this.userService.resetPassword(email).subscribe();
   }
 }

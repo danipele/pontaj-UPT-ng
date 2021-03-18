@@ -6,6 +6,10 @@ import { Observable } from 'rxjs';
 export class UserService {
   constructor(private http: HttpClient) {}
 
+  resetPassword(email: string): Observable<any> {
+    return this.http.post('http://localhost:8000/api/v1/users/reset_password', { email });
+  }
+
   getAuthenticatedUser(): Observable<any> {
     return this.http.get('http://localhost:8000/api/v1/users/authenticated_user');
   }
