@@ -11,5 +11,5 @@
     <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">Descarca template</button>
     <button mat-menu-item (click)="importFile()" class="upt-secondary-btn">Importa fisier</button>
   </mat-menu>
-  <button mat-raised-button class="upt-btn" [mat-dialog-close]="addProject()" cdkFocusInitial>Adauga proiect</button>
+  <button mat-raised-button class="upt-btn" (click)="addProject()" cdkFocusInitial>Adauga proiect</button>
 </div>

@@ -33,6 +33,8 @@ import { ProjectsDialogComponent } from './dialogs/projects-dialog/projects-dial
 import { MatMenuModule } from '@angular/material/menu';
 import { PersonalInformationDialogComponent } from './dialogs/personal-information-dialog/personal-information-dialog.component';
 import { UserService } from './services/user.service';
+import { SettingsDialogComponent } from './dialogs/settings-dialog/settings-dialog.component';
+import { AddCourseDialogComponent } from './dialogs/add-course-dialog/add-course-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -49,7 +51,9 @@ export function momentAdapterFactory(): DateAdapter {
     AddTimelineDialogComponent,
     CoursesDialogComponent,
     ProjectsDialogComponent,
-    PersonalInformationDialogComponent
+    PersonalInformationDialogComponent,
+    SettingsDialogComponent,
+    AddCourseDialogComponent
   ],
   imports: [
     BrowserModule,

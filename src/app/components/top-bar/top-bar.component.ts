@@ -7,6 +7,7 @@ import { ProjectsDialogComponent } from '../../dialogs/projects-dialog/projects-
 import { PersonalInformationDialogComponent } from '../../dialogs/personal-information-dialog/personal-information-dialog.component';
 import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-dialog.component';
 
 @Component({
   selector: 'app-top-bar',
@@ -50,6 +51,13 @@ export class TopBarComponent implements OnInit {
         width: '50%',
         data: { user }
       });
+    });
+  }
+
+  openSettingsDialog(): void {
+    this.dialog.open(SettingsDialogComponent, {
+      width: '50%',
+      data: {}
     });
   }
 }
