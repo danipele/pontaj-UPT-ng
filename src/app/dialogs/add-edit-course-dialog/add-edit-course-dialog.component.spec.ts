@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AddCourseDialogComponent } from './add-course-dialog.component';
+import { AddEditCourseDialogComponent } from './add-edit-course-dialog.component';
 
 describe('AddCourseDialogComponent', () => {
-  let component: AddCourseDialogComponent;
-  let fixture: ComponentFixture<AddCourseDialogComponent>;
+  let component: AddEditCourseDialogComponent;
+  let fixture: ComponentFixture<AddEditCourseDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddCourseDialogComponent]
+      declarations: [AddEditCourseDialogComponent]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddCourseDialogComponent);
+    fixture = TestBed.createComponent(AddEditCourseDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

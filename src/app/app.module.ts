@@ -34,10 +34,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { PersonalInformationDialogComponent } from './dialogs/personal-information-dialog/personal-information-dialog.component';
 import { UserService } from './services/user.service';
 import { SettingsDialogComponent } from './dialogs/settings-dialog/settings-dialog.component';
-import { AddCourseDialogComponent } from './dialogs/add-course-dialog/add-course-dialog.component';
+import { AddEditCourseDialogComponent } from './dialogs/add-edit-course-dialog/add-edit-course-dialog.component';
 import { MatTableModule } from '@angular/material/table';
 import { CourseService } from './services/course.service';
-import { AddProjectDialogComponent } from './dialogs/add-project-dialog/add-project-dialog.component';
+import { AddEditProjectDialogComponent } from './dialogs/add-edit-project-dialog/add-edit-project-dialog.component';
 import { ProjectService } from './services/project.service';
 registerLocaleData(localeRo);
 
@@ -57,8 +57,8 @@ export function momentAdapterFactory(): DateAdapter {
     ProjectsDialogComponent,
     PersonalInformationDialogComponent,
     SettingsDialogComponent,
-    AddCourseDialogComponent,
-    AddProjectDialogComponent
+    AddEditCourseDialogComponent,
+    AddEditProjectDialogComponent
   ],
   imports: [
     BrowserModule,

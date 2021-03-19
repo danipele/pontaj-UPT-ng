@@ -11,8 +11,16 @@ table
   padding: 10px
 
 .mat-column-description
-  width: 70% !important
+  width: 64% !important
   word-break: break-word
+  padding: 10px
+
+.mat-column-edit
+  width: 3% !important
+  padding: 10px
+
+.mat-column-delete
+  width: 3% !important
   padding: 10px
 
 .count
@@ -26,3 +34,19 @@ table
   min-width: 30px
   text-align: center
   padding: 4px
+
+.action-button
+  background-color: #5e5d5b
+  width: 30px
+  height: 30px
+  &:hover
+    background-color: #00135f
+  &:focus
+    outline: none
+
+.mat-mini-fab
+  &::ng-deep .mat-button-wrapper
+    padding: 0
+
+.mat-icon
+  font-size: 16px

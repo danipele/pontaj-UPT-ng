@@ -6,7 +6,7 @@ table
   overflow: auto
 
 .mat-column-name
-  width: 23% !important
+  width: 21% !important
   word-break: break-word
   padding: 10px
 
@@ -19,13 +19,21 @@ table
   text-align: center
 
 .mat-column-faculty
-  width: 23% !important
+  width: 21% !important
   word-break: break-word
   padding: 10px
 
 .mat-column-description
-  width: 44% !important
+  width: 42% !important
   word-break: break-word
+  padding: 10px
+
+.mat-column-edit
+  width: 3% !important
+  padding: 10px
+
+.mat-column-delete
+  width: 3% !important
   padding: 10px
 
 .count
@@ -40,3 +48,18 @@ table
   text-align: center
   padding: 4px
 
+.action-button
+  background-color: #5e5d5b
+  width: 30px
+  height: 30px
+  &:hover
+    background-color: #00135f
+  &:focus
+    outline: none
+
+.mat-mini-fab
+  &::ng-deep .mat-button-wrapper
+    padding: 0
+
+.mat-icon
+  font-size: 16px

@@ -11,7 +11,11 @@ export class CourseService {
     return this.http.get('http://localhost:8000/api/v1/courses');
   }
 
-  save(course: ICourse): Observable<any> {
+  add(course: ICourse): Observable<any> {
     return this.http.post('http://localhost:8000/api/v1/courses', course);
+  }
+
+  update(course: ICourse): Observable<any> {
+    return this.http.put('http://localhost:8000/api/v1/courses', course);
   }
 }

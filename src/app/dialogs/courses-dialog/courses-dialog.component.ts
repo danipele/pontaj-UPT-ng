@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { AddCourseDialogComponent } from '../add-course-dialog/add-course-dialog.component';
+import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { ICourse } from '../../models/course.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../../services/course.service';
@@ -12,7 +12,7 @@ import { CourseService } from '../../services/course.service';
 })
 export class CoursesDialogComponent implements OnInit {
   courses = new MatTableDataSource<ICourse>();
-  columnNames: string[] = ['name', 'student_year', 'semester', 'faculty', 'description'];
+  columnNames: string[] = ['name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
 
   constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
 
@@ -32,13 +32,26 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   addCourse(): void {
-    const dialogRef = this.dialog.open(AddCourseDialogComponent, {
+    const dialogRef = this.dialog.open(AddEditCourseDialogComponent, {
       width: '50%',
       data: {}
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.courseService.save(result).subscribe((coursesResult) => {
+      this.courseService.add(result).subscribe((coursesResult) => {
+        this.courses.data = coursesResult;
+        this.refresh();
+      });
+    });
+  }
+
+  editCourse(course: ICourse): void {
+    const dialogRef = this.dialog.open(AddEditCourseDialogComponent, {
+      width: '50%',
+      data: course
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.courseService.update(result).subscribe((coursesResult) => {
         this.courses.data = coursesResult;
         this.refresh();
       });

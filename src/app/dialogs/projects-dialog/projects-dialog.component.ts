@@ -3,7 +3,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { IProject } from '../../models/project.model';
 import { ProjectService } from '../../services/project.service';
-import { AddProjectDialogComponent } from '../add-project-dialog/add-project-dialog.component';
+import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
+import { ICourse } from '../../models/course.model';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -12,7 +13,7 @@ import { AddProjectDialogComponent } from '../add-project-dialog/add-project-dia
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['name', 'description'];
+  columnNames: string[] = ['name', 'description', 'edit', 'delete'];
 
   constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
 
@@ -32,13 +33,26 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   addProject(): void {
-    const dialogRef = this.dialog.open(AddProjectDialogComponent, {
+    const dialogRef = this.dialog.open(AddEditProjectDialogComponent, {
       width: '50%',
       data: {}
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.projectService.save(result).subscribe((projectsResult) => {
+      this.projectService.add(result).subscribe((projectsResult) => {
+        this.projects.data = projectsResult;
+        this.refresh();
+      });
+    });
+  }
+
+  editProject(course: ICourse): void {
+    const dialogRef = this.dialog.open(AddEditProjectDialogComponent, {
+      width: '50%',
+      data: course
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      this.projectService.update(result).subscribe((projectsResult) => {
         this.projects.data = projectsResult;
         this.refresh();
       });
