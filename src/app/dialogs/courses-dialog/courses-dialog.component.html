@@ -1,10 +1,41 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Cursurile mele</span>
+    <div class="row">
+      <span>Cursurile mele</span>
+      <div class="count">{{ courses.data.length }}</div>
+    </div>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
-<div class="modal-body"></div>
+<div class="modal-body">
+  <div class="table-container">
+    <table mat-table [dataSource]="courses">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nume</th>
+        <td mat-cell *matCellDef="let course">{{ course.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="student_year">
+        <th mat-header-cell *matHeaderCellDef>Anul de studiu</th>
+        <td mat-cell *matCellDef="let course">{{ course.student_year }}</td>
+      </ng-container>
+      <ng-container matColumnDef="semester">
+        <th mat-header-cell *matHeaderCellDef>Semestru</th>
+        <td mat-cell *matCellDef="let course">{{ course.semester }}</td>
+      </ng-container>
+      <ng-container matColumnDef="faculty">
+        <th mat-header-cell *matHeaderCellDef>Facultatea</th>
+        <td mat-cell *matCellDef="let course">{{ course.faculty }}</td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrierea</th>
+        <td mat-cell *matCellDef="let course">{{ course.description }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+    </table>
+  </div>
+</div>
 <div class="modal-footer">
   <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa cursuri</button>
   <mat-menu #menu="matMenu">

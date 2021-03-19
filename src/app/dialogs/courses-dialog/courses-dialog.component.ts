@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { AddCourseDialogComponent } from '../add-course-dialog/add-course-dialog.component';
 import { ICourse } from '../../models/course.model';
+import { MatTableDataSource } from '@angular/material/table';
+import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -11,11 +13,21 @@ import { ICourse } from '../../models/course.model';
 })
 export class CoursesDialogComponent implements OnInit {
   @ViewChild('importMenuTrigger') importMenuTrigger: MatMenuTrigger;
-  courses: ICourse[];
+  courses = new MatTableDataSource<ICourse>();
+  columnNames: string[] = ['name', 'student_year', 'semester', 'faculty', 'description'];
 
-  constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog) {}
+  constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.courseService.getAll().subscribe((result) => {
+      this.courses.data = result;
+      this.refresh();
+    });
+  }
+
+  refresh(): void {
+    this.courses.data = this.courses.data;
+  }
 
   cancel(): void {
     this.dialogRef.close();
@@ -28,7 +40,10 @@ export class CoursesDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.courses.push(result.course);
+      this.courseService.save(result).subscribe((coursesResult) => {
+        this.courses.data = coursesResult;
+        this.refresh();
+      });
     });
   }
 

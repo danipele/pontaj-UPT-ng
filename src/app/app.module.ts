@@ -35,6 +35,8 @@ import { PersonalInformationDialogComponent } from './dialogs/personal-informati
 import { UserService } from './services/user.service';
 import { SettingsDialogComponent } from './dialogs/settings-dialog/settings-dialog.component';
 import { AddCourseDialogComponent } from './dialogs/add-course-dialog/add-course-dialog.component';
+import { MatTableModule } from '@angular/material/table';
+import { CourseService } from './services/course.service';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -74,11 +76,13 @@ export function momentAdapterFactory(): DateAdapter {
     BrowserAnimationsModule,
     MatNativeDateModule,
     MatMenuModule,
-    FormsModule
+    FormsModule,
+    MatTableModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
     { provide: UserService, useClass: UserService },
+    { provide: CourseService, useClass: CourseService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

@@ -16,6 +16,7 @@ export class AddCourseDialogComponent implements OnInit {
     this.formGroup = new FormGroup({
       courseName: new FormControl(),
       courseStudentYear: new FormControl(),
+      courseSemester: new FormControl(),
       courseFaculty: new FormControl(),
       courseDescription: new FormControl()
     });
@@ -32,6 +33,7 @@ export class AddCourseDialogComponent implements OnInit {
       course: {
         name: this.formGroup.controls.courseName.value,
         student_year: this.formGroup.controls.courseStudentYear.value,
+        semester: this.formGroup.controls.courseSemester.value,
         faculty: this.formGroup.controls.courseFaculty.value,
         description: this.formGroup.controls.courseDescription.value
       }
