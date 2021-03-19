@@ -16,6 +16,7 @@
             color="primary"
             (change)="checkAll($event.checked)"
             [checked]="projects.data.length !== 0 && selectedProjects.length === projects.data.length"
+            class="select-checkbox"
           ></mat-checkbox>
         </th>
         <td mat-cell *matCellDef="let project">
@@ -23,6 +24,7 @@
             color="primary"
             (change)="checkProject($event.checked, project)"
             [checked]="isProjectChecked(project)"
+            class="select-checkbox"
           ></mat-checkbox>
         </td>
       </ng-container>
@@ -41,7 +43,7 @@
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let project">
-          <button mat-mini-fab class="action-button" aria-label="Edit" (click)="editProject(project)">
+          <button mat-mini-fab title="Editeaza" class="action-button" aria-label="Edit" (click)="editProject(project)">
             <mat-icon>edit</mat-icon>
           </button>
         </td>
@@ -49,8 +51,16 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let project">
-          <button mat-mini-fab class="action-button" aria-label="Delete" (click)="deleteProject(project)">
+          <button mat-mini-fab title="Sterge" class="action-button" aria-label="Delete" (click)="deleteProject(project)">
             <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="add_timeline">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let project">
+          <button mat-mini-fab title="Adauga pontaj" class="action-button" aria-label="AddTimeline" (click)="addTimeline(project)">
+            <mat-icon>access_time</mat-icon>
           </button>
         </td>
       </ng-container>

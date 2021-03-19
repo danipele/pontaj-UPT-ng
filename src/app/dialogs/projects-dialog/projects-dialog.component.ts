@@ -15,7 +15,7 @@ import { indexOf } from 'lodash';
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete'];
+  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete', 'add_timeline'];
   selectedProjects: IProject[] = [];
 
   constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
@@ -139,4 +139,6 @@ export class ProjectsDialogComponent implements OnInit {
       }
     });
   }
+
+  addTimeline(project: IProject): void {}
 }

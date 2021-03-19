@@ -14,7 +14,18 @@ import { indexOf } from 'lodash';
 })
 export class CoursesDialogComponent implements OnInit {
   courses = new MatTableDataSource<ICourse>();
-  columnNames: string[] = ['select', 'nr_crt', 'name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
+  columnNames: string[] = [
+    'select',
+    'nr_crt',
+    'name',
+    'student_year',
+    'semester',
+    'faculty',
+    'description',
+    'edit',
+    'delete',
+    'add_timeline'
+  ];
   selectedCourses: ICourse[] = [];
 
   constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
@@ -138,4 +149,6 @@ export class CoursesDialogComponent implements OnInit {
       }
     });
   }
+
+  addTimeline(course: ICourse): void {}
 }
