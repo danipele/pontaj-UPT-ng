@@ -16,7 +16,11 @@ export class ProjectService {
     return this.http.post('http://localhost:8000/api/v1/projects', project);
   }
 
-  update(project: IProject): Observable<any> {
-    return this.http.put('http://localhost:8000/api/v1/projects', project);
+  update(params: { project: IProject }): Observable<any> {
+    return this.http.put(`http://localhost:8000/api/v1/projects/${params.project.id}`, params);
+  }
+
+  delete(projectId: number | undefined): Observable<any> {
+    return this.http.delete(`http://localhost:8000/api/v1/courses/${projectId}`);
   }
 }

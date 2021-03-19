@@ -39,6 +39,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CourseService } from './services/course.service';
 import { AddEditProjectDialogComponent } from './dialogs/add-edit-project-dialog/add-edit-project-dialog.component';
 import { ProjectService } from './services/project.service';
+import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -58,7 +59,8 @@ export function momentAdapterFactory(): DateAdapter {
     PersonalInformationDialogComponent,
     SettingsDialogComponent,
     AddEditCourseDialogComponent,
-    AddEditProjectDialogComponent
+    AddEditProjectDialogComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,

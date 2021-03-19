@@ -41,7 +41,7 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let course">
-          <button mat-mini-fab class="action-button" aria-label="Delete">
+          <button mat-mini-fab class="action-button" aria-label="Delete" (click)="deleteCourse(course)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

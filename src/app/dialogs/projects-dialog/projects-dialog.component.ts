@@ -5,6 +5,8 @@ import { IProject } from '../../models/project.model';
 import { ProjectService } from '../../services/project.service';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
 import { ICourse } from '../../models/course.model';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { indexOf } from 'lodash';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -56,6 +58,28 @@ export class ProjectsDialogComponent implements OnInit {
         this.projects.data = projectsResult;
         this.refresh();
       });
+    });
+  }
+
+  deleteProject(project: IProject): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi acest proiect?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.projectService.delete(project.id).subscribe(() => {
+          const index = indexOf(this.projects.data, project);
+          if (index !== -1) {
+            this.projects.data.splice(index, 1);
+          }
+          this.refresh();
+        });
+      }
     });
   }
 

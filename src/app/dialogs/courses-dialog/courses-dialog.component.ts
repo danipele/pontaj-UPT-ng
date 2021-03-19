@@ -4,6 +4,8 @@ import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit
 import { ICourse } from '../../models/course.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../../services/course.service';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { indexOf } from 'lodash';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -55,6 +57,28 @@ export class CoursesDialogComponent implements OnInit {
         this.courses.data = coursesResult;
         this.refresh();
       });
+    });
+  }
+
+  deleteCourse(course: ICourse): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi acest curs?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.courseService.delete(course.id).subscribe(() => {
+          const index = indexOf(this.courses.data, course);
+          if (index !== -1) {
+            this.courses.data.splice(index, 1);
+          }
+          this.refresh();
+        });
+      }
     });
   }
 

@@ -15,7 +15,11 @@ export class CourseService {
     return this.http.post('http://localhost:8000/api/v1/courses', course);
   }
 
-  update(course: ICourse): Observable<any> {
-    return this.http.put('http://localhost:8000/api/v1/courses', course);
+  update(params: { course: ICourse }): Observable<any> {
+    return this.http.put(`http://localhost:8000/api/v1/courses/${params.course.id}`, params);
+  }
+
+  delete(courseId: number | undefined): Observable<any> {
+    return this.http.delete(`http://localhost:8000/api/v1/courses/${courseId}`);
   }
 }
