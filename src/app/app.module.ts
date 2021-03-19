@@ -37,6 +37,8 @@ import { SettingsDialogComponent } from './dialogs/settings-dialog/settings-dial
 import { AddCourseDialogComponent } from './dialogs/add-course-dialog/add-course-dialog.component';
 import { MatTableModule } from '@angular/material/table';
 import { CourseService } from './services/course.service';
+import { AddProjectDialogComponent } from './dialogs/add-project-dialog/add-project-dialog.component';
+import { ProjectService } from './services/project.service';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -55,7 +57,8 @@ export function momentAdapterFactory(): DateAdapter {
     ProjectsDialogComponent,
     PersonalInformationDialogComponent,
     SettingsDialogComponent,
-    AddCourseDialogComponent
+    AddCourseDialogComponent,
+    AddProjectDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -83,6 +86,7 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: LoginService, useClass: LoginService },
     { provide: UserService, useClass: UserService },
     { provide: CourseService, useClass: CourseService },
+    { provide: ProjectService, useClass: ProjectService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

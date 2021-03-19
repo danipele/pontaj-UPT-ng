@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { AddCourseDialogComponent } from '../add-course-dialog/add-course-dialog.component';
 import { ICourse } from '../../models/course.model';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,7 +11,6 @@ import { CourseService } from '../../services/course.service';
   styleUrls: ['./courses-dialog.component.sass']
 })
 export class CoursesDialogComponent implements OnInit {
-  @ViewChild('importMenuTrigger') importMenuTrigger: MatMenuTrigger;
   courses = new MatTableDataSource<ICourse>();
   columnNames: string[] = ['name', 'student_year', 'semester', 'faculty', 'description'];
 

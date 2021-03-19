@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span> Adauga proiect </span>
+  </h5>
+  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+</div>
+<div class="modal-body">
+  <div>
+    <h6>
+      <span>Numele proiectului</span>
+    </h6>
+  </div>
+  <form [formGroup]="formGroup" role="form" name="addProjectForm">
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Nume</mat-label>
+        <input matInput formControlName="projectName" />
+      </mat-form-field>
+    </div>
+    <div class="header-margin-top">
+      <h6>
+        <span>Descrierea proiectului</span>
+      </h6>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Descriere</mat-label>
+        <textarea matInput formControlName="projectDescription" class="description-textarea"></textarea>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button mat-raised-button class="upt-btn" [mat-dialog-close]="addProject()" cdkFocusInitial>Adauga</button>
+</div>

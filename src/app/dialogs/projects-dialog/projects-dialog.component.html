@@ -1,10 +1,29 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Proiectele mele</span>
+    <div class="row">
+      <span>Proiectele mele</span>
+      <div class="count">{{ projects.data.length }}</div>
+    </div>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
-<div class="modal-body"></div>
+<div class="modal-body">
+  <div class="table-container">
+    <table mat-table [dataSource]="projects">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nume</th>
+        <td mat-cell *matCellDef="let project">{{ project.name }}</td>
+      </ng-container>
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrierea</th>
+        <td mat-cell *matCellDef="let project">{{ project.description }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+    </table>
+  </div>
+</div>
 <div class="modal-footer">
   <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa proiecte</button>
   <mat-menu #menu="matMenu">
