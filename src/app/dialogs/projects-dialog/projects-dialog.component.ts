@@ -82,7 +82,11 @@ export class ProjectsDialogComponent implements OnInit {
 
   checkAll(checked: boolean): void {
     if (checked) {
-      this.projects.data.forEach((project) => this.selectedProjects.push(project));
+      this.projects.data.forEach((project) => {
+        if (!this.selectedProjects.includes(project)) {
+          this.selectedProjects.push(project);
+        }
+      });
     } else {
       this.selectedProjects = [];
     }

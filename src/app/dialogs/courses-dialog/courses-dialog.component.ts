@@ -92,7 +92,11 @@ export class CoursesDialogComponent implements OnInit {
 
   checkAll(checked: boolean): void {
     if (checked) {
-      this.courses.data.forEach((course) => this.selectedCourses.push(course));
+      this.courses.data.forEach((course) => {
+        if (!this.selectedCourses.includes(course)) {
+          this.selectedCourses.push(course);
+        }
+      });
     } else {
       this.selectedCourses = [];
     }
