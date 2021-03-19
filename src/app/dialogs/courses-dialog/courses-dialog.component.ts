@@ -14,7 +14,7 @@ import { indexOf } from 'lodash';
 })
 export class CoursesDialogComponent implements OnInit {
   courses = new MatTableDataSource<ICourse>();
-  columnNames: string[] = ['name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
+  columnNames: string[] = ['nr_crt', 'name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
 
   constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
 

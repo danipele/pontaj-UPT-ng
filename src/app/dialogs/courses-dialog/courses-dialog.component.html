@@ -10,6 +10,10 @@
 <div class="modal-body">
   <div class="table-container">
     <table mat-table [dataSource]="courses">
+      <ng-container matColumnDef="nr_crt">
+        <th mat-header-cell *matHeaderCellDef>Nr. crt.</th>
+        <td mat-cell *matCellDef="let course">{{ courses.data.indexOf(course) + 1 }}</td>
+      </ng-container>
       <ng-container matColumnDef="name">
         <th mat-header-cell *matHeaderCellDef>Nume</th>
         <td mat-cell *matCellDef="let course">{{ course.name }}</td>

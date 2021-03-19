@@ -15,7 +15,7 @@ import { indexOf } from 'lodash';
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['name', 'description', 'edit', 'delete'];
+  columnNames: string[] = ['nr_crt', 'name', 'description', 'edit', 'delete'];
 
   constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
 
