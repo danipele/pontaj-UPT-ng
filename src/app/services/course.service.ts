@@ -22,4 +22,8 @@ export class CourseService {
   delete(courseId: number | undefined): Observable<any> {
     return this.http.delete(`http://localhost:8000/api/v1/courses/${courseId}`);
   }
+
+  delete_selected(courses: ICourse[]): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/courses/destroy_selected`, { courses });
+  }
 }

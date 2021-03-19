@@ -21,6 +21,10 @@ export class ProjectService {
   }
 
   delete(projectId: number | undefined): Observable<any> {
-    return this.http.delete(`http://localhost:8000/api/v1/courses/${projectId}`);
+    return this.http.delete(`http://localhost:8000/api/v1/projects/${projectId}`);
+  }
+
+  delete_selected(projects: IProject[]): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/projects/destroy_selected`, { projects });
   }
 }

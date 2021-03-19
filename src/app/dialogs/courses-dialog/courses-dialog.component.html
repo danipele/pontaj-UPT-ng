@@ -10,6 +10,18 @@
 <div class="modal-body">
   <div class="table-container">
     <table mat-table [dataSource]="courses">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox
+            color="primary"
+            (change)="checkAll($event.checked)"
+            [checked]="courses.data.length !== 0 && selectedCourses.length === courses.data.length"
+          ></mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let course">
+          <mat-checkbox color="primary" (change)="checkCourse($event.checked, course)" [checked]="isCourseChecked(course)"></mat-checkbox>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="nr_crt">
         <th mat-header-cell *matHeaderCellDef>Nr. crt.</th>
         <td mat-cell *matCellDef="let course">{{ courses.data.indexOf(course) + 1 }}</td>
@@ -57,6 +69,9 @@
   </div>
 </div>
 <div class="modal-footer">
+  <button mat-raised-button class="upt-primary-btn" (click)="deleteSelected()" [hidden]="selectedCourses.length === 0">
+    Sterge cursuri
+  </button>
   <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa cursuri</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">Descarca template</button>

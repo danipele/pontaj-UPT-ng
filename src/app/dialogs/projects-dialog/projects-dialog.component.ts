@@ -15,7 +15,8 @@ import { indexOf } from 'lodash';
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['nr_crt', 'name', 'description', 'edit', 'delete'];
+  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete'];
+  selectedProjects: IProject[] = [];
 
   constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
 
@@ -73,17 +74,69 @@ export class ProjectsDialogComponent implements OnInit {
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
         this.projectService.delete(project.id).subscribe(() => {
-          const index = indexOf(this.projects.data, project);
-          if (index !== -1) {
-            this.projects.data.splice(index, 1);
-          }
-          this.refresh();
+          this.deleteProjectFromList(project);
         });
       }
     });
   }
 
+  checkAll(checked: boolean): void {
+    if (checked) {
+      this.projects.data.forEach((project) => this.selectedProjects.push(project));
+    } else {
+      this.selectedProjects = [];
+    }
+  }
+
+  checkProject(checked: boolean, project: IProject): void {
+    if (checked) {
+      this.selectedProjects.push(project);
+    } else {
+      const index = indexOf(this.selectedProjects, project);
+      if (index !== -1) {
+        this.selectedProjects.splice(index, 1);
+      }
+    }
+  }
+
   downloadTemplate(): void {}
 
   importFile(): void {}
+
+  deleteProjectFromList(project: IProject): void {
+    const index = indexOf(this.projects.data, project);
+    if (index !== -1) {
+      this.projects.data.splice(index, 1);
+    }
+    this.refresh();
+  }
+
+  isProjectChecked(project: IProject): boolean {
+    const index = indexOf(this.selectedProjects, project);
+    return index !== -1;
+  }
+
+  deleteSelected(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi ' + this.selectedProjects.length + ' proiecte?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.projectService.delete_selected(this.selectedProjects).subscribe(() => {
+          if (this.selectedProjects.length === this.projects.data.length) {
+            this.projects.data = [];
+          } else {
+            this.selectedProjects.forEach((project) => this.deleteProjectFromList(project));
+          }
+          this.selectedProjects = [];
+          this.refresh();
+        });
+      }
+    });
+  }
 }

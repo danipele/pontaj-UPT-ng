@@ -14,7 +14,8 @@ import { indexOf } from 'lodash';
 })
 export class CoursesDialogComponent implements OnInit {
   courses = new MatTableDataSource<ICourse>();
-  columnNames: string[] = ['nr_crt', 'name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
+  columnNames: string[] = ['select', 'nr_crt', 'name', 'student_year', 'semester', 'faculty', 'description', 'edit', 'delete'];
+  selectedCourses: ICourse[] = [];
 
   constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
 
@@ -72,17 +73,69 @@ export class CoursesDialogComponent implements OnInit {
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
         this.courseService.delete(course.id).subscribe(() => {
-          const index = indexOf(this.courses.data, course);
-          if (index !== -1) {
-            this.courses.data.splice(index, 1);
-          }
-          this.refresh();
+          this.deleteCourseFromList(course);
         });
       }
     });
   }
 
+  checkAll(checked: boolean): void {
+    if (checked) {
+      this.courses.data.forEach((course) => this.selectedCourses.push(course));
+    } else {
+      this.selectedCourses = [];
+    }
+  }
+
+  checkCourse(checked: boolean, course: ICourse): void {
+    if (checked) {
+      this.selectedCourses.push(course);
+    } else {
+      const index = indexOf(this.selectedCourses, course);
+      if (index !== -1) {
+        this.selectedCourses.splice(index, 1);
+      }
+    }
+  }
+
   downloadTemplate(): void {}
 
   importFile(): void {}
+
+  deleteCourseFromList(course: ICourse): void {
+    const index = indexOf(this.courses.data, course);
+    if (index !== -1) {
+      this.courses.data.splice(index, 1);
+    }
+    this.refresh();
+  }
+
+  isCourseChecked(course: ICourse): boolean {
+    const index = indexOf(this.selectedCourses, course);
+    return index !== -1;
+  }
+
+  deleteSelected(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi ' + this.selectedCourses.length + ' cursuri?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.courseService.delete_selected(this.selectedCourses).subscribe(() => {
+          if (this.selectedCourses.length === this.courses.data.length) {
+            this.courses.data = [];
+          } else {
+            this.selectedCourses.forEach((course) => this.deleteCourseFromList(course));
+          }
+          this.selectedCourses = [];
+          this.refresh();
+        });
+      }
+    });
+  }
 }
