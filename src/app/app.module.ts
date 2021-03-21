@@ -40,6 +40,7 @@ import { CourseService } from './services/course.service';
 import { AddEditProjectDialogComponent } from './dialogs/add-edit-project-dialog/add-edit-project-dialog.component';
 import { ProjectService } from './services/project.service';
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
+import { SignupComponent } from './components/signup/signup.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -60,7 +61,8 @@ export function momentAdapterFactory(): DateAdapter {
     SettingsDialogComponent,
     AddEditCourseDialogComponent,
     AddEditProjectDialogComponent,
-    ConfirmationDialogComponent
+    ConfirmationDialogComponent,
+    SignupComponent
   ],
   imports: [
     BrowserModule,

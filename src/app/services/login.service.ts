@@ -13,4 +13,8 @@ export class LoginService {
   logout(): Observable<any> {
     return this.http.delete('http://localhost:8000/api/v1/logout');
   }
+
+  signup(params: {}): Observable<any> {
+    return this.http.post('http://localhost:8000/api/v1/users', { user: params });
+  }
 }

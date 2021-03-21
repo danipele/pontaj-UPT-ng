@@ -26,6 +26,9 @@
           <div>
             <button (click)="resetPassword()" class="upt-btn reset-password-btn" [hidden]="resetPassOn">Resetare parola</button>
           </div>
+          <div class="form-group-button" [hidden]="resetPassOn">
+            <button mat-raised-button (click)="signup()" class="upt-secondary-btn">Creeaza cont</button>
+          </div>
           <div>
             <button mat-raised-button (click)="sendEmail()" class="upt-btn" [hidden]="!resetPassOn">
               Trimite email de resetare a parolei

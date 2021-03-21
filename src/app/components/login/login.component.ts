@@ -30,7 +30,11 @@ export class LoginComponent implements OnInit {
     };
 
     this.loginService.login(params).subscribe((result) => {
-      this.router.navigate(['/dashboard']);
+      if (result.success === 'true') {
+        this.router.navigate(['/dashboard']);
+      } else {
+        this.error = result.message;
+      }
     });
   }
 
@@ -42,5 +46,9 @@ export class LoginComponent implements OnInit {
     this.resetPassOn = false;
     const email = this.formGroup.controls.userEmail.value;
     this.userService.resetPassword(email).subscribe();
+  }
+
+  signup(): void {
+    this.router.navigate(['/signup']);
   }
 }
