@@ -18,10 +18,12 @@ export class WeekPickerStrategy<D> implements MatDateRangeSelectionStrategy<D> {
   private createWeekRange(dDate: D | null): DateRange<D> {
     if (dDate) {
       const date = (dDate as unknown) as Date;
-      const daysToStart = moment(date).startOf('week').toDate().getDate() - date.getDate();
-      const daysToEnd = moment(date).endOf('week').toDate().getDate() - date.getDate();
-      const start = this.dateAdapter.addCalendarDays(dDate, daysToStart);
-      const end = this.dateAdapter.addCalendarDays(dDate, daysToEnd);
+      const daysToStartOfWeek = moment(date).startOf('week').toDate().getDate() - date.getDate();
+      const daysToEndOfWeek = moment(date).endOf('week').toDate().getDate() - date.getDate();
+      const daysToStartOfMonth = moment(date).startOf('month').toDate().getDate() - date.getDate();
+      const daysToEndOfMonth = moment(date).endOf('month').toDate().getDate() - date.getDate();
+      const start = this.dateAdapter.addCalendarDays(dDate, daysToStartOfWeek > 0 ? daysToStartOfMonth : daysToStartOfWeek);
+      const end = this.dateAdapter.addCalendarDays(dDate, daysToEndOfWeek < 0 ? daysToEndOfMonth : daysToEndOfWeek);
       return new DateRange<D>(start, end);
     }
 
