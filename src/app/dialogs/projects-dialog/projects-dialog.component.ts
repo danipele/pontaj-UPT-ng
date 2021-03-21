@@ -17,6 +17,7 @@ export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
   columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete', 'add_timeline'];
   selectedProjects: IProject[] = [];
+  acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
   constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
 
@@ -107,7 +108,17 @@ export class ProjectsDialogComponent implements OnInit {
     window.open(this.projectService.download_template_api_url());
   }
 
-  importFile(): void {}
+  importFile(event: any): void {
+    const file = event.target.files[0];
+    if (this.acceptedFileTypes.includes(file.type)) {
+      const formData: FormData = new FormData();
+      formData.append('projects_file', file);
+      this.projectService.import_projects(formData).subscribe((projects) => {
+        this.projects.data = projects;
+        this.refresh();
+      });
+    }
+  }
 
   deleteProjectFromList(project: IProject): void {
     const index = indexOf(this.projects.data, project);

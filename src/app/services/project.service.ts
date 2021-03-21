@@ -31,4 +31,8 @@ export class ProjectService {
   download_template_api_url(): string {
     return 'http://localhost:8000/api/v1/projects/download_template';
   }
+
+  import_projects(formData: FormData): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/projects/import_projects`, formData);
+  }
 }

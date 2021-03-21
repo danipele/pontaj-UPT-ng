@@ -27,6 +27,7 @@ export class CoursesDialogComponent implements OnInit {
     'add_timeline'
   ];
   selectedCourses: ICourse[] = [];
+  acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
   constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
 
@@ -117,7 +118,17 @@ export class CoursesDialogComponent implements OnInit {
     window.open(this.courseService.download_template_api_url());
   }
 
-  importFile(): void {}
+  importFile(event: any): void {
+    const file = event.target.files[0];
+    if (this.acceptedFileTypes.includes(file.type)) {
+      const formData: FormData = new FormData();
+      formData.append('courses_file', file);
+      this.courseService.import_courses(formData).subscribe((courses) => {
+        this.courses.data = courses;
+        this.refresh();
+      });
+    }
+  }
 
   deleteCourseFromList(course: ICourse): void {
     const index = indexOf(this.courses.data, course);

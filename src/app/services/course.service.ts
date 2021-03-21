@@ -30,4 +30,8 @@ export class CourseService {
   download_template_api_url(): string {
     return 'http://localhost:8000/api/v1/courses/download_template';
   }
+
+  import_courses(formData: FormData): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/courses/import_courses`, formData);
+  }
 }
