@@ -20,6 +20,7 @@ export class CoursesDialogComponent implements OnInit {
     'name',
     'student_year',
     'semester',
+    'cycle',
     'faculty',
     'description',
     'edit',

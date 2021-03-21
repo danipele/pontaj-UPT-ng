@@ -45,7 +45,22 @@
           </mat-form-field>
         </div>
       </div>
-      <div class="col-md-8">
+      <div class="col-md-2">
+        <div>
+          <span>Ciclul</span>
+        </div>
+        <div>
+          <mat-form-field class="form-year-width small-margin-top">
+            <mat-label>Ciclul</mat-label>
+            <mat-select formControlName="courseCycle">
+              <mat-option *ngFor="let cycle of CYCLES" [value]="cycle">
+                {{ cycle }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-6">
         <div>
           <span>De la facultatea</span>
         </div>

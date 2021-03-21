@@ -3,6 +3,7 @@ export interface ICourse {
   name?: string;
   student_year?: number;
   semester?: number;
+  cycle?: string;
   faculty?: string;
   description?: string;
 }
