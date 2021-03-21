@@ -113,7 +113,9 @@ export class CoursesDialogComponent implements OnInit {
     }
   }
 
-  downloadTemplate(): void {}
+  downloadTemplate(): void {
+    window.open(this.courseService.download_template_api_url());
+  }
 
   importFile(): void {}
 

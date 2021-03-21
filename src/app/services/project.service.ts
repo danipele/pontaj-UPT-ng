@@ -27,4 +27,8 @@ export class ProjectService {
   delete_selected(projects: IProject[]): Observable<any> {
     return this.http.post(`http://localhost:8000/api/v1/projects/destroy_selected`, { projects });
   }
+
+  download_template_api_url(): string {
+    return 'http://localhost:8000/api/v1/projects/download_template';
+  }
 }

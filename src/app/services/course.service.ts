@@ -26,4 +26,8 @@ export class CourseService {
   delete_selected(courses: ICourse[]): Observable<any> {
     return this.http.post(`http://localhost:8000/api/v1/courses/destroy_selected`, { courses });
   }
+
+  download_template_api_url(): string {
+    return 'http://localhost:8000/api/v1/courses/download_template';
+  }
 }

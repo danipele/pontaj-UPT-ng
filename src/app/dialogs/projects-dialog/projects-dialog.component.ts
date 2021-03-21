@@ -103,7 +103,9 @@ export class ProjectsDialogComponent implements OnInit {
     }
   }
 
-  downloadTemplate(): void {}
+  downloadTemplate(): void {
+    window.open(this.projectService.download_template_api_url());
+  }
 
   importFile(): void {}
 
