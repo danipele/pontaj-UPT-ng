@@ -8,6 +8,7 @@ import { PersonalInformationDialogComponent } from '../../dialogs/personal-infor
 import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-dialog.component';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'app-top-bar',
@@ -15,12 +16,19 @@ import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-
   styleUrls: ['./top-bar.component.sass']
 })
 export class TopBarComponent implements OnInit {
-  constructor(private loginService: LoginService, private router: Router, public dialog: MatDialog, private userService: UserService) {}
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    public dialog: MatDialog,
+    private userService: UserService,
+    private cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {}
 
   logout(): void {
     this.loginService.logout().subscribe(() => {
+      this.cookieService.remove('auth_token');
       this.router.navigate(['/login']);
     });
   }

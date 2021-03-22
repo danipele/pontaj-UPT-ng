@@ -27,7 +27,13 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getAuthenticatedUser().subscribe((user) => {
+      if (user) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
+  }
 
   login(): void {
     const params = {

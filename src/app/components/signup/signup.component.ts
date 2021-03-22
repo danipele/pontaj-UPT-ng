@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-signup',
@@ -12,7 +13,7 @@ export class SignupComponent implements OnInit {
   TYPES: string[] = ['Angajat cu norma de baza', 'Angajat in regim de plata cu ora', 'Colaborator'];
   formGroup: FormGroup;
 
-  constructor(private loginService: LoginService, private router: Router) {
+  constructor(private loginService: LoginService, private router: Router, private userService: UserService) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
       userPassword: new FormControl(),
@@ -22,7 +23,13 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.userService.getAuthenticatedUser().subscribe((user) => {
+      if (user) {
+        this.router.navigate(['/dashboard']);
+      }
+    });
+  }
 
   createAccount(): void {
     const params = {

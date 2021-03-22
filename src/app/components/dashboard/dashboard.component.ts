@@ -3,6 +3,8 @@ import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTimelineDialogComponent } from '../../dialogs/add-timeline-dialog/add-timeline-dialog.component';
 import { CalendarEvent } from 'angular-calendar';
+import { UserService } from '../../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,13 +16,22 @@ export class DashboardComponent implements OnInit {
   date: Date;
   events: CalendarEvent[];
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialog: MatDialog, private userService: UserService, private router: Router) {
     this.viewType = 'Saptamanal';
   }
 
   ngOnInit(): void {
-    this.date = moment().startOf('week').toDate();
-    this.events = [];
+    this.userService.getAuthenticatedUser().subscribe(
+      () => {
+        this.date = moment().startOf('week').toDate();
+        this.events = [];
+      },
+      (error) => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+      }
+    );
   }
 
   isWeekly(): boolean {
