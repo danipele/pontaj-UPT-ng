@@ -41,6 +41,8 @@ import { AddEditProjectDialogComponent } from './dialogs/add-edit-project-dialog
 import { ProjectService } from './services/project.service';
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { HttpOptions } from './helpers/http-options';
+import { CookieModule, CookieService } from 'ngx-cookie';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -84,13 +86,16 @@ export function momentAdapterFactory(): DateAdapter {
     MatNativeDateModule,
     MatMenuModule,
     FormsModule,
-    MatTableModule
+    MatTableModule,
+    CookieModule.forRoot()
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },
     { provide: UserService, useClass: UserService },
     { provide: CourseService, useClass: CourseService },
     { provide: ProjectService, useClass: ProjectService },
+    { provide: HttpOptions, useClass: HttpOptions },
+    { provide: CookieService, useClass: CookieService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

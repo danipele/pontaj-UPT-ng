@@ -34,7 +34,7 @@ export class SignupComponent implements OnInit {
     };
 
     this.loginService.signup(params).subscribe((result) => {
-      if (result.success === 'true') {
+      if (result.success === true) {
         this.router.navigate(['/login']);
       }
     });

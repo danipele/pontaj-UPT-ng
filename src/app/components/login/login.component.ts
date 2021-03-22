@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { CookieService } from 'ngx-cookie';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,12 @@ export class LoginComponent implements OnInit {
   error = '';
   resetPassOn = false;
 
-  constructor(private loginService: LoginService, private router: Router, private userService: UserService) {
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private userService: UserService,
+    private cookieService: CookieService
+  ) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
       userPassword: new FormControl()
@@ -30,7 +36,8 @@ export class LoginComponent implements OnInit {
     };
 
     this.loginService.login(params).subscribe((result) => {
-      if (result.success === 'true') {
+      if (result.success === true) {
+        this.cookieService.put('auth_token', result.auth_token);
         this.router.navigate(['/dashboard']);
       } else {
         this.error = result.message;
