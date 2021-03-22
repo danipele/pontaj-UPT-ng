@@ -7,6 +7,7 @@ import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-ed
 import { ICourse } from '../../models/course.model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
+import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -157,5 +158,18 @@ export class ProjectsDialogComponent implements OnInit {
     });
   }
 
-  addTimeline(project: IProject): void {}
+  addTimeline(project: IProject): void {
+    this.cancel();
+    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+      width: '40%',
+      data: {
+        date: new Date(),
+        project: { selected: project, projects: this.projects.data }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // resolve event
+    });
+  }
 }

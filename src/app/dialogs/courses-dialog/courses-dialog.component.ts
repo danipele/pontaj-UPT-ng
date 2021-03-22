@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CourseService } from '../../services/course.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
+import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -168,5 +169,18 @@ export class CoursesDialogComponent implements OnInit {
     });
   }
 
-  addTimeline(course: ICourse): void {}
+  addTimeline(course: ICourse): void {
+    this.cancel();
+    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+      width: '40%',
+      data: {
+        date: new Date(),
+        course: { selected: course, courses: this.courses.data }
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      // resolve event
+    });
+  }
 }

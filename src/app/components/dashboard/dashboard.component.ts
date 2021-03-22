@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
+      // resolve event
       const startDate = result.date;
       const endDate = result.date;
       startDate.setHours(result.startHour);

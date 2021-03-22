@@ -1,5 +1,9 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ICourse } from '../../models/course.model';
+import { IProject } from '../../models/project.model';
+import { CourseService } from '../../services/course.service';
+import { ProjectService } from '../../services/project.service';
 
 interface Hour {
   displayValue: string;
@@ -7,7 +11,15 @@ interface Hour {
 }
 
 interface Data {
-  date: Date;
+  date?: Date;
+  course?: {
+    selected: ICourse;
+    courses: ICourse[];
+  };
+  project?: {
+    selected: IProject;
+    projects: IProject[];
+  };
 }
 
 @Component({
@@ -21,6 +33,8 @@ export class AddTimelineDialogComponent {
   allDay: boolean;
   activity: string;
   subactivity: string | undefined;
+  entities: ICourse[] | IProject[] = [];
+  entity: ICourse | IProject | undefined;
 
   HOURS: Hour[] = [
     { displayValue: '8:00', value: 8 },
@@ -41,11 +55,77 @@ export class AddTimelineDialogComponent {
   ];
 
   ACTIVITIES: string[] = ['Curs', 'Proiect', 'Concediu', 'Alta activitate'];
-  SUBACTIVITIES: string[] = ['Curs', 'Seminar', 'Laborator', 'Proiect', 'Examen'];
+  COURSE_SUBACTIVITIES: string[] = [
+    'Curs',
+    'Seminar',
+    'Laborator',
+    'Proiect',
+    'Evaluare',
+    'Consultatii',
+    'Pregatire pentru activitatea didactica'
+  ];
+  PROJECT_SUBACTIVITIES: string[] = [
+    'Documentare pentru cercetare',
+    'Documentare oportunitati de finantare proiecte',
+    'Elaborare proiecte de cercetare',
+    'Executie proiecte de cercetare'
+  ];
+  OTHER_SUBACTIVITIES: string[] = [
+    'Indrumare doctoranzi',
+    'Implicare neremunerată în problematica societății',
+    'Gestiune cooperari',
+    'Zile delegatie (Deplasare interna)',
+    'Zile delegatie (Deplasare externa)',
+    'Plecati cu bursa',
+    'Alte activitati'
+  ];
+  HOLIDAYS: string[] = [
+    'Concediu medical',
+    'Concediu de odihna',
+    'Concediu fara salariu',
+    'Concediu crestere copil',
+    'Concediu de maternitate',
+    'Absente nemotivate'
+  ];
+  subactivities: string[] = [];
 
-  constructor(public dialogRef: MatDialogRef<AddTimelineDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
-    this.startHour = data.date.getHours();
-    this.endHour = this.startHour + 1;
+  constructor(
+    public dialogRef: MatDialogRef<AddTimelineDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Data,
+    private courseService: CourseService,
+    private projectService: ProjectService
+  ) {
+    if (data.date) {
+      if (data.date.getHours() > 8 && data.date.getHours() < 22) {
+        this.startHour = data.date.getHours();
+        this.endHour = this.startHour + 1;
+      } else {
+        this.startHour = 8;
+        this.endHour = 9;
+      }
+    }
+    if (data.course) {
+      this.setSelectedCourse(data.course);
+    }
+    if (data.project) {
+      this.setSelectedProject(data.project);
+    }
+  }
+
+  setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
+    this.activity = 'Curs';
+    this.subactivities = this.COURSE_SUBACTIVITIES;
+    this.subactivity = 'Curs';
+    this.entities = data.courses;
+    this.entity = data.selected;
+  }
+
+  setSelectedProject(data: { selected: IProject; projects: IProject[] }): void {
+    this.activity = 'Proiect';
+    this.subactivities = this.PROJECT_SUBACTIVITIES;
+    this.subactivity = 'Documentare pentru cercetare';
+    this.entities = data.projects;
+    this.entity = data.selected;
   }
 
   cancel(): void {
@@ -71,11 +151,53 @@ export class AddTimelineDialogComponent {
       endHour: this.endHour,
       allDay: this.allDay,
       activity: this.activity,
-      subactivity: this.subactivity
+      subactivity: this.subactivity,
+      entity: this.entity
     };
   }
 
-  resetSubactivity(): void {
+  activitySelected(): void {
     this.subactivity = undefined;
+    switch (this.activity) {
+      case 'Curs': {
+        this.subactivities = this.COURSE_SUBACTIVITIES;
+        this.getCourses();
+        break;
+      }
+      case 'Proiect': {
+        this.subactivities = this.PROJECT_SUBACTIVITIES;
+        this.getProjects();
+        break;
+      }
+      case 'Concediu': {
+        this.subactivities = this.HOLIDAYS;
+        break;
+      }
+      case 'Alta activitate': {
+        this.subactivities = this.OTHER_SUBACTIVITIES;
+        break;
+      }
+    }
+  }
+
+  getCourses(): void {
+    this.courseService.getAll().subscribe((result) => {
+      this.entities = result;
+    });
+  }
+
+  getProjects(): void {
+    this.projectService.getAll().subscribe((result) => {
+      this.entities = result;
+    });
+  }
+
+  subactivitySelected(): void {
+    this.entity = undefined;
+    if (this.activity === 'Curs') {
+      this.getCourses();
+    } else {
+      this.getProjects();
+    }
   }
 }
