@@ -5,6 +5,7 @@ import { AddTimelineDialogComponent } from '../../dialogs/add-timeline-dialog/ad
 import { CalendarEvent } from 'angular-calendar';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,15 +17,23 @@ export class DashboardComponent implements OnInit {
   date: Date;
   events: CalendarEvent[];
 
-  constructor(public dialog: MatDialog, private userService: UserService, private router: Router) {
+  constructor(
+    public dialog: MatDialog,
+    private userService: UserService,
+    private router: Router,
+    private eventsService: CalendarEventsHelper
+  ) {
     this.viewType = 'Saptamanal';
+    this.date = moment().startOf('week').toDate();
+    this.events = [];
   }
 
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       () => {
-        this.date = moment().startOf('week').toDate();
-        this.events = [];
+        this.eventsService.getUserEvents().then((events) => {
+          this.events = events;
+        });
       },
       (error) => {
         if (error.status === 401) {
@@ -95,30 +104,8 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // resolve event
-      const startDate = result.date;
-      const endDate = result.date;
-      startDate.setHours(result.startHour);
-      endDate.setHours(result.endHour);
-
-      this.addEvent(startDate, endDate, result.allDay);
+      this.eventsService.resolveEvent(result);
     });
-  }
-
-  addEvent(startDate: Date, endDate: Date, allDay: boolean): void {
-    const ev = {
-      id: 1,
-      start: startDate,
-      end: endDate,
-      title: 'This is an event',
-      color: {
-        primary: '#00135f',
-        secondary: '#5e5d5b'
-      },
-      allDay
-    };
-
-    this.events.push(ev);
   }
 
   goToDay(event: any): void {

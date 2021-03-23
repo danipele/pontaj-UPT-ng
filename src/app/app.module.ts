@@ -43,6 +43,8 @@ import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confi
 import { SignupComponent } from './components/signup/signup.component';
 import { HttpOptions } from './helpers/http-options';
 import { CookieModule, CookieService } from 'ngx-cookie';
+import { CalendarEventsHelper } from './helpers/calendar-events-helper';
+import { TimelinesService } from './services/timelines.service';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -96,6 +98,8 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: ProjectService, useClass: ProjectService },
     { provide: HttpOptions, useClass: HttpOptions },
     { provide: CookieService, useClass: CookieService },
+    { provide: CalendarEventsHelper, useClass: CalendarEventsHelper },
+    { provide: TimelinesService, useClass: TimelinesService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]

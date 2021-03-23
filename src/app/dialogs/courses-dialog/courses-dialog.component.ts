@@ -7,6 +7,7 @@ import { CourseService } from '../../services/course.service';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
 import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -31,7 +32,12 @@ export class CoursesDialogComponent implements OnInit {
   selectedCourses: ICourse[] = [];
   acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
-  constructor(public dialogRef: MatDialogRef<CoursesDialogComponent>, public dialog: MatDialog, public courseService: CourseService) {}
+  constructor(
+    public dialogRef: MatDialogRef<CoursesDialogComponent>,
+    public dialog: MatDialog,
+    public courseService: CourseService,
+    private eventsService: CalendarEventsHelper
+  ) {}
 
   ngOnInit(): void {
     this.courseService.getAll().subscribe((result) => {
@@ -180,7 +186,7 @@ export class CoursesDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // resolve event
+      this.eventsService.resolveEvent(result);
     });
   }
 }

@@ -8,6 +8,7 @@ import { ICourse } from '../../models/course.model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
 import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -20,7 +21,12 @@ export class ProjectsDialogComponent implements OnInit {
   selectedProjects: IProject[] = [];
   acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
-  constructor(public dialogRef: MatDialogRef<ProjectsDialogComponent>, public dialog: MatDialog, public projectService: ProjectService) {}
+  constructor(
+    public dialogRef: MatDialogRef<ProjectsDialogComponent>,
+    public dialog: MatDialog,
+    public projectService: ProjectService,
+    private eventsService: CalendarEventsHelper
+  ) {}
 
   ngOnInit(): void {
     this.projectService.getAll().subscribe((result) => {
@@ -169,7 +175,7 @@ export class ProjectsDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      // resolve event
+      this.eventsService.resolveEvent(result);
     });
   }
 }

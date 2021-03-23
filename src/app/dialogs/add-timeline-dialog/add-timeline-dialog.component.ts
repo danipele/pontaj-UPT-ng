@@ -30,11 +30,12 @@ interface Data {
 export class AddTimelineDialogComponent {
   startHour: number;
   endHour: number;
-  allDay: boolean;
+  allDay = false;
   activity: string;
   subactivity: string | undefined;
   entities: ICourse[] | IProject[] = [];
   entity: ICourse | IProject | undefined;
+  description = '';
 
   HOURS: Hour[] = [
     { displayValue: '8:00', value: 8 },
@@ -152,7 +153,8 @@ export class AddTimelineDialogComponent {
       allDay: this.allDay,
       activity: this.activity,
       subactivity: this.subactivity,
-      entity: this.entity
+      entity: this.entity,
+      description: this.description
     };
   }
 
