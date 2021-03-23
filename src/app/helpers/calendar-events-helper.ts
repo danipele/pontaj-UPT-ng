@@ -46,18 +46,34 @@ export class CalendarEventsHelper {
     this.events.push(ev);
   }
 
-  getUserEvents(): Promise<CalendarEvent[]> {
+  getUserEventsForCurrentWeek(date: Date): Promise<CalendarEvent[]> {
     return this.timelineService
-      .getAll()
+      .getAllForWeek(date)
       .pipe(
-        map((result: { start_date: string; end_date: string; all_day: boolean }[]) => {
-          result.forEach((timeline: { start_date: string; end_date: string; all_day: boolean }) => {
-            this.addEvent(new Date(timeline.start_date), new Date(timeline.end_date), timeline.all_day);
-          });
-          return this.getEvents();
+        map((result: []) => {
+          return this.addEvents(result);
         })
       )
       .toPromise();
+  }
+
+  getUserEventsForCurrentDay(date: Date): Promise<CalendarEvent[]> {
+    return this.timelineService
+      .getAllForDay(date)
+      .pipe(
+        map((result: []) => {
+          return this.addEvents(result);
+        })
+      )
+      .toPromise();
+  }
+
+  addEvents(result: []): CalendarEvent[] {
+    this.events = [];
+    result.forEach((timeline: { start_date: string; end_date: string; all_day: boolean }) => {
+      this.addEvent(new Date(timeline.start_date), new Date(timeline.end_date), timeline.all_day);
+    });
+    return this.getEvents();
   }
 
   getEvents(): CalendarEvent[] {

@@ -11,7 +11,19 @@ export class TimelinesService {
     return this.http.post('http://localhost:8000/api/v1/timelines', timeline, this.httpOptions.getAuthOptions());
   }
 
-  getAll(): Observable<any> {
-    return this.http.get('http://localhost:8000/api/v1/timelines', this.httpOptions.getAuthOptions());
+  getAllForWeek(date: Date): Observable<any> {
+    return this.http.post(
+      'http://localhost:8000/api/v1/timelines/for_week',
+      { date: date.toDateString() },
+      this.httpOptions.getAuthOptions()
+    );
+  }
+
+  getAllForDay(date: Date): Observable<any> {
+    return this.http.post(
+      'http://localhost:8000/api/v1/timelines/for_day',
+      { date: date.toDateString() },
+      this.httpOptions.getAuthOptions()
+    );
   }
 }
