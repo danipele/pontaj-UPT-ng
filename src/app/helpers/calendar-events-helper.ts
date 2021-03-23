@@ -63,4 +63,8 @@ export class CalendarEventsHelper {
   getEvents(): CalendarEvent[] {
     return this.events;
   }
+
+  deleteEvents(): void {
+    this.events = [];
+  }
 }

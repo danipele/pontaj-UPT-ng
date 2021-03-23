@@ -9,6 +9,7 @@ import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-dialog.component';
 import { CookieService } from 'ngx-cookie';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 
 @Component({
   selector: 'app-top-bar',
@@ -21,7 +22,8 @@ export class TopBarComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private calendarEventsHelper: CalendarEventsHelper
   ) {}
 
   ngOnInit(): void {}
@@ -29,6 +31,7 @@ export class TopBarComponent implements OnInit {
   logout(): void {
     this.loginService.logout().subscribe(() => {
       this.cookieService.remove('auth_token');
+      this.calendarEventsHelper.deleteEvents();
       this.router.navigate(['/login']);
     });
   }

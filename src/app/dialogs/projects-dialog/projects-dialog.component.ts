@@ -25,7 +25,7 @@ export class ProjectsDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ProjectsDialogComponent>,
     public dialog: MatDialog,
     public projectService: ProjectService,
-    private eventsService: CalendarEventsHelper
+    private calendarEventsHelper: CalendarEventsHelper
   ) {}
 
   ngOnInit(): void {
@@ -175,7 +175,7 @@ export class ProjectsDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.eventsService.resolveEvent(result);
+      this.calendarEventsHelper.resolveEvent(result);
     });
   }
 }

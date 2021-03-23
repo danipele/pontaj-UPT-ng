@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
     public dialog: MatDialog,
     private userService: UserService,
     private router: Router,
-    private eventsService: CalendarEventsHelper
+    private calendarEventsHelper: CalendarEventsHelper
   ) {
     this.viewType = 'Saptamanal';
     this.date = moment().startOf('week').toDate();
@@ -31,12 +31,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       () => {
-        this.eventsService.getUserEvents().then((events) => {
+        this.calendarEventsHelper.getUserEvents().then((events) => {
           this.events = events;
         });
       },
       (error) => {
         if (error.status === 401) {
+          this.calendarEventsHelper.deleteEvents();
           this.router.navigate(['/login']);
         }
       }
@@ -104,7 +105,7 @@ export class DashboardComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.eventsService.resolveEvent(result);
+      this.calendarEventsHelper.resolveEvent(result);
     });
   }
 

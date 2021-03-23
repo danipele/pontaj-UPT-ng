@@ -36,7 +36,7 @@ export class CoursesDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CoursesDialogComponent>,
     public dialog: MatDialog,
     public courseService: CourseService,
-    private eventsService: CalendarEventsHelper
+    private calendarEventsHelper: CalendarEventsHelper
   ) {}
 
   ngOnInit(): void {
@@ -186,7 +186,7 @@ export class CoursesDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.eventsService.resolveEvent(result);
+      this.calendarEventsHelper.resolveEvent(result);
     });
   }
 }
