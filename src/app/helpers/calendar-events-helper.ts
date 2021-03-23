@@ -18,29 +18,27 @@ export class CalendarEventsHelper {
     const timeline: {} = {
       start_date: startDate,
       end_date: endDate,
-      all_day: result.allDay,
       activity: result.activity,
       subactivity: result.subactivity,
-      entity: result.entity,
+      entity: result.entity ? result.entity.id : undefined,
       description: result.description
     };
 
-    this.timelineService.add(timeline).subscribe(() => {
-      this.addEvent(startDate, endDate, result.allDay);
+    this.timelineService.add(timeline).subscribe((timelineResult: {}) => {
+      this.addEvent(timelineResult);
     });
   }
 
-  addEvent(startDate: Date, endDate: Date, allDay: boolean): void {
+  addEvent(timeline: any): void {
     const ev = {
       id: 1,
-      start: startDate,
-      end: endDate,
-      title: 'This is an event',
+      start: new Date(timeline.start_date),
+      end: new Date(timeline.end_date),
+      title: timeline.activity_type,
       color: {
         primary: '#00135f',
-        secondary: '#5e5d5b'
-      },
-      allDay
+        secondary: '#fff'
+      }
     };
 
     this.events.push(ev);
@@ -70,8 +68,8 @@ export class CalendarEventsHelper {
 
   addEvents(result: []): CalendarEvent[] {
     this.events = [];
-    result.forEach((timeline: { start_date: string; end_date: string; all_day: boolean }) => {
-      this.addEvent(new Date(timeline.start_date), new Date(timeline.end_date), timeline.all_day);
+    result.forEach((timeline) => {
+      this.addEvent(timeline);
     });
     return this.getEvents();
   }

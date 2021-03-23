@@ -141,7 +141,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.calendarEventsHelper.resolveEvent(result);
+      if (result) {
+        this.calendarEventsHelper.resolveEvent(result);
+      }
     });
   }
 

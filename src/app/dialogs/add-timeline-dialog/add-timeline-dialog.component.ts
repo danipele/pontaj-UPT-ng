@@ -148,9 +148,8 @@ export class AddTimelineDialogComponent {
   sendData(): {} {
     return {
       date: this.data.date,
-      startHour: this.startHour,
-      endHour: this.endHour,
-      allDay: this.allDay,
+      startHour: this.allDay ? 8 : this.startHour,
+      endHour: this.allDay ? 23 : this.endHour,
       activity: this.activity,
       subactivity: this.subactivity,
       entity: this.entity,

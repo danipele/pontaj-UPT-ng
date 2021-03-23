@@ -61,10 +61,12 @@ export class CoursesDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.courseService.add(result).subscribe((coursesResult) => {
-        this.courses.data = coursesResult;
-        this.refresh();
-      });
+      if (result) {
+        this.courseService.add(result).subscribe((coursesResult) => {
+          this.courses.data = coursesResult;
+          this.refresh();
+        });
+      }
     });
   }
 
@@ -74,10 +76,12 @@ export class CoursesDialogComponent implements OnInit {
       data: course
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.courseService.update(result).subscribe((coursesResult) => {
-        this.courses.data = coursesResult;
-        this.refresh();
-      });
+      if (result) {
+        this.courseService.update(result).subscribe((coursesResult) => {
+          this.courses.data = coursesResult;
+          this.refresh();
+        });
+      }
     });
   }
 
@@ -186,7 +190,9 @@ export class CoursesDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.calendarEventsHelper.resolveEvent(result);
+      if (result) {
+        this.calendarEventsHelper.resolveEvent(result);
+      }
     });
   }
 }

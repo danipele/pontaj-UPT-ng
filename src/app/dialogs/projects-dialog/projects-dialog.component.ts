@@ -50,10 +50,12 @@ export class ProjectsDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.projectService.add(result).subscribe((projectsResult) => {
-        this.projects.data = projectsResult;
-        this.refresh();
-      });
+      if (result) {
+        this.projectService.add(result).subscribe((projectsResult) => {
+          this.projects.data = projectsResult;
+          this.refresh();
+        });
+      }
     });
   }
 
@@ -63,10 +65,12 @@ export class ProjectsDialogComponent implements OnInit {
       data: course
     });
     dialogRef.afterClosed().subscribe((result) => {
-      this.projectService.update(result).subscribe((projectsResult) => {
-        this.projects.data = projectsResult;
-        this.refresh();
-      });
+      if (result) {
+        this.projectService.update(result).subscribe((projectsResult) => {
+          this.projects.data = projectsResult;
+          this.refresh();
+        });
+      }
     });
   }
 
@@ -175,7 +179,9 @@ export class ProjectsDialogComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.calendarEventsHelper.resolveEvent(result);
+      if (result) {
+        this.calendarEventsHelper.resolveEvent(result);
+      }
     });
   }
 }
