@@ -23,6 +23,8 @@
         [dayEndHour]="22"
         [hourSegments]="1"
         [hourSegmentHeight]="50"
+        [hourSegmentTemplate]="hourSegmentTemplateWeek"
+        [headerTemplate]="headerTemplateWeek"
         (dayHeaderClicked)="setDay($event)"
         (beforeViewRender)="setWeekInterval($event)"
         (hourSegmentClicked)="openAddTimelineDialog($event)"
@@ -39,9 +41,57 @@
         [dayEndHour]="22"
         [hourSegments]="1"
         [hourSegmentHeight]="50"
+        [hourSegmentTemplate]="hourSegmentTemplateDay"
         (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
       ></mwl-calendar-day-view>
     </div>
   </div>
 </div>
+
+<ng-template #hourSegmentTemplateDay let-segment="segment">
+  <div class="segment-container" [class.segment-weekend]="isWeekend(segment.date)" [class.segment-today]="isToday(segment.date)">
+    <div class="hour-display-day">
+      <span
+        ><b>{{ segment.displayDate | date: 'HH:mm' }}</b></span
+      >
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #hourSegmentTemplateWeek let-segment="segment" let-isTimeLabel="isTimeLabel">
+  <div
+    [class.segment-container]="!isTimeLabel"
+    [class.segment-weekend]="isWeekend(segment.date)"
+    [class.segment-today]="isToday(segment.date)"
+  >
+    <div *ngIf="isTimeLabel" class="hour-segment">
+      <span
+        ><b>{{ segment.displayDate | date: 'HH:mm' }}</b></span
+      >
+    </div>
+  </div>
+</ng-template>
+
+<ng-template
+  #headerTemplateWeek
+  let-days="days"
+  let-trackByWeekDayHeaderDate="trackByWeekDayHeaderDate"
+  let-dayHeaderClicked="dayHeaderClicked"
+>
+  <div class="cal-day-headers" role="row">
+    <div
+      *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
+      [class.header-today]="day.isToday"
+      [class.header-weekend]="day.isWeekend"
+      class="cal-header"
+      tabindex="0"
+      role="columnheader"
+      (mwlClick)="dayHeaderClicked.emit({ day: day, sourceEvent: $event })"
+    >
+      <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b>
+      <br />
+      <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
+    </div>
+  </div>
+</ng-template>

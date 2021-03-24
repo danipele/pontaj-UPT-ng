@@ -159,4 +159,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.cookieService.remove('auth_token');
   }
+
+  isToday(date: Date): boolean {
+    return Math.floor(new Date().getTime() / 1000 / 3600 / 24) === Math.floor(date.getTime() / 1000 / 3600 / 24);
+  }
+
+  isWeekend(date: Date): boolean {
+    return date.getDay() === 6 || date.getDay() === 0;
+  }
 }
