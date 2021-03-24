@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CookieService } from 'ngx-cookie';
+import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -166,5 +167,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   isWeekend(date: Date): boolean {
     return date.getDay() === 6 || date.getDay() === 0;
+  }
+
+  openEvent(event: any): void {
+    const dialogRef = this.dialog.open(EventDialogComponent, {
+      width: '25%',
+      height: '40%',
+      data: { event: event.event },
+      position: this.getEventDialogPosition(event),
+      backdropClass: 'event-background'
+    });
+  }
+
+  getEventDialogPosition(event: any): {} {
+    const positions = event.sourceEvent.currentTarget.getBoundingClientRect();
+    return {
+      top: `${positions.top - 100}px`,
+      left: `${positions.right + 10}px`
+    };
   }
 }

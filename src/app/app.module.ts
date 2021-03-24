@@ -45,6 +45,7 @@ import { HttpOptions } from './helpers/http-options';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from './helpers/calendar-events-helper';
 import { TimelinesService } from './services/timelines.service';
+import { EventDialogComponent } from './dialogs/event-dialog/event-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -66,7 +67,8 @@ export function momentAdapterFactory(): DateAdapter {
     AddEditCourseDialogComponent,
     AddEditProjectDialogComponent,
     ConfirmationDialogComponent,
-    SignupComponent
+    SignupComponent,
+    EventDialogComponent
   ],
   imports: [
     BrowserModule,

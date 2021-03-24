@@ -12,8 +12,6 @@ interface Data {
   styleUrls: ['./personal-information-dialog.component.sass']
 })
 export class PersonalInformationDialogComponent implements OnInit {
-  user: IUser;
-
   constructor(public dialogRef: MatDialogRef<PersonalInformationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {}
 
   ngOnInit(): void {}

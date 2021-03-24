@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
 import { TimelinesService } from '../services/timelines.service';
 import { map } from 'rxjs/operators';
+import { IEvent } from '../models/event.model';
 
 @Injectable()
 export class CalendarEventsHelper {
@@ -30,16 +31,25 @@ export class CalendarEventsHelper {
   }
 
   addEvent(timeline: any): void {
-    const ev = {
+    const ev: IEvent = {
       id: 1,
       start: new Date(timeline.start_date),
       end: new Date(timeline.end_date),
-      title: timeline.activity_type,
+      title: timeline.subactivity,
       color: {
         primary: '#00135f',
-        secondary: '#fff'
-      }
+        secondary: this.getEventColor(timeline.activity)
+      },
+      description: timeline.description,
+      activity: timeline.activity,
+      subactivity: timeline.subactivity
     };
+
+    if (timeline.course) {
+      ev.entity = timeline.course;
+    } else if (timeline.project) {
+      ev.entity = timeline.project;
+    }
 
     this.events.push(ev);
   }
@@ -80,5 +90,19 @@ export class CalendarEventsHelper {
 
   deleteEvents(): void {
     this.events = [];
+  }
+
+  getEventColor(activity: string): string {
+    switch (activity) {
+      case 'Curs':
+        return 'rgb(255, 20, 20, 0.5)';
+      case 'Project':
+        return 'rgb(20, 255, 20, 0.5)';
+      case 'Alta activitate':
+        return 'rgb(20, 20, 200, 0.5)';
+      case 'Concediu':
+        return 'rgb(209, 214, 100, 0.5)';
+    }
+    return '';
   }
 }

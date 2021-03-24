@@ -29,6 +29,9 @@
         (beforeViewRender)="setWeekInterval($event)"
         (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
+        [eventTemplate]="eventTemplate"
+        (eventClicked)="openEvent($event)"
+        ><span></span
       ></mwl-calendar-week-view>
     </div>
 
@@ -92,6 +95,23 @@
       <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b>
       <br />
       <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #eventTemplate let-weekEvent="weekEvent" let-eventClicked="eventClicked" let-column="column">
+  <div
+    class="cal-event event"
+    [ngStyle]="{
+      backgroundColor: weekEvent.event.color?.secondary,
+      borderColor: weekEvent.event.color?.primary
+    }"
+    (mwlClick)="eventClicked.emit({ sourceEvent: $event })"
+    tabindex="0"
+    role="application"
+  >
+    <div class="activity-event">
+      <span>{{ weekEvent.event.subactivity }}</span>
     </div>
   </div>
 </ng-template>
