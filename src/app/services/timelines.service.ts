@@ -26,4 +26,12 @@ export class TimelinesService {
       this.httpOptions.getAuthOptions()
     );
   }
+
+  delete(timelineId: string | number | undefined): Observable<any> {
+    return this.http.delete(`http://localhost:8000/api/v1/timelines/${timelineId}`, this.httpOptions.getAuthOptions());
+  }
+
+  update(params: { id: number }): Observable<any> {
+    return this.http.put(`http://localhost:8000/api/v1/timelines/${params.id}`, params, this.httpOptions.getAuthOptions());
+  }
 }

@@ -5,11 +5,11 @@ import { IProject } from './project.model';
 export interface IEvent {
   id?: string | number;
   start: Date;
-  end?: Date;
+  end: Date;
   title: string;
   color?: EventColor;
-  activity?: string;
-  subactivity?: string;
+  activity: string;
+  subactivity: string;
   entity?: ICourse | IProject;
   description?: string;
 }

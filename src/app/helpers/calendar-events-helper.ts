@@ -3,6 +3,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { TimelinesService } from '../services/timelines.service';
 import { map } from 'rxjs/operators';
 import { IEvent } from '../models/event.model';
+import { indexOf } from 'lodash';
 
 @Injectable()
 export class CalendarEventsHelper {
@@ -16,7 +17,7 @@ export class CalendarEventsHelper {
     startDate.setHours(result.startHour);
     endDate.setHours(result.endHour);
 
-    const timeline: {} = {
+    const timeline: any = {
       start_date: startDate,
       end_date: endDate,
       activity: result.activity,
@@ -25,14 +26,21 @@ export class CalendarEventsHelper {
       description: result.description
     };
 
-    this.timelineService.add(timeline).subscribe((timelineResult: {}) => {
-      this.addEvent(timelineResult);
-    });
+    if (result.id) {
+      timeline.id = result.id;
+      this.timelineService.update(timeline).subscribe((timelineResult: {}) => {
+        this.editEvent(timelineResult);
+      });
+    } else {
+      this.timelineService.add(timeline).subscribe((timelineResult: {}) => {
+        this.addEvent(timelineResult);
+      });
+    }
   }
 
-  addEvent(timeline: any): void {
-    const ev: IEvent = {
-      id: 1,
+  createEvent(timeline: any): IEvent {
+    return {
+      id: timeline.id,
       start: new Date(timeline.start_date),
       end: new Date(timeline.end_date),
       title: timeline.subactivity,
@@ -45,8 +53,25 @@ export class CalendarEventsHelper {
       subactivity: timeline.subactivity,
       entity: timeline.entity
     };
+  }
 
-    this.events.push(ev);
+  addEvent(timeline: any): void {
+    const event = this.createEvent(timeline);
+    this.events.push(event);
+  }
+
+  editEvent(timeline: any): void {
+    const ev = this.createEvent(timeline);
+    for (const event of this.events) {
+      if (event.id === ev.id) {
+        const index = indexOf(this.events, event);
+        if (index !== -1) {
+          this.events.splice(index, 1);
+        }
+        this.events.push(ev);
+        break;
+      }
+    }
   }
 
   getUserEventsForCurrentWeek(date: Date): Promise<CalendarEvent[]> {
@@ -99,5 +124,12 @@ export class CalendarEventsHelper {
         return 'rgb(90, 37, 236)';
     }
     return '';
+  }
+
+  deleteEvent(event: IEvent): void {
+    const index = indexOf(this.events, event);
+    if (index !== -1) {
+      this.events.splice(index, 1);
+    }
   }
 }

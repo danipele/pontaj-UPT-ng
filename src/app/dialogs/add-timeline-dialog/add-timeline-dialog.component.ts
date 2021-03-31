@@ -4,6 +4,7 @@ import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
+import { IEvent } from '../../models/event.model';
 
 interface Hour {
   displayValue: string;
@@ -20,6 +21,7 @@ interface Data {
     selected: IProject;
     projects: IProject[];
   };
+  event?: IEvent;
 }
 
 @Component({
@@ -35,7 +37,7 @@ export class AddTimelineDialogComponent {
   subactivity: string | undefined;
   entities: ICourse[] | IProject[] = [];
   entity: ICourse | IProject | undefined;
-  description = '';
+  description: string | undefined = '';
 
   HOURS: Hour[] = [
     { displayValue: '8:00', value: 8 },
@@ -89,6 +91,8 @@ export class AddTimelineDialogComponent {
     'Absente nemotivate'
   ];
   subactivities: string[] = [];
+  dialogTitle = 'Adauga o noua inregistrare';
+  id?: string | number | undefined;
 
   constructor(
     public dialogRef: MatDialogRef<AddTimelineDialogComponent>,
@@ -114,6 +118,25 @@ export class AddTimelineDialogComponent {
     }
     if (data.project) {
       this.setSelectedProject(data.project);
+    }
+    if (this.data.event) {
+      this.dialogTitle = 'Editeaza inregistrarea';
+
+      const event = this.data.event;
+      this.data.date = event.start;
+      this.startHour = event.start.getHours();
+
+      if (event.end.getHours() === 22) {
+        this.allDay = true;
+      }
+      this.endHour = event.end?.getHours();
+
+      this.activity = event.activity;
+      this.activitySelected(event.subactivity);
+      this.subactivitySelected(event.entity);
+
+      this.description = event.description;
+      this.id = event.id;
     }
   }
 
@@ -153,25 +176,24 @@ export class AddTimelineDialogComponent {
     return {
       date: this.data.date,
       startHour: this.allDay ? 8 : this.startHour,
-      endHour: this.allDay ? 23 : this.endHour,
+      endHour: this.allDay ? 22 : this.endHour,
       activity: this.activity,
       subactivity: this.subactivity,
       entity: this.entity,
-      description: this.description
+      description: this.description,
+      id: this.id
     };
   }
 
-  activitySelected(): void {
-    this.subactivity = undefined;
+  activitySelected(subactivity?: string): void {
+    this.subactivity = subactivity;
     switch (this.activity) {
       case 'Activitate didactica': {
         this.subactivities = this.COURSE_SUBACTIVITIES;
-        this.getCourses();
         break;
       }
       case 'Proiect': {
         this.subactivities = this.PROJECT_SUBACTIVITIES;
-        this.getProjects();
         break;
       }
       case 'Concediu': {
@@ -185,24 +207,38 @@ export class AddTimelineDialogComponent {
     }
   }
 
-  getCourses(): void {
+  getCourses(entity?: ICourse | IProject | undefined): void {
     this.courseService.getAll().subscribe((result) => {
       this.entities = result;
+      if (entity) {
+        this.setEntity(entity);
+      }
     });
   }
 
-  getProjects(): void {
+  getProjects(entity?: ICourse | IProject | undefined): void {
     this.projectService.getAll().subscribe((result) => {
       this.entities = result;
+      if (entity) {
+        this.setEntity(entity);
+      }
     });
   }
 
-  subactivitySelected(): void {
-    this.entity = undefined;
+  setEntity(entity: ICourse | IProject): void {
+    for (const e of this.entities) {
+      if (e.id === entity.id) {
+        this.entity = e;
+        break;
+      }
+    }
+  }
+
+  subactivitySelected(entity?: ICourse | IProject | undefined): void {
     if (this.activity === 'Activitate didactica') {
-      this.getCourses();
+      this.getCourses(entity);
     } else {
-      this.getProjects();
+      this.getProjects(entity);
     }
   }
 }

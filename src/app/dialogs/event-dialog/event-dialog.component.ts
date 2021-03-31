@@ -1,8 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { IEvent } from '../../models/event.model';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
+import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { TimelinesService } from '../../services/timelines.service';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 
 interface Data {
   event: IEvent;
@@ -14,7 +18,13 @@ interface Data {
   styleUrls: ['./event-dialog.component.sass']
 })
 export class EventDialogComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<EventDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {}
+  constructor(
+    public dialogRef: MatDialogRef<EventDialogComponent>,
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: Data,
+    private calendarEventsHelper: CalendarEventsHelper,
+    private timelineService: TimelinesService
+  ) {}
 
   ngOnInit(): void {}
 
@@ -22,9 +32,40 @@ export class EventDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  editEvent(): void {}
+  editEvent(): void {
+    this.cancel();
+    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+      width: '40%',
+      data: {
+        event: this.data.event
+      }
+    });
 
-  deleteEvent(): void {}
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.calendarEventsHelper.resolveEvent(result);
+      }
+    });
+  }
+
+  deleteEvent(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi aceasta inregistrare?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.timelineService.delete(this.data.event.id).subscribe(() => {
+          this.calendarEventsHelper.deleteEvent(this.data.event);
+          this.cancel();
+        });
+      }
+    });
+  }
 
   getIconsColor(): string {
     switch (this.data.event.activity) {
