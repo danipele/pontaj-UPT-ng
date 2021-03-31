@@ -101,7 +101,7 @@
 
 <ng-template #eventTemplate let-weekEvent="weekEvent" let-eventClicked="eventClicked" let-column="column">
   <div
-    class="cal-event event"
+    class="cal-event"
     [ngStyle]="{
       backgroundColor: weekEvent.event.color?.secondary,
       borderColor: weekEvent.event.color?.primary
@@ -111,7 +111,10 @@
     role="application"
   >
     <div class="activity-event">
-      <span>{{ weekEvent.event.subactivity }}</span>
+      {{ weekEvent.event.subactivity }}
+    </div>
+    <div class="activity-event">
+      {{ weekEvent.event.start | date: 'HH:mm' | titlecase }} - {{ weekEvent.event.end | date: 'HH:mm' | titlecase }}
     </div>
   </div>
 </ng-template>

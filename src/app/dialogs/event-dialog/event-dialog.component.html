@@ -1,7 +1,31 @@
-<div class="modal-header">
-  <h5 class="modal-title">
-    <span>{{ data.event.subactivity }}</span>
-  </h5>
-  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+<button mat-flat-button class="close-dialog-btn close-btn" (click)="cancel()">&times;</button>
+<div class="modal-container">
+  <div
+    class="activity-container"
+    [class.activity-course]="data.event.activity === 'Activitate didactica'"
+    [class.activity-project]="data.event.activity === 'Proiect'"
+    [class.activity-other-activity]="data.event.activity === 'Alta activitate'"
+    [class.activity-holiday]="data.event.activity === 'Concediu'"
+  >
+    <span>{{ data.event.activity }}</span>
+  </div>
+  <div>
+    <h5>
+      <span>{{ data.event.subactivity }}</span>
+    </h5>
+  </div>
+  <div *ngIf="data.event.entity !== undefined">
+    <h6>
+      <span>{{ data.event.entity.name }}</span>
+    </h6>
+  </div>
+  <div>
+    <span>{{ data.event.description }}</span>
+  </div>
+  <div>
+    <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
+  </div>
+  <div>
+    <span>{{ data.event.start | date: 'HH:mm' | titlecase }} - {{ data.event.end | date: 'HH:mm' | titlecase }}</span>
+  </div>
 </div>
-<div class="modal-body"></div>

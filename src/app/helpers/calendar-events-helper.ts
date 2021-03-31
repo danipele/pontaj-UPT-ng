@@ -37,19 +37,14 @@ export class CalendarEventsHelper {
       end: new Date(timeline.end_date),
       title: timeline.subactivity,
       color: {
-        primary: '#00135f',
+        primary: '#fff',
         secondary: this.getEventColor(timeline.activity)
       },
       description: timeline.description,
       activity: timeline.activity,
-      subactivity: timeline.subactivity
+      subactivity: timeline.subactivity,
+      entity: timeline.entity
     };
-
-    if (timeline.course) {
-      ev.entity = timeline.course;
-    } else if (timeline.project) {
-      ev.entity = timeline.project;
-    }
 
     this.events.push(ev);
   }
@@ -94,14 +89,14 @@ export class CalendarEventsHelper {
 
   getEventColor(activity: string): string {
     switch (activity) {
-      case 'Curs':
-        return 'rgb(255, 20, 20, 0.5)';
-      case 'Project':
-        return 'rgb(20, 255, 20, 0.5)';
+      case 'Activitate didactica':
+        return 'rgb(183, 4, 4)';
+      case 'Proiect':
+        return 'rgb(29, 119, 29)';
       case 'Alta activitate':
-        return 'rgb(20, 20, 200, 0.5)';
+        return 'rgb(51, 195, 178)';
       case 'Concediu':
-        return 'rgb(209, 214, 100, 0.5)';
+        return 'rgb(90, 37, 236)';
     }
     return '';
   }

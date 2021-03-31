@@ -55,7 +55,7 @@ export class AddTimelineDialogComponent {
     { displayValue: '22:00', value: 22 }
   ];
 
-  ACTIVITIES: string[] = ['Curs', 'Proiect', 'Concediu', 'Alta activitate'];
+  ACTIVITIES: string[] = ['Activitate didactica', 'Proiect', 'Concediu', 'Alta activitate'];
   COURSE_SUBACTIVITIES: string[] = [
     'Curs',
     'Seminar',
@@ -114,7 +114,7 @@ export class AddTimelineDialogComponent {
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
-    this.activity = 'Curs';
+    this.activity = 'Activitate didactica';
     this.subactivities = this.COURSE_SUBACTIVITIES;
     this.subactivity = 'Curs';
     this.entities = data.courses;
@@ -160,7 +160,7 @@ export class AddTimelineDialogComponent {
   activitySelected(): void {
     this.subactivity = undefined;
     switch (this.activity) {
-      case 'Curs': {
+      case 'Activitate didactica': {
         this.subactivities = this.COURSE_SUBACTIVITIES;
         this.getCourses();
         break;
@@ -195,7 +195,7 @@ export class AddTimelineDialogComponent {
 
   subactivitySelected(): void {
     this.entity = undefined;
-    if (this.activity === 'Curs') {
+    if (this.activity === 'Activitate didactica') {
       this.getCourses();
     } else {
       this.getProjects();

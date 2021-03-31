@@ -162,7 +162,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   isToday(date: Date): boolean {
-    return Math.floor(new Date().getTime() / 1000 / 3600 / 24) === Math.floor(date.getTime() / 1000 / 3600 / 24);
+    const today = new Date();
+    return today.getDay() === date.getDay() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
   }
 
   isWeekend(date: Date): boolean {
