@@ -103,6 +103,10 @@ export class AddTimelineDialogComponent {
       } else {
         this.startHour = 8;
         this.endHour = 9;
+        this.data.date = new Date();
+        this.data.date.setMinutes(0);
+        this.data.date.setSeconds(0);
+        this.data.date.setMilliseconds(0);
       }
     }
     if (data.course) {
