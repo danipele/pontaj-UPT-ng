@@ -1,5 +1,4 @@
-<button mat-flat-button class="close-dialog-btn close-btn" (click)="cancel()">&times;</button>
-<div class="modal-container">
+<div class="header-container">
   <div
     class="activity-container"
     [class.activity-course]="data.event.activity === 'Activitate didactica'"
@@ -9,23 +8,65 @@
   >
     <span>{{ data.event.activity }}</span>
   </div>
-  <div>
-    <h5>
-      <span>{{ data.event.subactivity }}</span>
-    </h5>
-  </div>
-  <div *ngIf="data.event.entity !== undefined">
-    <h6>
-      <span>{{ data.event.entity.name }}</span>
-    </h6>
-  </div>
-  <div>
-    <span>{{ data.event.description }}</span>
-  </div>
+</div>
+<div class="date-container">
   <div>
     <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
   </div>
-  <div>
+  <div class="hour-date">
     <span>{{ data.event.start | date: 'HH:mm' | titlecase }} - {{ data.event.end | date: 'HH:mm' | titlecase }}</span>
   </div>
+</div>
+<div class="body-container">
+  <div class="row">
+    <div class="col-md-2">
+      <mat-icon [ngStyle]="{ color: getIconsColor() }">title</mat-icon>
+    </div>
+    <div class="col-md-10 text-container">
+      <span
+        ><b>{{ data.event.subactivity }}</b></span
+      >
+    </div>
+  </div>
+  <div class="row" *ngIf="data.event.entity !== undefined">
+    <div class="col-md-2">
+      <mat-icon [ngStyle]="{ color: getIconsColor() }">text_fields</mat-icon>
+    </div>
+    <div class="col-md-10 text-container">
+      <span>{{ data.event.entity.name }}</span>
+      <div class="faculty">
+        <span>{{ getEntityDetails() }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <mat-icon [ngStyle]="{ color: getIconsColor() }">description</mat-icon>
+    </div>
+    <div class="col-md-10 text-container description">
+      <span>{{ data.event.description }}</span>
+    </div>
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    mat-fab
+    title="Sterge"
+    class="action-button"
+    aria-label="Delete"
+    (click)="deleteEvent()"
+    [ngStyle]="{ backgroundColor: getIconsColor() }"
+  >
+    <mat-icon>delete</mat-icon>
+  </button>
+  <button
+    mat-fab
+    title="Editeaza"
+    class="action-button"
+    aria-label="Edit"
+    (click)="editEvent()"
+    [ngStyle]="{ backgroundColor: getIconsColor() }"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
 </div>

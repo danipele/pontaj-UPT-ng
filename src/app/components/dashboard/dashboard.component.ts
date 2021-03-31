@@ -172,8 +172,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   openEvent(event: any): void {
     const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '25%',
-      height: '40%',
+      width: '20%',
       data: { event: event.event },
       position: this.getEventDialogPosition(event),
       backdropClass: 'event-background'
