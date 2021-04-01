@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
 import { TimelinesService } from '../services/timelines.service';
 import { map } from 'rxjs/operators';
 import { IEvent } from '../models/event.model';
@@ -7,7 +6,7 @@ import { indexOf } from 'lodash';
 
 @Injectable()
 export class CalendarEventsHelper {
-  events: CalendarEvent[] = [];
+  events: IEvent[] = [];
 
   constructor(private timelineService: TimelinesService) {}
 
@@ -74,7 +73,7 @@ export class CalendarEventsHelper {
     }
   }
 
-  getUserEventsForCurrentWeek(date: Date): Promise<CalendarEvent[]> {
+  getUserEventsForCurrentWeek(date: Date): Promise<IEvent[]> {
     return this.timelineService
       .getAllForWeek(date)
       .pipe(
@@ -85,7 +84,7 @@ export class CalendarEventsHelper {
       .toPromise();
   }
 
-  getUserEventsForCurrentDay(date: Date): Promise<CalendarEvent[]> {
+  getUserEventsForCurrentDay(date: Date): Promise<IEvent[]> {
     return this.timelineService
       .getAllForDay(date)
       .pipe(
@@ -96,7 +95,7 @@ export class CalendarEventsHelper {
       .toPromise();
   }
 
-  addEvents(result: []): CalendarEvent[] {
+  addEvents(result: []): IEvent[] {
     this.events = [];
     result.forEach((timeline) => {
       this.addEvent(timeline);
@@ -104,7 +103,7 @@ export class CalendarEventsHelper {
     return this.getEvents();
   }
 
-  getEvents(): CalendarEvent[] {
+  getEvents(): IEvent[] {
     return this.events;
   }
 

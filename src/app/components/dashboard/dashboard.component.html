@@ -36,6 +36,12 @@
     </div>
 
     <div *ngIf="isDaily()">
+      <div class="daily-header cal-header" [class.header-weekend]="isWeekend(this.date)" [class.header-today]="isToday(this.date)">
+        <b>{{ this.date | calendarDate: 'weekViewColumnHeader' }}</b> -
+        <span style="opacity: 50%">{{ this.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
+        <br />
+        <span style="opacity: 50%">{{ getNrOfHoursOnDay(this.date) }} ore</span>
+      </div>
       <mwl-calendar-day-view
         [viewDate]="date"
         locale="ro"
@@ -94,9 +100,10 @@
       role="columnheader"
       (mwlClick)="dayHeaderClicked.emit({ day: day, sourceEvent: $event })"
     >
-      <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b>
-      <br />
+      <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b> -
       <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
+      <br />
+      <span>{{ getNrOfHoursOnDay(day.date) }} ore</span>
     </div>
   </div>
 </ng-template>

@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTimelineDialogComponent } from '../../dialogs/add-timeline-dialog/add-timeline-dialog.component';
-import { CalendarEvent } from 'angular-calendar';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CookieService } from 'ngx-cookie';
 import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.component';
+import { IEvent } from '../../models/event.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +17,7 @@ import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.co
 export class DashboardComponent implements OnInit, OnDestroy {
   viewType: string;
   date: Date;
-  events: CalendarEvent[];
+  events: IEvent[];
 
   constructor(
     public dialog: MatDialog,
@@ -191,5 +191,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
       top: `${positions.top - 100}px`,
       left: `${left}px`
     };
+  }
+
+  getNrOfHoursOnDay(date: Date): number {
+    let hours = 0;
+    this.events.forEach((event) => {
+      const start = event.start;
+      const end = event.end;
+      if (start.getDay() === date.getDay() && start.getMonth() === date.getMonth() && start.getFullYear() === date.getFullYear()) {
+        hours += end.getHours() - start.getHours();
+      }
+    });
+    return hours;
   }
 }

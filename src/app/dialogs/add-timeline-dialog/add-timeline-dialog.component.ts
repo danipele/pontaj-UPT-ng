@@ -101,7 +101,7 @@ export class AddTimelineDialogComponent {
     private projectService: ProjectService
   ) {
     if (data.date) {
-      if (data.date.getHours() > 8 && data.date.getHours() < 22) {
+      if (data.date.getHours() >= 8 && data.date.getHours() <= 22) {
         this.startHour = data.date.getHours();
         this.endHour = this.startHour + 1;
       } else {
