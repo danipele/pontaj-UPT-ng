@@ -47,6 +47,8 @@
         [hourSegmentTemplate]="hourSegmentTemplateDay"
         (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
+        [eventTemplate]="eventTemplate"
+        (eventClicked)="openEvent($event)"
       ></mwl-calendar-day-view>
     </div>
   </div>

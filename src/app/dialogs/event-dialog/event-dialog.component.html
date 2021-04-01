@@ -9,15 +9,20 @@
     <span>{{ data.event.activity }}</span>
   </div>
 </div>
-<div class="date-container">
-  <div>
-    <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
-  </div>
-  <div class="hour-date">
-    <span>{{ data.event.start | date: 'HH:mm' | titlecase }} - {{ data.event.end | date: 'HH:mm' | titlecase }}</span>
-  </div>
-</div>
 <div class="body-container">
+  <div class="row">
+    <div class="col-md-2">
+      <mat-icon [ngStyle]="{ color: getIconsColor() }">calendar_today</mat-icon>
+    </div>
+    <div class="col-md-10 text-container">
+      <div>
+        <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
+      </div>
+      <div class="hour-date">
+        <span>{{ data.event.start | date: 'HH:mm' | titlecase }} - {{ data.event.end | date: 'HH:mm' | titlecase }}</span>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-2">
       <mat-icon [ngStyle]="{ color: getIconsColor() }">title</mat-icon>

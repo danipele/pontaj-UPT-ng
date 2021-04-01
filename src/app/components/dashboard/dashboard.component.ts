@@ -181,9 +181,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getEventDialogPosition(event: any): {} {
     const positions = event.sourceEvent.currentTarget.getBoundingClientRect();
+    let left;
+    if (this.isDaily()) {
+      left = event.sourceEvent.x + 50;
+    } else {
+      left = positions.right + 10;
+    }
     return {
       top: `${positions.top - 100}px`,
-      left: `${positions.right + 10}px`
+      left: `${left}px`
     };
   }
 }
