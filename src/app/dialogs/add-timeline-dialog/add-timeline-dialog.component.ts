@@ -282,4 +282,8 @@ export class AddTimelineDialogComponent {
       }
     });
   }
+
+  allFieldAreFilled(): boolean {
+    return !this.activity || !this.subactivity;
+  }
 }

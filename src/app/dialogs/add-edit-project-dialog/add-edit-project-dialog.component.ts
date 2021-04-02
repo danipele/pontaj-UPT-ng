@@ -37,4 +37,8 @@ export class AddEditProjectDialogComponent implements OnInit {
       }
     };
   }
+
+  allFieldAreFilled(): boolean {
+    return !this.formGroup.controls.projectName.value;
+  }
 }

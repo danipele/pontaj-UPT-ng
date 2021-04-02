@@ -50,4 +50,14 @@ export class AddEditCourseDialogComponent implements OnInit {
       }
     };
   }
+
+  allFieldAreFilled(): boolean {
+    return (
+      !this.formGroup.controls.courseName.value ||
+      !this.formGroup.controls.courseStudentYear.value ||
+      !this.formGroup.controls.courseSemester.value ||
+      !this.formGroup.controls.courseCycle.value ||
+      !this.formGroup.controls.courseFaculty.value
+    );
+  }
 }
