@@ -66,6 +66,9 @@
         <mat-option *ngFor="let entity of entities" [value]="entity">
           {{ entity.name }}
         </mat-option>
+        <mat-option *ngIf="entities.length === 0" (click)="addNewEntity()">
+          <mat-icon>add_circle_outline</mat-icon> Adauga un nou {{ activity === 'Activitate didactica' ? 'curs' : 'proiect' }}
+        </mat-option>
       </mat-select>
     </mat-form-field>
   </div>

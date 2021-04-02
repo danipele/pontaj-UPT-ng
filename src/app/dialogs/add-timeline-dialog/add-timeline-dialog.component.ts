@@ -1,10 +1,12 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { IEvent } from '../../models/event.model';
+import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
+import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
 
 interface Hour {
   displayValue: string;
@@ -98,6 +100,7 @@ export class AddTimelineDialogComponent {
     public dialogRef: MatDialogRef<AddTimelineDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private courseService: CourseService,
+    public dialog: MatDialog,
     private projectService: ProjectService
   ) {
     if (data.date) {
@@ -107,11 +110,11 @@ export class AddTimelineDialogComponent {
       } else {
         this.startHour = 8;
         this.endHour = 9;
-        this.data.date = new Date();
-        this.data.date.setMinutes(0);
-        this.data.date.setSeconds(0);
-        this.data.date.setMilliseconds(0);
+        data.date = new Date();
       }
+      data.date.setMinutes(0);
+      data.date.setSeconds(0);
+      data.date.setMilliseconds(0);
     }
     if (data.course) {
       this.setSelectedCourse(data.course);
@@ -240,5 +243,43 @@ export class AddTimelineDialogComponent {
     } else {
       this.getProjects(entity);
     }
+  }
+
+  addNewEntity(): void {
+    if (this.activity === 'Activitate didactica') {
+      this.addNewCourse();
+    } else {
+      this.addNewProject();
+    }
+  }
+
+  addNewCourse(): void {
+    const dialogRef = this.dialog.open(AddEditCourseDialogComponent, {
+      width: '50%',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.courseService.add(result).subscribe((coursesResult) => {
+          this.getCourses(coursesResult[0]);
+        });
+      }
+    });
+  }
+
+  addNewProject(): void {
+    const dialogRef = this.dialog.open(AddEditProjectDialogComponent, {
+      width: '50%',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.projectService.add(result).subscribe((projectsResult) => {
+          this.getProjects(projectsResult[0]);
+        });
+      }
+    });
   }
 }
