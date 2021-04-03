@@ -35,4 +35,8 @@ export class CourseService {
   import_courses(formData: FormData): Observable<any> {
     return this.http.post(`http://localhost:8000/api/v1/courses/import_courses`, formData, this.httpOptions.getImportOptions());
   }
+
+  export_courses(courses: ICourse[]): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/courses/export_courses`, { courses }, this.httpOptions.getExportOptions());
+  }
 }

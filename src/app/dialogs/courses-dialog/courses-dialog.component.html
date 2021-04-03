@@ -90,6 +90,9 @@
   <button mat-raised-button class="upt-primary-btn" (click)="deleteSelected()" [hidden]="selectedCourses.length === 0">
     Sterge cursuri
   </button>
+  <button mat-raised-button class="upt-primary-btn" (click)="exportCourses()" [hidden]="selectedCourses.length === 0">
+    Exporta cursuri
+  </button>
   <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa cursuri</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">Descarca template</button>

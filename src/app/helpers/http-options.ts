@@ -22,4 +22,12 @@ export class HttpOptions {
 
     return { headers };
   }
+
+  getExportOptions(): { headers: {}; responseType: any } {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.cookieService.get('auth_token')}`
+    });
+
+    return { headers, responseType: 'blob' };
+  }
 }

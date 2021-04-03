@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { indexOf } from 'lodash';
 import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -182,6 +183,12 @@ export class ProjectsDialogComponent implements OnInit {
       if (result) {
         this.calendarEventsHelper.resolveEvent(result);
       }
+    });
+  }
+
+  exportProjects(): void {
+    this.projectService.export_projects(this.selectedProjects).subscribe((result) => {
+      saveAs(result, 'Proiecte.xls');
     });
   }
 }

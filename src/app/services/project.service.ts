@@ -36,4 +36,8 @@ export class ProjectService {
   import_projects(formData: FormData): Observable<any> {
     return this.http.post(`http://localhost:8000/api/v1/projects/import_projects`, formData, this.httpOptions.getImportOptions());
   }
+
+  export_projects(projects: IProject[]): Observable<any> {
+    return this.http.post(`http://localhost:8000/api/v1/projects/export_projects`, { projects }, this.httpOptions.getExportOptions());
+  }
 }

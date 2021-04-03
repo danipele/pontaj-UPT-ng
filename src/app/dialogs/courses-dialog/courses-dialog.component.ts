@@ -8,6 +8,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { indexOf } from 'lodash';
 import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -193,6 +194,12 @@ export class CoursesDialogComponent implements OnInit {
       if (result) {
         this.calendarEventsHelper.resolveEvent(result);
       }
+    });
+  }
+
+  exportCourses(): void {
+    this.courseService.export_courses(this.selectedCourses).subscribe((result) => {
+      saveAs(result, 'Cursuri.xls');
     });
   }
 }
