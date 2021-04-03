@@ -14,4 +14,8 @@ export class UserService {
   getAuthenticatedUser(): Observable<any> {
     return this.http.get('http://localhost:8000/api/v1/users/authenticated_user', this.httpOptions.getAuthOptions());
   }
+
+  updateCurrentUser(params: {}): Observable<any> {
+    return this.http.put(`http://localhost:8000/api/v1/users`, { user: params }, this.httpOptions.getAuthOptions());
+  }
 }

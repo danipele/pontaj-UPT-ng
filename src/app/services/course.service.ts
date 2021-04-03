@@ -33,6 +33,6 @@ export class CourseService {
   }
 
   import_courses(formData: FormData): Observable<any> {
-    return this.http.post(`http://localhost:8000/api/v1/courses/import_courses`, formData, this.httpOptions.getAuthOptions());
+    return this.http.post(`http://localhost:8000/api/v1/courses/import_courses`, formData, this.httpOptions.getImportOptions());
   }
 }

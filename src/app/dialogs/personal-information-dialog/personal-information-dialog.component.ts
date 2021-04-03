@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IUser } from '../../models/user.model';
+import { FormControl, FormGroup } from '@angular/forms';
 
 interface Data {
   user: IUser;
@@ -12,13 +13,33 @@ interface Data {
   styleUrls: ['./personal-information-dialog.component.sass']
 })
 export class PersonalInformationDialogComponent implements OnInit {
-  constructor(public dialogRef: MatDialogRef<PersonalInformationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {}
+  formGroup: FormGroup;
+
+  constructor(public dialogRef: MatDialogRef<PersonalInformationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
+    this.formGroup = new FormGroup({
+      firstName: new FormControl(),
+      lastName: new FormControl()
+    });
+    if (data) {
+      this.formGroup.controls.firstName.setValue(data.user.first_name);
+      this.formGroup.controls.lastName.setValue(data.user.last_name);
+    }
+  }
 
   ngOnInit(): void {}
 
-  saveUser(): void {}
+  sendData(): any {
+    return {
+      first_name: this.formGroup.controls.firstName.value,
+      last_name: this.formGroup.controls.lastName.value
+    };
+  }
 
   cancel(): void {
     this.dialogRef.close();
+  }
+
+  allFieldAreFilled(): boolean {
+    return !this.formGroup.controls.firstName.value || !this.formGroup.controls.lastName.value;
   }
 }

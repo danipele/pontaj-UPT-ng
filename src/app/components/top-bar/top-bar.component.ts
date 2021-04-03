@@ -58,9 +58,17 @@ export class TopBarComponent implements OnInit {
 
   openPersonalInfoDialog(): void {
     this.userService.getAuthenticatedUser().subscribe((user: IUser) => {
-      this.dialog.open(PersonalInformationDialogComponent, {
+      const dialogRef = this.dialog.open(PersonalInformationDialogComponent, {
         width: '50%',
         data: { user }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        if (result) {
+          if (user.first_name !== result.firstName || user.last_name !== result.lastName) {
+            this.userService.updateCurrentUser(result).subscribe();
+          }
+        }
       });
     });
   }
