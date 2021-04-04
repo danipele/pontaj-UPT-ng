@@ -41,7 +41,7 @@ import { AddEditProjectDialogComponent } from './dialogs/add-edit-project-dialog
 import { ProjectService } from './services/project.service';
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { SignupComponent } from './components/signup/signup.component';
-import { HttpOptions } from './helpers/http-options';
+import { HttpWrapper } from './helpers/http-wrapper';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from './helpers/calendar-events-helper';
 import { TimelinesService } from './services/timelines.service';
@@ -98,7 +98,7 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: UserService, useClass: UserService },
     { provide: CourseService, useClass: CourseService },
     { provide: ProjectService, useClass: ProjectService },
-    { provide: HttpOptions, useClass: HttpOptions },
+    { provide: HttpWrapper, useClass: HttpWrapper },
     { provide: CookieService, useClass: CookieService },
     { provide: CalendarEventsHelper, useClass: CalendarEventsHelper },
     { provide: TimelinesService, useClass: TimelinesService },

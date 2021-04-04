@@ -30,10 +30,13 @@ export class ProjectsDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.projectService.getAll().subscribe((result) => {
-      this.projects.data = result;
-      this.refresh();
-    });
+    this.projectService.getAll().subscribe(
+      (result) => {
+        this.projects.data = result;
+        this.refresh();
+      },
+      () => this.cancel()
+    );
   }
 
   refresh(): void {
@@ -52,10 +55,13 @@ export class ProjectsDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.projectService.add(result).subscribe((projectsResult) => {
-          this.projects.data = projectsResult;
-          this.refresh();
-        });
+        this.projectService.add(result).subscribe(
+          (projectsResult) => {
+            this.projects.data = projectsResult;
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -67,10 +73,13 @@ export class ProjectsDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.projectService.update(result).subscribe((projectsResult) => {
-          this.projects.data = projectsResult;
-          this.refresh();
-        });
+        this.projectService.update(result).subscribe(
+          (projectsResult) => {
+            this.projects.data = projectsResult;
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -86,9 +95,12 @@ export class ProjectsDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.projectService.delete(project.id).subscribe(() => {
-          this.deleteProjectFromList(project);
-        });
+        this.projectService.delete(project.id).subscribe(
+          () => {
+            this.deleteProjectFromList(project);
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -117,7 +129,12 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   downloadTemplate(): void {
-    window.open(this.projectService.download_template_api_url());
+    this.projectService.download_template_api_url().subscribe(
+      (result) => {
+        saveAs(result, 'Proiecte.xls');
+      },
+      () => this.cancel()
+    );
   }
 
   importFile(event: any): void {
@@ -125,10 +142,13 @@ export class ProjectsDialogComponent implements OnInit {
     if (this.acceptedFileTypes.includes(file.type)) {
       const formData: FormData = new FormData();
       formData.append('projects_file', file);
-      this.projectService.import_projects(formData).subscribe((projects) => {
-        this.projects.data = projects;
-        this.refresh();
-      });
+      this.projectService.import_projects(formData).subscribe(
+        (projects) => {
+          this.projects.data = projects;
+          this.refresh();
+        },
+        () => this.cancel()
+      );
     }
   }
 
@@ -156,15 +176,18 @@ export class ProjectsDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.projectService.delete_selected(this.selectedProjects).subscribe(() => {
-          if (this.selectedProjects.length === this.projects.data.length) {
-            this.projects.data = [];
-          } else {
-            this.selectedProjects.forEach((project) => this.deleteProjectFromList(project));
-          }
-          this.selectedProjects = [];
-          this.refresh();
-        });
+        this.projectService.delete_selected(this.selectedProjects).subscribe(
+          () => {
+            if (this.selectedProjects.length === this.projects.data.length) {
+              this.projects.data = [];
+            } else {
+              this.selectedProjects.forEach((project) => this.deleteProjectFromList(project));
+            }
+            this.selectedProjects = [];
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -187,8 +210,11 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   exportProjects(): void {
-    this.projectService.export_projects(this.selectedProjects).subscribe((result) => {
-      saveAs(result, 'Proiecte.xls');
-    });
+    this.projectService.export_projects(this.selectedProjects).subscribe(
+      (result) => {
+        saveAs(result, 'Proiecte.xls');
+      },
+      () => this.cancel()
+    );
   }
 }

@@ -41,10 +41,13 @@ export class CoursesDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.courseService.getAll().subscribe((result) => {
-      this.courses.data = result;
-      this.refresh();
-    });
+    this.courseService.getAll().subscribe(
+      (result) => {
+        this.courses.data = result;
+        this.refresh();
+      },
+      () => this.cancel()
+    );
   }
 
   refresh(): void {
@@ -63,10 +66,13 @@ export class CoursesDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.courseService.add(result).subscribe((coursesResult) => {
-          this.courses.data = coursesResult;
-          this.refresh();
-        });
+        this.courseService.add(result).subscribe(
+          (coursesResult) => {
+            this.courses.data = coursesResult;
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -78,10 +84,13 @@ export class CoursesDialogComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.courseService.update(result).subscribe((coursesResult) => {
-          this.courses.data = coursesResult;
-          this.refresh();
-        });
+        this.courseService.update(result).subscribe(
+          (coursesResult) => {
+            this.courses.data = coursesResult;
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -97,9 +106,12 @@ export class CoursesDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.courseService.delete(course.id).subscribe(() => {
-          this.deleteCourseFromList(course);
-        });
+        this.courseService.delete(course.id).subscribe(
+          () => {
+            this.deleteCourseFromList(course);
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -128,7 +140,12 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   downloadTemplate(): void {
-    window.open(this.courseService.download_template_api_url());
+    this.courseService.download_template_api_url().subscribe(
+      (result) => {
+        saveAs(result, 'Cursuri.xls');
+      },
+      () => this.cancel()
+    );
   }
 
   importFile(event: any): void {
@@ -136,10 +153,13 @@ export class CoursesDialogComponent implements OnInit {
     if (this.acceptedFileTypes.includes(file.type)) {
       const formData: FormData = new FormData();
       formData.append('courses_file', file);
-      this.courseService.import_courses(formData).subscribe((courses) => {
-        this.courses.data = courses;
-        this.refresh();
-      });
+      this.courseService.import_courses(formData).subscribe(
+        (courses) => {
+          this.courses.data = courses;
+          this.refresh();
+        },
+        () => this.cancel()
+      );
     }
   }
 
@@ -167,15 +187,18 @@ export class CoursesDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.courseService.delete_selected(this.selectedCourses).subscribe(() => {
-          if (this.selectedCourses.length === this.courses.data.length) {
-            this.courses.data = [];
-          } else {
-            this.selectedCourses.forEach((course) => this.deleteCourseFromList(course));
-          }
-          this.selectedCourses = [];
-          this.refresh();
-        });
+        this.courseService.delete_selected(this.selectedCourses).subscribe(
+          () => {
+            if (this.selectedCourses.length === this.courses.data.length) {
+              this.courses.data = [];
+            } else {
+              this.selectedCourses.forEach((course) => this.deleteCourseFromList(course));
+            }
+            this.selectedCourses = [];
+            this.refresh();
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -198,8 +221,11 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   exportCourses(): void {
-    this.courseService.export_courses(this.selectedCourses).subscribe((result) => {
-      saveAs(result, 'Cursuri.xls');
-    });
+    this.courseService.export_courses(this.selectedCourses).subscribe(
+      (result) => {
+        saveAs(result, 'Cursuri.xls');
+      },
+      () => this.cancel()
+    );
   }
 }

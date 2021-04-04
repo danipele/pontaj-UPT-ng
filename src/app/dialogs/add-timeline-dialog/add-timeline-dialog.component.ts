@@ -211,21 +211,27 @@ export class AddTimelineDialogComponent {
   }
 
   getCourses(entity?: ICourse | IProject | undefined): void {
-    this.courseService.getAll().subscribe((result) => {
-      this.entities = result;
-      if (entity) {
-        this.setEntity(entity);
-      }
-    });
+    this.courseService.getAll().subscribe(
+      (result) => {
+        this.entities = result;
+        if (entity) {
+          this.setEntity(entity);
+        }
+      },
+      () => this.cancel()
+    );
   }
 
   getProjects(entity?: ICourse | IProject | undefined): void {
-    this.projectService.getAll().subscribe((result) => {
-      this.entities = result;
-      if (entity) {
-        this.setEntity(entity);
-      }
-    });
+    this.projectService.getAll().subscribe(
+      (result) => {
+        this.entities = result;
+        if (entity) {
+          this.setEntity(entity);
+        }
+      },
+      () => this.cancel()
+    );
   }
 
   setEntity(entity: ICourse | IProject): void {
@@ -261,9 +267,12 @@ export class AddTimelineDialogComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.courseService.add(result).subscribe((coursesResult) => {
-          this.getCourses(coursesResult[0]);
-        });
+        this.courseService.add(result).subscribe(
+          (coursesResult) => {
+            this.getCourses(coursesResult[0]);
+          },
+          () => this.cancel()
+        );
       }
     });
   }
@@ -276,9 +285,12 @@ export class AddTimelineDialogComponent {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.projectService.add(result).subscribe((projectsResult) => {
-          this.getProjects(projectsResult[0]);
-        });
+        this.projectService.add(result).subscribe(
+          (projectsResult) => {
+            this.getProjects(projectsResult[0]);
+          },
+          () => this.cancel()
+        );
       }
     });
   }
