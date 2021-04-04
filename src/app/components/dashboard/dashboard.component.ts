@@ -8,6 +8,7 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CookieService } from 'ngx-cookie';
 import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.component';
 import { IEvent } from '../../models/event.model';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   viewType: string;
   date: Date;
   events: IEvent[];
+  viewMode: string;
+  filterParams: { sort: string; direction: string; page: string; page_size: string };
 
   constructor(
     public dialog: MatDialog,
@@ -29,15 +32,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.viewType = 'Saptamanal';
     this.date = moment().startOf('week').toDate();
     this.events = [];
+    this.viewMode = 'list';
   }
 
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       () => {
-        if (this.isDaily()) {
-          this.setDayEvents();
-        } else {
-          this.setWeekEvents();
+        if (this.viewMode === 'calendar') {
+          if (this.isDaily()) {
+            this.setDayEvents();
+          } else {
+            this.setWeekEvents();
+          }
         }
       },
       (error) => {
@@ -106,13 +112,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setDayEvents(): void {
-    this.calendarEventsHelper.getUserEventsForCurrentDay(this.date).then((events) => {
+    this.calendarEventsHelper.getUserEventsForCurrentDay(this.date, this.filterParams).then((events) => {
       this.events = events;
     });
   }
 
   setWeekEvents(): void {
-    this.calendarEventsHelper.getUserEventsForCurrentWeek(this.date).then((events) => {
+    this.calendarEventsHelper.getUserEventsForCurrentWeek(this.date, this.filterParams).then((events) => {
       this.events = events;
     });
   }
@@ -209,5 +215,30 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     });
     return hours;
+  }
+
+  changeMode(): void {
+    if (this.viewMode === 'list') {
+      this.viewMode = 'calendar';
+    } else {
+      this.viewMode = 'list';
+    }
+  }
+
+  eventsForList(): MatTableDataSource<IEvent> {
+    const events = new MatTableDataSource<IEvent>();
+    events.data = this.events;
+
+    return events;
+  }
+
+  filterEvents(params: { sort: string; direction: string; page: string; page_size: string }): void {
+    this.filterParams = params;
+
+    if (this.isDaily()) {
+      this.setDayEvents();
+    } else {
+      this.setWeekEvents();
+    }
   }
 }

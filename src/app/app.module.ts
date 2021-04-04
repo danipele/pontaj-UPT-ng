@@ -46,6 +46,9 @@ import { CookieModule, CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from './helpers/calendar-events-helper';
 import { TimelinesService } from './services/timelines.service';
 import { EventDialogComponent } from './dialogs/event-dialog/event-dialog.component';
+import { EventsListComponent } from './components/events-list/events-list.component';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -68,7 +71,8 @@ export function momentAdapterFactory(): DateAdapter {
     AddEditProjectDialogComponent,
     ConfirmationDialogComponent,
     SignupComponent,
-    EventDialogComponent
+    EventDialogComponent,
+    EventsListComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +95,9 @@ export function momentAdapterFactory(): DateAdapter {
     MatMenuModule,
     FormsModule,
     MatTableModule,
-    CookieModule.forRoot()
+    CookieModule.forRoot(),
+    MatSortModule,
+    MatPaginatorModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },

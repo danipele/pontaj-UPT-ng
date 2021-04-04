@@ -11,9 +11,11 @@
       [isWeekly]="isWeekly()"
       [isTodayVisible]="isTodayVisible()"
       [date]="date"
+      (changeMode)="changeMode()"
+      [mode]="viewMode"
     ></app-calendar-header>
   </div>
-  <div class="calendar-body">
+  <div *ngIf="viewMode === 'calendar'">
     <div *ngIf="isWeekly()">
       <mwl-calendar-week-view
         [viewDate]="date"
@@ -57,6 +59,10 @@
         (eventClicked)="openEvent($event)"
       ></mwl-calendar-day-view>
     </div>
+  </div>
+
+  <div class="list-body" *ngIf="viewMode === 'list'">
+    <app-events-list [events]="eventsForList()" (filterEvents)="filterEvents($event)"></app-events-list>
   </div>
 </div>
 

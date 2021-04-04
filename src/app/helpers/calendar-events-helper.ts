@@ -73,9 +73,12 @@ export class CalendarEventsHelper {
     }
   }
 
-  getUserEventsForCurrentWeek(date: Date): Promise<IEvent[]> {
+  getUserEventsForCurrentWeek(
+    date: Date,
+    params?: { sort: string; direction: string; page: string; page_size: string }
+  ): Promise<IEvent[]> {
     return this.timelineService
-      .getAllForWeek(date)
+      .getAll(date, { for: 'week', ...params })
       .pipe(
         map((result: []) => {
           return this.addEvents(result);
@@ -84,9 +87,9 @@ export class CalendarEventsHelper {
       .toPromise();
   }
 
-  getUserEventsForCurrentDay(date: Date): Promise<IEvent[]> {
+  getUserEventsForCurrentDay(date: Date, params?: { sort: string; direction: string; page: string; page_size: string }): Promise<IEvent[]> {
     return this.timelineService
-      .getAllForDay(date)
+      .getAll(date, { for: 'day', ...params })
       .pipe(
         map((result: []) => {
           return this.addEvents(result);

@@ -24,6 +24,8 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() isWeekly: boolean;
   @Input() isTodayVisible: boolean;
   @Input() date: Date;
+  @Output() changeMode = new EventEmitter();
+  @Input() mode: string;
 
   format: string;
   endWeekDay: Date;
@@ -58,5 +60,9 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   goToSelectedDay(event: any): void {
     this.goToDay.emit(event.value);
+  }
+
+  executeChangeMode(): void {
+    this.changeMode.emit();
   }
 }

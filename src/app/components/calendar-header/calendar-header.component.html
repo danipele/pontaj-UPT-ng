@@ -11,6 +11,10 @@
     <span>Inapoi</span>
   </button>
 
+  <button mat-raised-button class="upt-secondary-btn mode-btn" (click)="executeChangeMode()">
+    <mat-icon class="user_icon">{{ mode === 'list' ? 'calendar_today' : 'list' }}</mat-icon>
+  </button>
+
   <div class="current-date">
     <mat-form-field appearance="fill" class="date-picker-field" *ngIf="isWeekly">
       <mat-label>Alege saptamana</mat-label>

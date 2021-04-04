@@ -10,20 +10,11 @@ export class TimelinesService {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/timelines`, timeline, this.httpWrapper.getAuthOptions());
   }
 
-  getAllForWeek(date: Date): Observable<any> {
-    return this.httpWrapper.post(
-      `http://localhost:8000/api/v1/timelines/for_week`,
-      { date: date.toDateString() },
-      this.httpWrapper.getAuthOptions()
-    );
-  }
-
-  getAllForDay(date: Date): Observable<any> {
-    return this.httpWrapper.post(
-      `http://localhost:8000/api/v1/timelines/for_day`,
-      { date: date.toDateString() },
-      this.httpWrapper.getAuthOptions()
-    );
+  getAll(date: Date, filter: {}): Observable<any> {
+    return this.httpWrapper.get(`http://localhost:8000/api/v1/timelines`, {
+      params: { date, ...filter },
+      ...this.httpWrapper.getAuthOptions()
+    });
   }
 
   delete(timelineId: string | number | undefined): Observable<any> {
