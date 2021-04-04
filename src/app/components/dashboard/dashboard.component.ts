@@ -172,20 +172,26 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   openEvent(event: any): void {
     const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '20%',
+      width: '300px',
       data: { event: event.event },
-      position: this.getEventDialogPosition(event),
+      position: this.getEventDialogPosition(event, event.event),
       backdropClass: 'event-background'
     });
   }
 
-  getEventDialogPosition(event: any): {} {
+  getEventDialogPosition(event: any, eventObj: IEvent): {} {
     const positions = event.sourceEvent.currentTarget.getBoundingClientRect();
     let left;
+
     if (this.isDaily()) {
       left = event.sourceEvent.x + 50;
     } else {
-      left = positions.right + 10;
+      const day = eventObj.start.getDay();
+      if (day === 6 || day === 0) {
+        left = positions.left - 310;
+      } else {
+        left = positions.right + 10;
+      }
     }
     return {
       top: `${positions.top - 100}px`,

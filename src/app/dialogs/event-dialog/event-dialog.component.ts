@@ -86,7 +86,9 @@ export class EventDialogComponent implements OnInit {
       const entity = this.data.event.entity;
       if ('faculty' in entity) {
         const course = this.data.event.entity as ICourse;
-        return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${course.description}`;
+        return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${
+          course.description || ''
+        }`;
       } else {
         const project = this.data.event.entity as IProject;
         return `${project.description}`;
