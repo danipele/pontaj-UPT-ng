@@ -3,12 +3,15 @@ import { TimelinesService } from '../services/timelines.service';
 import { map } from 'rxjs/operators';
 import { IEvent } from '../models/event.model';
 import { indexOf } from 'lodash';
+import { AddTimelineDialogComponent } from '../dialogs/add-timeline-dialog/add-timeline-dialog.component';
+import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Injectable()
 export class CalendarEventsHelper {
   events: IEvent[] = [];
 
-  constructor(private timelineService: TimelinesService) {}
+  constructor(public dialog: MatDialog, private timelineService: TimelinesService) {}
 
   resolveEvent(result: any): void {
     const startDate = new Date(result.date);
@@ -65,18 +68,14 @@ export class CalendarEventsHelper {
       if (event.id === ev.id) {
         const index = indexOf(this.events, event);
         if (index !== -1) {
-          this.events.splice(index, 1);
+          this.events.splice(index, 1, ev);
         }
-        this.events.push(ev);
         break;
       }
     }
   }
 
-  getUserEventsForCurrentWeek(
-    date: Date,
-    params?: { sort: string; direction: string; page: string; page_size: string }
-  ): Promise<IEvent[]> {
+  getUserEventsForCurrentWeek(date: Date, params?: { sort: string; direction: string }): Promise<IEvent[]> {
     return this.timelineService
       .getAll(date, { for: 'week', ...params })
       .pipe(
@@ -87,7 +86,7 @@ export class CalendarEventsHelper {
       .toPromise();
   }
 
-  getUserEventsForCurrentDay(date: Date, params?: { sort: string; direction: string; page: string; page_size: string }): Promise<IEvent[]> {
+  getUserEventsForCurrentDay(date: Date, params?: { sort: string; direction: string }): Promise<IEvent[]> {
     return this.timelineService
       .getAll(date, { for: 'day', ...params })
       .pipe(
@@ -133,5 +132,38 @@ export class CalendarEventsHelper {
     if (index !== -1) {
       this.events.splice(index, 1);
     }
+  }
+
+  editEventAction(event: IEvent): void {
+    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+      width: '40%',
+      data: {
+        event
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.resolveEvent(result);
+      }
+    });
+  }
+
+  deleteEventAction(event: IEvent): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi aceasta inregistrare?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.timelineService.delete(event.id).subscribe(() => {
+          this.deleteEvent(event);
+        });
+      }
+    });
   }
 }

@@ -11,6 +11,7 @@
       [isWeekly]="isWeekly()"
       [isTodayVisible]="isTodayVisible()"
       [date]="date"
+      (addTimeline)="openAddTimelineDialog()"
       (changeMode)="changeMode()"
       [mode]="viewMode"
     ></app-calendar-header>
@@ -24,7 +25,7 @@
         [dayStartHour]="8"
         [dayEndHour]="21"
         [hourSegments]="1"
-        [hourSegmentHeight]="50"
+        [hourSegmentHeight]="60"
         [hourSegmentTemplate]="hourSegmentTemplateWeek"
         [headerTemplate]="headerTemplateWeek"
         (dayHeaderClicked)="setDay($event)"
@@ -51,7 +52,7 @@
         [dayStartHour]="8"
         [dayEndHour]="21"
         [hourSegments]="1"
-        [hourSegmentHeight]="50"
+        [hourSegmentHeight]="60"
         [hourSegmentTemplate]="hourSegmentTemplateDay"
         (hourSegmentClicked)="openAddTimelineDialog($event)"
         [events]="events"
@@ -61,8 +62,14 @@
     </div>
   </div>
 
-  <div class="list-body" *ngIf="viewMode === 'list'">
-    <app-events-list [events]="eventsForList()" (filterEvents)="filterEvents($event)"></app-events-list>
+  <div class="list-body" *ngIf="viewMode === 'table'">
+    <app-events-list
+      [events]="eventsForList()"
+      (filterEvents)="filterEvents($event)"
+      (goToDay)="setDay($event)"
+      (editEvent)="editEvent($event)"
+      (deleteEvent)="deleteEvent($event)"
+    ></app-events-list>
   </div>
 </div>
 
@@ -80,7 +87,7 @@
   <div
     [class.segment-container]="!isTimeLabel"
     [class.segment-weekend]="isWeekend(segment.date)"
-    [class.segment-today]="isToday(segment.date)"
+    [class.segment-today]="!isTimeLabel && isToday(segment.date)"
   >
     <div *ngIf="isTimeLabel" class="hour-segment">
       <span

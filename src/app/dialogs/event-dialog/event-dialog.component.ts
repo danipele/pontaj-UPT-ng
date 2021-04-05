@@ -34,37 +34,12 @@ export class EventDialogComponent implements OnInit {
 
   editEvent(): void {
     this.cancel();
-    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
-      width: '40%',
-      data: {
-        event: this.data.event
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.calendarEventsHelper.resolveEvent(result);
-      }
-    });
+    this.calendarEventsHelper.editEventAction(this.data.event);
   }
 
   deleteEvent(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      width: '30%',
-      data: {
-        message: 'Esti sigur ca vrei sa stergi aceasta inregistrare?',
-        confirmationMessage: 'Sterge'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((confirmation) => {
-      if (confirmation) {
-        this.timelineService.delete(this.data.event.id).subscribe(() => {
-          this.calendarEventsHelper.deleteEvent(this.data.event);
-          this.cancel();
-        });
-      }
-    });
+    this.calendarEventsHelper.deleteEventAction(this.data.event);
+    this.cancel();
   }
 
   getIconsColor(): string {

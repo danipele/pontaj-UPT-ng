@@ -14,23 +14,21 @@ import { merge } from 'rxjs';
 })
 export class EventsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
-  @ViewChild(MatPaginator) paginator: MatPaginator;
   @Input() events: MatTableDataSource<IEvent>;
-  @Output() filterEvents = new EventEmitter<{ sort: string; direction: string; page: string; page_size: string }>();
+  @Output() filterEvents = new EventEmitter<{ sort: string; direction: string }>();
+  @Output() goToDay = new EventEmitter<{ day: { date: Date } }>();
+  @Output() editEvent = new EventEmitter<IEvent>();
+  @Output() deleteEvent = new EventEmitter<IEvent>();
 
   selectedEvents: IEvent[] = [];
-  columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end'];
+  columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete'];
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
-
-    merge(this.sort.sortChange, this.paginator.page)
-      .pipe(tap(() => this.executeFilterEvents()))
-      .subscribe();
+    this.sort.sortChange.pipe(tap(() => this.executeFilterEvents())).subscribe();
 
     this.events.sort = this.sort;
 
@@ -43,9 +41,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   executeFilterEvents(): void {
     const params = {
       sort: this.sort.active,
-      direction: this.sort.direction.toString(),
-      page: this.paginator.pageIndex.toString(),
-      page_size: this.paginator.pageSize.toString()
+      direction: this.sort.direction.toString()
     };
 
     this.filterEvents.emit(params);
@@ -77,5 +73,17 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   isEventChecked(event: IEvent): boolean {
     const index = indexOf(this.selectedEvents, event);
     return index !== -1;
+  }
+
+  executeGoToDay(event: IEvent): void {
+    this.goToDay.emit({ day: { date: event.start } });
+  }
+
+  executeEditEvent(event: IEvent): void {
+    this.editEvent.emit(event);
+  }
+
+  executeDeleteEvent(event: IEvent): void {
+    this.deleteEvent.emit(event);
   }
 }

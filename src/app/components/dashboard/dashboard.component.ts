@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   date: Date;
   events: IEvent[];
   viewMode: string;
-  filterParams: { sort: string; direction: string; page: string; page_size: string };
+  filterParams: { sort: string; direction: string };
 
   constructor(
     public dialog: MatDialog,
@@ -32,19 +32,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.viewType = 'Saptamanal';
     this.date = moment().startOf('week').toDate();
     this.events = [];
-    this.viewMode = 'list';
+    this.viewMode = 'calendar';
   }
 
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       () => {
-        if (this.viewMode === 'calendar') {
-          if (this.isDaily()) {
-            this.setDayEvents();
-          } else {
-            this.setWeekEvents();
-          }
-        }
+        this.setEvents();
       },
       (error) => {
         if (error.status === 401) {
@@ -74,11 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     yesterday.setDate(this.date.getDate() - (this.isWeekly() ? 7 : 1));
     this.date = yesterday;
 
-    if (this.isDaily()) {
-      this.setDayEvents();
-    } else {
-      this.setWeekEvents();
-    }
+    this.setEvents();
   }
 
   goForwards(): void {
@@ -86,11 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     tomorrow.setDate(this.date.getDate() + (this.isWeekly() ? 7 : 1));
     this.date = tomorrow;
 
-    if (this.isDaily()) {
-      this.setDayEvents();
-    } else {
-      this.setWeekEvents();
-    }
+    this.setEvents();
   }
 
   goToToday(): void {
@@ -100,11 +86,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.date = today.toDate();
 
-    if (this.isDaily()) {
-      this.setDayEvents();
-    } else {
-      this.setWeekEvents();
-    }
+    this.setEvents();
   }
 
   setWeekInterval(event: any): void {
@@ -141,10 +123,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  openAddTimelineDialog(event: any): void {
+  openAddTimelineDialog(event?: any): void {
     const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
       width: '40%',
-      data: { date: event.date }
+      data: { date: event ? event.date : new Date() }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -156,11 +138,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   goToDay(event: any): void {
     this.date = event;
-    if (this.isDaily()) {
-      this.setDayEvents();
-    } else {
-      this.setWeekEvents();
-    }
+    this.setEvents();
   }
 
   ngOnDestroy(): void {
@@ -218,11 +196,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   changeMode(): void {
-    if (this.viewMode === 'list') {
+    if (this.viewMode === 'table') {
       this.viewMode = 'calendar';
+      this.filterParams = { sort: '', direction: '' };
     } else {
-      this.viewMode = 'list';
+      this.viewMode = 'table';
+      this.filterParams = { sort: 'date', direction: 'desc' };
     }
+    this.setEvents();
   }
 
   eventsForList(): MatTableDataSource<IEvent> {
@@ -232,13 +213,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return events;
   }
 
-  filterEvents(params: { sort: string; direction: string; page: string; page_size: string }): void {
+  filterEvents(params: { sort: string; direction: string }): void {
     this.filterParams = params;
 
+    this.setEvents();
+  }
+
+  setEvents(): void {
     if (this.isDaily()) {
       this.setDayEvents();
     } else {
       this.setWeekEvents();
     }
+  }
+
+  editEvent(event: IEvent): void {
+    this.calendarEventsHelper.editEventAction(event);
+  }
+
+  deleteEvent(event: IEvent): void {
+    this.calendarEventsHelper.deleteEventAction(event);
   }
 }

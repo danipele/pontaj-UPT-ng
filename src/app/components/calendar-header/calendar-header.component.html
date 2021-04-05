@@ -1,4 +1,11 @@
 <div class="calendar-header text-center">
+  <button mat-flat-button class="upt-secondary-btn mode-btn table-btn" [disabled]="mode === 'table'" (click)="executeChangeMode()">
+    Tabel
+  </button>
+  <button mat-flat-button class="upt-secondary-btn mode-btn calendar-btn" [disabled]="mode === 'calendar'" (click)="executeChangeMode()">
+    Calendar
+  </button>
+
   <button mat-raised-button class="upt-btn go-to-next" (click)="executeGoForwards()">
     <span>Inainte</span>
   </button>
@@ -11,8 +18,8 @@
     <span>Inapoi</span>
   </button>
 
-  <button mat-raised-button class="upt-secondary-btn mode-btn" (click)="executeChangeMode()">
-    <mat-icon class="user_icon">{{ mode === 'list' ? 'calendar_today' : 'list' }}</mat-icon>
+  <button mat-flat-button class="upt-secondary-btn add-timeline-button" (click)="executeAddTimeline()">
+    <mat-icon>add_box</mat-icon>
   </button>
 
   <div class="current-date">
@@ -36,8 +43,4 @@
   <button mat-raised-button class="upt-primary-btn weekly-btn" (click)="executeSetWeekly()" [disabled]="isWeekly">
     <span>Vezi toata saptamana</span>
   </button>
-
-  <div class="date-label">
-    <span>Calendarul meu</span>
-  </div>
 </div>

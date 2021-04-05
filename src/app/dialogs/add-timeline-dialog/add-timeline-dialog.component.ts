@@ -129,7 +129,7 @@ export class AddTimelineDialogComponent {
       this.data.date = event.start;
       this.startHour = event.start.getHours();
 
-      if (event.end.getHours() === 22) {
+      if (event.start.getHours() === 8 && event.end.getHours() === 22) {
         this.allDay = true;
       }
       this.endHour = event.end?.getHours();
