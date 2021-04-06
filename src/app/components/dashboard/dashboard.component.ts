@@ -20,7 +20,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   date: Date;
   events: IEvent[];
   viewMode: string;
-  filterParams: { sort: string; direction: string };
+  filterParams: {
+    sort?: string;
+    direction?: string;
+    subactivity?: string;
+    activity?: string;
+    start_date_filter?: string;
+    end_date_filter?: string;
+  };
 
   constructor(
     public dialog: MatDialog,
@@ -198,10 +205,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changeMode(): void {
     if (this.viewMode === 'table') {
       this.viewMode = 'calendar';
-      this.filterParams = { sort: '', direction: '' };
+      this.filterParams = { sort: '', direction: '', subactivity: '', activity: '' };
     } else {
       this.viewMode = 'table';
-      this.filterParams = { sort: 'date', direction: 'desc' };
+      this.filterParams = { sort: 'date', direction: 'desc', subactivity: '', activity: '' };
     }
     this.setEvents();
   }
@@ -213,7 +220,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return events;
   }
 
-  filterEvents(params: { sort: string; direction: string }): void {
+  filterEvents(params: {
+    sort?: string;
+    direction?: string;
+    subactivity?: string;
+    activity?: string;
+    start_date_filter?: string;
+    end_date_filter?: string;
+  }): void {
     this.filterParams = params;
 
     this.setEvents();

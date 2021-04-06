@@ -69,6 +69,8 @@
       (goToDay)="setDay($event)"
       (editEvent)="editEvent($event)"
       (deleteEvent)="deleteEvent($event)"
+      [startDate]="date"
+      [isWeekly]="isWeekly()"
     ></app-events-list>
   </div>
 </div>

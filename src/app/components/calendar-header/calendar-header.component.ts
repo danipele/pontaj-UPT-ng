@@ -11,7 +11,7 @@ import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
   styleUrls: ['./calendar-header.component.sass'],
   providers: [
     { provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: WeekPickerStrategy },
-    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })
