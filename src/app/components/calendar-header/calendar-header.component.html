@@ -1,21 +1,26 @@
 <div class="calendar-header text-center">
-  <button mat-flat-button class="upt-secondary-btn mode-btn table-btn" [disabled]="mode === 'table'" (click)="executeChangeMode()">
+  <button
+    mat-flat-button
+    class="upt-secondary-btn switch-modes-btn first-mode-btn"
+    [disabled]="mode === 'table'"
+    (click)="executeChangeMode()"
+  >
     Tabel
   </button>
-  <button mat-flat-button class="upt-secondary-btn mode-btn calendar-btn" [disabled]="mode === 'calendar'" (click)="executeChangeMode()">
+  <button
+    mat-flat-button
+    class="upt-secondary-btn switch-modes-btn second-mode-btn"
+    [disabled]="mode === 'calendar'"
+    (click)="executeChangeMode()"
+  >
     Calendar
   </button>
 
-  <button mat-raised-button class="upt-btn go-to-next" (click)="executeGoForwards()">
-    <span>Inainte</span>
+  <button mat-flat-button class="upt-secondary-btn switch-modes-btn first-mode-btn" [disabled]="!isWeekly" (click)="executeSetDaily()">
+    Zilnic
   </button>
-
-  <button mat-raised-button class="upt-primary-btn go-to-today-btn" (click)="executeGoToToday()" [disabled]="isTodayVisible">
-    <span>Du-te la Astazi</span>
-  </button>
-
-  <button mat-raised-button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
-    <span>Inapoi</span>
+  <button mat-flat-button class="upt-secondary-btn switch-modes-btn second-mode-btn" [disabled]="isWeekly" (click)="executeSetWeekly()">
+    Saptamanal
   </button>
 
   <button mat-flat-button class="upt-secondary-btn add-timeline-button" (click)="executeAddTimeline()">
@@ -40,7 +45,15 @@
     </mat-form-field>
   </div>
 
-  <button mat-raised-button class="upt-primary-btn weekly-btn" (click)="executeSetWeekly()" [disabled]="isWeekly">
-    <span>Vezi toata saptamana</span>
+  <button mat-raised-button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
+    <span>Inapoi</span>
+  </button>
+
+  <button mat-raised-button class="upt-primary-btn go-to-today-btn" (click)="executeGoToToday()" [disabled]="isTodayVisible">
+    <span>Du-te la Astazi</span>
+  </button>
+
+  <button mat-raised-button class="upt-btn go-to-next" (click)="executeGoForwards()">
+    <span>Inainte</span>
   </button>
 </div>

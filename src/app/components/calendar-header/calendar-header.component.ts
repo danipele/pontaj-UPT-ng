@@ -19,6 +19,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() goBackwards = new EventEmitter();
   @Output() goForwards = new EventEmitter();
   @Output() setWeekly = new EventEmitter();
+  @Output() setDaily = new EventEmitter();
   @Output() goToToday = new EventEmitter();
   @Output() goToDay = new EventEmitter<Date>();
   @Input() isWeekly: boolean;
@@ -46,6 +47,10 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   executeSetWeekly(): void {
     this.setWeekly.emit();
+  }
+
+  executeSetDaily(): void {
+    this.setDaily.emit();
   }
 
   executeGoToToday(): void {

@@ -118,6 +118,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.setDayEvents();
   }
 
+  setDaily(): void {
+    this.setDay({ day: { date: this.date } });
+  }
+
   isTodayVisible(): boolean {
     if (this.isDaily()) {
       const today = moment(new Date());
