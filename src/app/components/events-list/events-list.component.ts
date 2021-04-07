@@ -241,4 +241,10 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     }
     return '';
   }
+
+  getEndDateForWeekly(): Date {
+    const endDate = new Date(this.startDate);
+    endDate.setDate(this.startDate.getDate() + 6);
+    return endDate;
+  }
 }

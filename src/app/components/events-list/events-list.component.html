@@ -1,21 +1,25 @@
 <div class="table-container">
+  <div class="date-label">
+    <span>{{ startDate | date: 'EEEE, dd MMM yyyy' }}</span>
+    <span *ngIf="isWeekly"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy' }}</span>
+  </div>
   <mat-grid-list cols="100" rowHeight="50px">
     <mat-grid-tile [colspan]="100" [rowspan]="1">
       <button
         mat-raised-button
         class="upt-secondary-btn switch-modes-btn second-mode-btn"
-        [disabled]="allEvents"
-        (click)="executeGetAllEvents()"
-      >
-        Toate inregistrarile
-      </button>
-      <button
-        mat-raised-button
-        class="upt-secondary-btn switch-modes-btn first-mode-btn"
         [disabled]="!allEvents"
         (click)="executeGetEvents()"
       >
         Inregistrarile din aceasta {{ isWeekly ? 'saptamana' : 'zi' }}
+      </button>
+      <button
+        mat-raised-button
+        class="upt-secondary-btn switch-modes-btn first-mode-btn"
+        [disabled]="allEvents"
+        (click)="executeGetAllEvents()"
+      >
+        Toate inregistrarile
       </button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="7" [rowspan]="1">
