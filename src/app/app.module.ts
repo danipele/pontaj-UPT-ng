@@ -49,6 +49,7 @@ import { EventDialogComponent } from './dialogs/event-dialog/event-dialog.compon
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatGridListModule } from '@angular/material/grid-list';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -97,7 +98,8 @@ export function momentAdapterFactory(): DateAdapter {
     MatTableModule,
     CookieModule.forRoot(),
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatGridListModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },

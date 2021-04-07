@@ -6,6 +6,9 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { tap } from 'rxjs/operators';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
+import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TimelinesService } from '../../services/timelines.service';
 
 @Component({
   selector: 'app-events-list',
@@ -56,14 +59,14 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
   selectedEvents: IEvent[] = [];
   columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete'];
-  filterColumnNames: string[] = ['selectFilter', 'nrCrtFilter', 'subactivityFilter', 'activityFilter', 'dateFilter'];
 
   subactivityFilter = '';
   activityFilter = '';
   startDateFilter?: Date;
   endDateFilter?: Date;
+  allEvents = false;
 
-  constructor() {}
+  constructor(public dialog: MatDialog, private timelineService: TimelinesService) {}
 
   ngOnInit(): void {}
 
@@ -82,10 +85,11 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     const params: any = {
       sort: this.sort.active,
       direction: this.sort.direction.toString(),
-      subactivity: this.subactivityFilter,
-      activity: this.activityFilter,
+      subactivity: this.subactivityFilter || '',
+      activity: this.activityFilter || '',
       start_date_filter: this.startDateFilter || '',
-      end_date_filter: this.endDateFilter || ''
+      end_date_filter: this.endDateFilter || '',
+      all: this.allEvents
     };
 
     this.filterEvents.emit(params);
@@ -131,13 +135,16 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     this.deleteEvent.emit(event);
   }
 
-  removeSubactivityFilter(): void {
-    this.subactivityFilter = '';
+  executeStartDateFilterEvents(event: any): void {
+    this.startDateFilter = event.value;
+    this.endDateFilter = undefined;
+    this.allEvents = true;
     this.executeFilterEvents();
   }
 
-  removeActivityFilter(): void {
-    this.activityFilter = '';
+  executeEndDateFilterEvents(event: any): void {
+    this.endDateFilter = event.value;
+    this.allEvents = true;
     this.executeFilterEvents();
   }
 
@@ -147,14 +154,29 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     this.executeFilterEvents();
   }
 
-  executeStartDateFilterEvents(event: any): void {
-    this.startDateFilter = event.value;
-    this.endDateFilter = undefined;
+  executeGetAllEvents(): void {
+    this.allEvents = true;
     this.executeFilterEvents();
   }
 
-  executeEndDateFilterEvents(event: any): void {
-    this.endDateFilter = event.value;
+  executeGetEvents(): void {
+    this.allEvents = false;
     this.executeFilterEvents();
+  }
+
+  deleteSelected(): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi ' + this.selectedEvents.length + ' inregistrari?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.timelineService.delete_selected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
+      }
+    });
   }
 }

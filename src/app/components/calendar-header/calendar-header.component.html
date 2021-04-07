@@ -1,6 +1,6 @@
 <div class="calendar-header text-center">
   <button
-    mat-flat-button
+    mat-raised-button
     class="upt-secondary-btn switch-modes-btn first-mode-btn"
     [disabled]="mode === 'table'"
     (click)="executeChangeMode()"
@@ -8,7 +8,7 @@
     Tabel
   </button>
   <button
-    mat-flat-button
+    mat-raised-button
     class="upt-secondary-btn switch-modes-btn second-mode-btn"
     [disabled]="mode === 'calendar'"
     (click)="executeChangeMode()"
@@ -16,10 +16,10 @@
     Calendar
   </button>
 
-  <button mat-flat-button class="upt-secondary-btn switch-modes-btn first-mode-btn" [disabled]="!isWeekly" (click)="executeSetDaily()">
+  <button mat-raised-button class="upt-secondary-btn switch-modes-btn first-mode-btn" [disabled]="!isWeekly" (click)="executeSetDaily()">
     Zilnic
   </button>
-  <button mat-flat-button class="upt-secondary-btn switch-modes-btn second-mode-btn" [disabled]="isWeekly" (click)="executeSetWeekly()">
+  <button mat-raised-button class="upt-secondary-btn switch-modes-btn second-mode-btn" [disabled]="isWeekly" (click)="executeSetWeekly()">
     Saptamanal
   </button>
 

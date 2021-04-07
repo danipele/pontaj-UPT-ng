@@ -3,10 +3,7 @@ import { IEvent } from '../../models/event.model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { TimelinesService } from '../../services/timelines.service';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
-import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
 
 interface Data {
   event: IEvent;
@@ -22,8 +19,7 @@ export class EventDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EventDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Data,
-    private calendarEventsHelper: CalendarEventsHelper,
-    private timelineService: TimelinesService
+    private calendarEventsHelper: CalendarEventsHelper
   ) {}
 
   ngOnInit(): void {}

@@ -1,4 +1,63 @@
 <div class="table-container">
+  <mat-grid-list cols="100" rowHeight="50px">
+    <mat-grid-tile [colspan]="100" [rowspan]="1">
+      <button
+        mat-raised-button
+        class="upt-secondary-btn switch-modes-btn second-mode-btn"
+        [disabled]="allEvents"
+        (click)="executeGetAllEvents()"
+      >
+        Toate inregistrarile
+      </button>
+      <button
+        mat-raised-button
+        class="upt-secondary-btn switch-modes-btn first-mode-btn"
+        [disabled]="!allEvents"
+        (click)="executeGetEvents()"
+      >
+        Inregistrarile din aceasta {{ isWeekly ? 'saptamana' : 'zi' }}
+      </button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="7" [rowspan]="1">
+      <button mat-raised-button class="upt-primary-btn" (click)="deleteSelected()" [hidden]="selectedEvents.length === 0">Sterge</button>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="23" [rowspan]="1">
+      <mat-form-field appearance="fill" class="filter-container">
+        <mat-label>Filtreaza dupa subtipul activitatii:</mat-label>
+        <mat-select [(ngModel)]="subactivityFilter" name="subactivityFilter" (selectionChange)="executeFilterEvents()">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let subactivity of SUBACTIVITIES" [value]="subactivity">
+            {{ subactivity }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="23" [rowspan]="1">
+      <mat-form-field appearance="fill" class="filter-container">
+        <mat-label>Filtreaza dupa tipul activitatii:</mat-label>
+        <mat-select [(ngModel)]="activityFilter" name="activityFilter" (selectionChange)="executeFilterEvents()">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let activity of ACTIVITIES" [value]="activity">
+            {{ activity }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="16" [rowspan]="1">
+      <mat-form-field appearance="fill" class="filter-container date-filter-container">
+        <mat-label>Filtreaza dupa data</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate [value]="startDateFilter" (dateChange)="executeStartDateFilterEvents($event)" />
+          <input matEndDate [value]="endDateFilter" (dateChange)="executeEndDateFilterEvents($event)" />
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="3" [rowspan]="1" class="btn-grid-tile">
+      <button mat-flat-button class="remove-date-filter-btn" (click)="removeDateFilter()">&times;</button>
+    </mat-grid-tile>
+  </mat-grid-list>
   <table mat-table [dataSource]="events" matSort matSortActive="date" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
@@ -18,49 +77,19 @@
         ></mat-checkbox>
       </td>
     </ng-container>
-    <ng-container matColumnDef="selectFilter">
-      <th mat-header-cell *matHeaderCellDef></th>
-    </ng-container>
+
     <ng-container matColumnDef="nr_crt">
       <th mat-header-cell *matHeaderCellDef>Nr. crt.</th>
       <td mat-cell *matCellDef="let event">{{ events.data.indexOf(event) + 1 }}</td>
     </ng-container>
-    <ng-container matColumnDef="nrCrtFilter">
-      <th mat-header-cell *matHeaderCellDef></th>
-    </ng-container>
+
     <ng-container matColumnDef="subactivity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Subtipul activitatii</th>
       <td mat-cell *matCellDef="let event">{{ event.subactivity }}</td>
     </ng-container>
-    <ng-container matColumnDef="subactivityFilter">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-form-field appearance="fill" class="filter-container">
-          <mat-label>Filtreaza dupa subtipul activitatii:</mat-label>
-          <mat-select [(ngModel)]="subactivityFilter" name="subactivityFilter" (selectionChange)="executeFilterEvents()">
-            <mat-option *ngFor="let subactivity of SUBACTIVITIES" [value]="subactivity">
-              {{ subactivity }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-icon-button class="remove-filter-btn" (click)="removeSubactivityFilter()"><mat-icon>close</mat-icon></button>
-      </th>
-    </ng-container>
     <ng-container matColumnDef="activity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipul activitatii</th>
       <td mat-cell *matCellDef="let event">{{ event.activity }}</td>
-    </ng-container>
-    <ng-container matColumnDef="activityFilter">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-form-field appearance="fill" class="filter-container">
-          <mat-label>Filtreaza dupa tipul activitatii:</mat-label>
-          <mat-select [(ngModel)]="activityFilter" name="activityFilter" (selectionChange)="executeFilterEvents()">
-            <mat-option *ngFor="let activity of ACTIVITIES" [value]="activity">
-              {{ activity }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <button mat-icon-button class="remove-filter-btn" (click)="removeActivityFilter()"><mat-icon>close</mat-icon></button>
-      </th>
     </ng-container>
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ziua</th>
@@ -69,20 +98,6 @@
           ><u>{{ event.start | date: 'EEEE, dd MMM yyyy' | titlecase }}</u></span
         >
       </td>
-    </ng-container>
-    <ng-container matColumnDef="dateFilter">
-      <th mat-header-cell *matHeaderCellDef>
-        <mat-form-field appearance="fill" class="filter-container">
-          <mat-label>Filtreaza dupa data</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate [value]="startDateFilter" (dateChange)="executeStartDateFilterEvents($event)" />
-            <input matEndDate [value]="endDateFilter" (dateChange)="executeEndDateFilterEvents($event)" />
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-        <button mat-icon-button class="remove-filter-btn" (click)="removeDateFilter()"><mat-icon>close</mat-icon></button>
-      </th>
     </ng-container>
     <ng-container matColumnDef="start">
       <th mat-header-cell *matHeaderCellDef>Ora de inceput</th>
@@ -117,7 +132,6 @@
       </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="filterColumnNames; sticky: true"></tr>
     <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
   </table>
