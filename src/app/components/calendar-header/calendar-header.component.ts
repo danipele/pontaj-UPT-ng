@@ -25,7 +25,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Input() isWeekly: boolean;
   @Input() isTodayVisible: boolean;
   @Input() date: Date;
-  @Output() addTimeline = new EventEmitter();
+  @Output() addTimeline = new EventEmitter<{ date: Date }>();
   @Output() changeMode = new EventEmitter();
   @Input() mode: string;
 
@@ -69,7 +69,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   executeAddTimeline(): void {
-    this.addTimeline.emit();
+    this.addTimeline.emit({ date: this.date });
   }
 
   executeChangeMode(): void {

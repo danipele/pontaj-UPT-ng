@@ -28,6 +28,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     start_date_filter?: string;
     end_date_filter?: string;
     all?: boolean;
+    course?: number;
+    project?: number;
   };
 
   constructor(
@@ -41,6 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.date = moment().startOf('week').toDate();
     this.events = [];
     this.viewMode = 'calendar';
+    this.initCalendarFilters();
   }
 
   ngOnInit(): void {
@@ -213,14 +216,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   changeMode(): void {
-    if (this.viewMode === 'table') {
+    if (this.viewMode === 'list') {
       this.viewMode = 'calendar';
-      this.filterParams = { sort: '', direction: '', subactivity: '', activity: '', all: false };
+      this.initCalendarFilters();
     } else {
-      this.viewMode = 'table';
-      this.filterParams = { sort: 'date', direction: 'desc', subactivity: '', activity: '', all: false };
+      this.viewMode = 'list';
+      this.initListFilter();
     }
     this.setEvents();
+  }
+
+  initCalendarFilters(): void {
+    this.filterParams = {
+      sort: '',
+      direction: '',
+      subactivity: '',
+      activity: '',
+      start_date_filter: '',
+      end_date_filter: '',
+      all: false,
+      course: -1,
+      project: -1
+    };
+  }
+
+  initListFilter(): void {
+    this.filterParams = {
+      sort: 'date',
+      direction: 'desc',
+      subactivity: '',
+      activity: '',
+      start_date_filter: '',
+      end_date_filter: '',
+      all: false,
+      course: -1,
+      project: -1
+    };
   }
 
   eventsForList(): MatTableDataSource<IEvent> {
@@ -238,6 +269,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     start_date_filter?: string;
     end_date_filter?: string;
     all?: boolean;
+    course?: number;
+    project?: number;
   }): void {
     this.filterParams = params;
 

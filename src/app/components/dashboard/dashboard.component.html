@@ -12,7 +12,7 @@
       [isWeekly]="isWeekly()"
       [isTodayVisible]="isTodayVisible()"
       [date]="date"
-      (addTimeline)="openAddTimelineDialog()"
+      (addTimeline)="openAddTimelineDialog($event)"
       (changeMode)="changeMode()"
       [mode]="viewMode"
     ></app-calendar-header>
@@ -63,7 +63,7 @@
     </div>
   </div>
 
-  <div class="list-body" *ngIf="viewMode === 'table'">
+  <div class="list-body" *ngIf="viewMode === 'list'">
     <app-events-list
       [events]="eventsForList()"
       (filterEvents)="filterEvents($event)"

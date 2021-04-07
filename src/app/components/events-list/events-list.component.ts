@@ -9,6 +9,10 @@ import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { TimelinesService } from '../../services/timelines.service';
+import { ICourse } from '../../models/course.model';
+import { IProject } from '../../models/project.model';
+import { CourseService } from '../../services/course.service';
+import { ProjectService } from '../../services/project.service';
 
 @Component({
   selector: 'app-events-list',
@@ -22,7 +26,17 @@ import { TimelinesService } from '../../services/timelines.service';
 export class EventsListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
   @Input() events: MatTableDataSource<IEvent>;
-  @Output() filterEvents = new EventEmitter<{ sort?: string; direction?: string; subactivity?: string; activity?: string }>();
+  @Output() filterEvents = new EventEmitter<{
+    sort?: string;
+    direction?: string;
+    subactivity?: string;
+    activity?: string;
+    start_date_filter?: string;
+    end_date_filter?: string;
+    all?: boolean;
+    course?: number;
+    project?: number;
+  }>();
   @Output() goToDay = new EventEmitter<{ day: { date: Date } }>();
   @Output() editEvent = new EventEmitter<IEvent>();
   @Output() deleteEvent = new EventEmitter<IEvent>();
@@ -66,9 +80,22 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   startDateFilter?: Date;
   endDateFilter?: Date;
 
-  constructor(public dialog: MatDialog, private timelineService: TimelinesService) {}
+  courseFilter: ICourse;
+  projectFilter: IProject;
+  courses: ICourse[];
+  projects: IProject[];
 
-  ngOnInit(): void {}
+  constructor(
+    public dialog: MatDialog,
+    private timelineService: TimelinesService,
+    public courseService: CourseService,
+    public projectService: ProjectService
+  ) {}
+
+  ngOnInit(): void {
+    this.getCourses();
+    this.getProjects();
+  }
 
   ngAfterViewInit(): void {
     this.sort.sortChange.pipe(tap(() => this.executeFilterEvents())).subscribe();
@@ -81,6 +108,14 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     this.sort.sortChange.emit(sortState);
   }
 
+  getCourses(): void {
+    this.courseService.getAll().subscribe((result) => (this.courses = result));
+  }
+
+  getProjects(): void {
+    this.projectService.getAll().subscribe((result) => (this.projects = result));
+  }
+
   executeFilterEvents(): void {
     const params: any = {
       sort: this.sort.active,
@@ -89,7 +124,9 @@ export class EventsListComponent implements OnInit, AfterViewInit {
       activity: this.activityFilter || '',
       start_date_filter: this.startDateFilter || '',
       end_date_filter: this.endDateFilter || '',
-      all: this.allEvents
+      all: this.allEvents,
+      course: this.courseFilter?.id || -1,
+      project: this.projectFilter?.id || -1
     };
 
     this.filterEvents.emit(params);

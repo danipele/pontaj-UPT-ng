@@ -110,7 +110,6 @@ export class AddTimelineDialogComponent {
       } else {
         this.startHour = 8;
         this.endHour = 9;
-        data.date = new Date();
       }
       data.date.setMinutes(0);
       data.date.setSeconds(0);

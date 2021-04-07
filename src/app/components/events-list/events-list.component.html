@@ -57,6 +57,28 @@
     <mat-grid-tile [colspan]="3" [rowspan]="1" class="btn-grid-tile">
       <button mat-flat-button class="remove-date-filter-btn" (click)="removeDateFilter()">&times;</button>
     </mat-grid-tile>
+    <mat-grid-tile [colspan]="14" [rowspan]="1">
+      <mat-form-field appearance="fill" class="filter-container course-filter">
+        <mat-label>Filtreaza dupa curs:</mat-label>
+        <mat-select [(ngModel)]="courseFilter" name="courseFilter" (selectionChange)="executeFilterEvents()">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let course of courses" [value]="course">
+            {{ course.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="14" [rowspan]="1">
+      <mat-form-field appearance="fill" class="filter-container project-filter">
+        <mat-label>Filtreaza dupa proiect:</mat-label>
+        <mat-select [(ngModel)]="projectFilter" name="projectFilter" (selectionChange)="executeFilterEvents()">
+          <mat-option></mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project">
+            {{ project.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-grid-tile>
   </mat-grid-list>
   <table mat-table [dataSource]="events" matSort matSortActive="date" matSortDirection="desc" matSortDisableClear>
     <ng-container matColumnDef="select">
