@@ -80,7 +80,7 @@
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
-  <table mat-table [dataSource]="events" matSort matSortActive="date" matSortDirection="desc" matSortDisableClear>
+  <table mat-table [dataSource]="events" matSort matSortActive="date" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
@@ -154,7 +154,48 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let event" [attr.colspan]="columnNames.length">
+        <div class="example-element-detail" [@detailExpand]="event == expandedEvent ? 'expanded' : 'collapsed'">
+          <div class="expanded-date-container">
+            <div class="year-container">
+              {{ event.start | date: 'y' }}
+            </div>
+            <div class="day-container">
+              <div>
+                <b>{{ event.start | date: 'd' }}</b>
+              </div>
+            </div>
+            <div class="month-container">
+              <div>
+                <b>{{ event.start | date: 'MMMM' }}</b>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="activities row">{{ event.subactivity }} ∙ {{ event.activity }}</div>
+            <div class="entity row" *ngIf="event.entity">
+              {{ event.entity.name }}
+            </div>
+            <div class="entity-description row" *ngIf="event.entity">
+              {{ getEntityDetails(event) }}
+            </div>
+            <div class="description row">
+              {{ event.description }}
+            </div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
+
     <tr mat-header-row *matHeaderRowDef="columnNames; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: columnNames"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: columnNames"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedEvent === row"
+      (click)="expandedEvent = expandedEvent === row ? null : row"
+    ></tr>
+    <tr mat-row *matRowDef="let &quot;expanded-row&quot;; columns: ['expandedDetail']" class="example-detail-row"></tr>
   </table>
 </div>

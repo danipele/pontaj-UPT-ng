@@ -13,6 +13,7 @@ import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-events-list',
@@ -21,6 +22,13 @@ import { ProjectService } from '../../services/project.service';
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
     { provide: DateAdapter, useClass: CustomDateAdapter }
+  ],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('300ms cubic-bezier(0.4, 0.0, 0.2, 1)'))
+    ])
   ]
 })
 export class EventsListComponent implements OnInit, AfterViewInit {
@@ -74,6 +82,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
   selectedEvents: IEvent[] = [];
   columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete'];
+  expandedEvent: IEvent | null;
 
   subactivityFilter = '';
   activityFilter = '';
@@ -215,5 +224,21 @@ export class EventsListComponent implements OnInit, AfterViewInit {
         this.timelineService.delete_selected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
       }
     });
+  }
+
+  getEntityDetails(event: IEvent): string {
+    if (event.entity) {
+      const entity = event.entity;
+      if ('faculty' in entity) {
+        const course = event.entity as ICourse;
+        return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${
+          course.description || ''
+        }`;
+      } else {
+        const project = event.entity as IProject;
+        return `${project.description}`;
+      }
+    }
+    return '';
   }
 }
