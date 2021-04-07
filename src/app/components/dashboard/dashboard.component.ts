@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     activity?: string;
     start_date_filter?: string;
     end_date_filter?: string;
+    all?: boolean;
   };
 
   constructor(
@@ -67,6 +68,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   setWeekly(): void {
     this.viewType = 'Saptamanal';
     this.date = moment(this.date).startOf('week').toDate();
+    this.filterParams.all = false;
     this.setWeekEvents();
   }
 
@@ -75,6 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     yesterday.setDate(this.date.getDate() - (this.isWeekly() ? 7 : 1));
     this.date = yesterday;
 
+    this.filterParams.all = false;
     this.setEvents();
   }
 
@@ -83,6 +86,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     tomorrow.setDate(this.date.getDate() + (this.isWeekly() ? 7 : 1));
     this.date = tomorrow;
 
+    this.filterParams.all = false;
     this.setEvents();
   }
 
@@ -93,6 +97,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.date = today.toDate();
 
+    this.filterParams.all = false;
     this.setEvents();
   }
 
@@ -119,6 +124,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setDaily(): void {
+    this.filterParams.all = false;
     this.setDay({ day: { date: this.date } });
   }
 
@@ -209,10 +215,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   changeMode(): void {
     if (this.viewMode === 'table') {
       this.viewMode = 'calendar';
-      this.filterParams = { sort: '', direction: '', subactivity: '', activity: '' };
+      this.filterParams = { sort: '', direction: '', subactivity: '', activity: '', all: false };
     } else {
       this.viewMode = 'table';
-      this.filterParams = { sort: 'date', direction: 'desc', subactivity: '', activity: '' };
+      this.filterParams = { sort: 'date', direction: 'desc', subactivity: '', activity: '', all: false };
     }
     this.setEvents();
   }
@@ -231,6 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     activity?: string;
     start_date_filter?: string;
     end_date_filter?: string;
+    all?: boolean;
   }): void {
     this.filterParams = params;
 

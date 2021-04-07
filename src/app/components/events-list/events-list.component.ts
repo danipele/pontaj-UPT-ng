@@ -28,6 +28,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   @Output() deleteEvent = new EventEmitter<IEvent>();
   @Input() startDate: Date;
   @Input() isWeekly: boolean;
+  @Input() allEvents: boolean | undefined = false;
 
   ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Concediu', 'Proiect'];
   SUBACTIVITIES: string[] = [
@@ -64,7 +65,6 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   activityFilter = '';
   startDateFilter?: Date;
   endDateFilter?: Date;
-  allEvents = false;
 
   constructor(public dialog: MatDialog, private timelineService: TimelinesService) {}
 
