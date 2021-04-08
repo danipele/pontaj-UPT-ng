@@ -137,7 +137,7 @@
     role="application"
   >
     <div class="activity-event">
-      {{ weekEvent.event.subactivity }}
+      {{ weekEvent.event.activity == 'Proiect' ? weekEvent.event.activity : weekEvent.event.subactivity }}
     </div>
     <div class="activity-event">
       {{ weekEvent.event.start | date: 'HH:mm' | titlecase }} - {{ weekEvent.event.end | date: 'HH:mm' | titlecase }}

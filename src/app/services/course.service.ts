@@ -38,4 +38,8 @@ export class CourseService {
   export_courses(courses: ICourse[]): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/export_courses`, { courses }, this.httpWrapper.getDownloadOptions());
   }
+
+  getCourseDetails(course: ICourse): string {
+    return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${course.description || ''}`;
+  }
 }

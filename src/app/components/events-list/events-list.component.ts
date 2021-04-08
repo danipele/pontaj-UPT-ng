@@ -72,6 +72,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     'Implicare neremunerată în problematica societății',
     'Indrumare doctoranzi',
     'Laborator',
+    'Ora de proiect',
     'Plecati cu bursa',
     'Pregatire pentru activitatea didactica',
     'Proiect',
@@ -197,6 +198,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   removeDateFilter(): void {
     this.startDateFilter = undefined;
     this.endDateFilter = undefined;
+    this.allEvents = false;
     this.executeFilterEvents();
   }
 
@@ -214,7 +216,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi ' + this.selectedEvents.length + ' inregistrari?',
+        message: 'Esti sigur ca vrei sa stergi ' + this.selectedEvents.length + ' evenimente?',
         confirmationMessage: 'Sterge'
       }
     });
@@ -231,12 +233,10 @@ export class EventsListComponent implements OnInit, AfterViewInit {
       const entity = event.entity;
       if ('faculty' in entity) {
         const course = event.entity as ICourse;
-        return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${
-          course.description || ''
-        }`;
+        return this.courseService.getCourseDetails(course);
       } else {
         const project = event.entity as IProject;
-        return `${project.description}`;
+        return this.projectService.getProjectDetails(project);
       }
     }
     return '';

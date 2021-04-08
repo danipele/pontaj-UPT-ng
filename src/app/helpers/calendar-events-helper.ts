@@ -179,7 +179,7 @@ export class CalendarEventsHelper {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi aceasta inregistrare?',
+        message: 'Esti sigur ca vrei sa stergi aceasta evenimente?',
         confirmationMessage: 'Sterge'
       }
     });

@@ -46,7 +46,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="sub-activity-field" *ngIf="activity != undefined">
+    <mat-form-field appearance="fill" class="sub-activity-field" *ngIf="activity != undefined && activity != 'Proiect'">
       <mat-label>Subtipul activitatii</mat-label>
       <mat-select [(ngModel)]="subactivity" name="subactivity" (selectionChange)="subactivitySelected()">
         <mat-option *ngFor="let subactivity of subactivities" [value]="subactivity">
@@ -59,7 +59,7 @@
     <mat-form-field
       appearance="fill"
       class="entity-field"
-      *ngIf="(activity === 'Activitate didactica' || activity === 'Proiect') && subactivity != undefined"
+      *ngIf="(activity === 'Activitate didactica' && subactivity != undefined) || activity === 'Proiect'"
     >
       <mat-label>{{ activity }}</mat-label>
       <mat-select [(ngModel)]="entity" name="entity">
@@ -85,7 +85,7 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button [disabled]="allFieldAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
+  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
     Confirm
   </button>
 </div>

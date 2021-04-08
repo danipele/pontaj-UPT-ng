@@ -39,7 +39,7 @@ export class PersonalInformationDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  allFieldAreFilled(): boolean {
+  notAllFieldsAreFilled(): boolean {
     return !this.formGroup.controls.firstName.value || !this.formGroup.controls.lastName.value;
   }
 }

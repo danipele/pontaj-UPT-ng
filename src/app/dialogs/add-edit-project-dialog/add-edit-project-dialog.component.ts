@@ -14,10 +14,16 @@ export class AddEditProjectDialogComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<AddEditProjectDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: IProject) {
     this.formGroup = new FormGroup({
       projectName: new FormControl(),
+      projectHoursPerMonth: new FormControl(),
+      projectRestrictedStartHour: new FormControl(),
+      projectRestrictedEndHour: new FormControl(),
       projectDescription: new FormControl()
     });
     if (data) {
       this.formGroup.controls.projectName.setValue(data.name);
+      this.formGroup.controls.projectHoursPerMonth.setValue(data.hours_per_month);
+      this.formGroup.controls.projectRestrictedStartHour.setValue(data.restricted_start_hour);
+      this.formGroup.controls.projectRestrictedEndHour.setValue(data.restricted_end_hour);
       this.formGroup.controls.projectDescription.setValue(data.description);
     }
   }
@@ -33,12 +39,15 @@ export class AddEditProjectDialogComponent implements OnInit {
       project: {
         id: this.data.id,
         name: this.formGroup.controls.projectName.value,
+        hours_per_month: this.formGroup.controls.projectHoursPerMonth.value,
+        restricted_start_hour: this.formGroup.controls.projectRestrictedStartHour.value,
+        restricted_end_hour: this.formGroup.controls.projectRestrictedEndHour.value,
         description: this.formGroup.controls.projectDescription.value
       }
     };
   }
 
-  allFieldAreFilled(): boolean {
+  notAllFieldsAreFilled(): boolean {
     return !this.formGroup.controls.projectName.value;
   }
 }

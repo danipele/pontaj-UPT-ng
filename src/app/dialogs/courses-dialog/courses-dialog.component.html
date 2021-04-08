@@ -54,7 +54,7 @@
       </ng-container>
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef>Descrierea</th>
-        <td mat-cell *matCellDef="let course">{{ course.description }}</td>
+        <td mat-cell *matCellDef="let course" class="description">{{ course.description }}</td>
       </ng-container>
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef></th>
@@ -75,7 +75,7 @@
       <ng-container matColumnDef="add_event">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let course">
-          <button mat-mini-fab title="Adauga pontaj" class="action-button" aria-label="AddEvent" (click)="addEvent(course)">
+          <button mat-mini-fab title="Adauga eveniment" class="action-button" aria-label="AddEvent" (click)="addEvent(course)">
             <mat-icon>access_time</mat-icon>
           </button>
         </td>

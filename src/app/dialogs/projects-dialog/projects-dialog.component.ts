@@ -18,7 +18,18 @@ import { saveAs } from 'file-saver';
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete', 'add_event'];
+  columnNames: string[] = [
+    'select',
+    'nr_crt',
+    'name',
+    'hours_per_month',
+    'restricted_start_hour',
+    'restricted_end_hour',
+    'description',
+    'edit',
+    'delete',
+    'add_event'
+  ];
   selectedProjects: IProject[] = [];
   acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 

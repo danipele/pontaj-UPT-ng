@@ -64,16 +64,10 @@ export class AddEventDialogComponent {
     'Curs',
     'Seminar',
     'Laborator',
-    'Proiect',
+    'Ora de proiect',
     'Evaluare',
     'Consultatii',
     'Pregatire pentru activitatea didactica'
-  ];
-  PROJECT_SUBACTIVITIES: string[] = [
-    'Documentare pentru cercetare',
-    'Documentare oportunitati de finantare proiecte',
-    'Elaborare proiecte de cercetare',
-    'Executie proiecte de cercetare'
   ];
   OTHER_SUBACTIVITIES: string[] = [
     'Indrumare doctoranzi',
@@ -82,18 +76,22 @@ export class AddEventDialogComponent {
     'Zile delegatie (Deplasare interna)',
     'Zile delegatie (Deplasare externa)',
     'Plecati cu bursa',
+    'Documentare pentru cercetare',
+    'Documentare oportunitati de finantare proiecte',
+    'Elaborare proiecte de cercetare',
+    'Executie proiecte de cercetare',
     'Alte activitati'
   ];
   HOLIDAYS: string[] = [
-    'Concediu medical',
     'Concediu de odihna',
-    'Concediu fara salariu',
+    'Concediu medical',
     'Concediu crestere copil',
     'Concediu de maternitate',
+    'Concediu fara salariu',
     'Absente nemotivate'
   ];
   subactivities: string[] = [];
-  dialogTitle = 'Adauga o noua inregistrare';
+  dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
 
   constructor(
@@ -104,7 +102,7 @@ export class AddEventDialogComponent {
     private projectService: ProjectService
   ) {
     if (data.date) {
-      if (data.date.getHours() >= 8 && data.date.getHours() <= 22) {
+      if (data.date.getHours() >= 8 && data.date.getHours() < 22) {
         this.startHour = data.date.getHours();
         this.endHour = this.startHour + 1;
       } else {
@@ -122,7 +120,7 @@ export class AddEventDialogComponent {
       this.setSelectedProject(data.project);
     }
     if (this.data.event) {
-      this.dialogTitle = 'Editeaza inregistrarea';
+      this.dialogTitle = 'Editeaza eveniment';
 
       const event = this.data.event;
       this.data.date = event.start;
@@ -134,7 +132,7 @@ export class AddEventDialogComponent {
       this.endHour = event.end?.getHours();
 
       this.activity = event.activity;
-      this.activitySelected(event.subactivity);
+      this.activitySelected(event.subactivity, event.entity);
       this.subactivitySelected(event.entity);
 
       this.description = event.description;
@@ -152,8 +150,6 @@ export class AddEventDialogComponent {
 
   setSelectedProject(data: { selected: IProject; projects: IProject[] }): void {
     this.activity = 'Proiect';
-    this.subactivities = this.PROJECT_SUBACTIVITIES;
-    this.subactivity = 'Documentare pentru cercetare';
     this.entities = data.projects;
     this.entity = data.selected;
   }
@@ -187,7 +183,8 @@ export class AddEventDialogComponent {
     };
   }
 
-  activitySelected(subactivity?: string): void {
+  activitySelected(subactivity?: string, entity?: ICourse | IProject): void {
+    this.entity = undefined;
     this.subactivity = subactivity;
     switch (this.activity) {
       case 'Activitate didactica': {
@@ -195,7 +192,7 @@ export class AddEventDialogComponent {
         break;
       }
       case 'Proiect': {
-        this.subactivities = this.PROJECT_SUBACTIVITIES;
+        this.getProjects(entity);
         break;
       }
       case 'Concediu': {
@@ -243,10 +240,9 @@ export class AddEventDialogComponent {
   }
 
   subactivitySelected(entity?: ICourse | IProject | undefined): void {
+    this.entity = undefined;
     if (this.activity === 'Activitate didactica') {
       this.getCourses(entity);
-    } else {
-      this.getProjects(entity);
     }
   }
 
@@ -294,7 +290,11 @@ export class AddEventDialogComponent {
     });
   }
 
-  allFieldAreFilled(): boolean {
-    return !this.activity || !this.subactivity;
+  notAllFieldsAreFilled(): boolean {
+    return (
+      !this.activity ||
+      (this.activity !== 'Proiect' && !this.subactivity) ||
+      (this.activity !== 'Alta activitate' && this.activity !== 'Concediu' && !this.entity)
+    );
   }
 }

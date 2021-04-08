@@ -43,4 +43,15 @@ export class ProjectService {
       this.httpWrapper.getDownloadOptions()
     );
   }
+
+  getProjectDetails(project: IProject): string {
+    const hoursPerMonth = project.hours_per_month ? `${project.hours_per_month} ore pe luna ∙ ` : '';
+    let restrictedHours = '';
+    if (project.restricted_start_hour || project.restricted_end_hour) {
+      restrictedHours = `Restrictie ore de lucru pe proiect: ${project.restricted_start_hour || '00'}:00 - ${
+        project.restricted_end_hour || '24'
+      }:00 ∙ `;
+    }
+    return `${hoursPerMonth}${restrictedHours}${project.description || ''}`;
+  }
 }

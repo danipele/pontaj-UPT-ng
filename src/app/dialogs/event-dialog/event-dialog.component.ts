@@ -4,6 +4,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { CourseService } from '../../services/course.service';
+import { ProjectService } from '../../services/project.service';
 
 interface Data {
   event: IEvent;
@@ -19,7 +21,9 @@ export class EventDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<EventDialogComponent>,
     public dialog: MatDialog,
     @Inject(MAT_DIALOG_DATA) public data: Data,
-    private calendarEventsHelper: CalendarEventsHelper
+    private calendarEventsHelper: CalendarEventsHelper,
+    private courseService: CourseService,
+    private projectService: ProjectService
   ) {}
 
   ngOnInit(): void {}
@@ -57,12 +61,10 @@ export class EventDialogComponent implements OnInit {
       const entity = this.data.event.entity;
       if ('faculty' in entity) {
         const course = this.data.event.entity as ICourse;
-        return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${
-          course.description || ''
-        }`;
+        return this.courseService.getCourseDetails(course);
       } else {
         const project = this.data.event.entity as IProject;
-        return `${project.description}`;
+        return this.projectService.getProjectDetails(project);
       }
     }
     return '';

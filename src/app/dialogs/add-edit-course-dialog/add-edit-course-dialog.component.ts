@@ -51,7 +51,7 @@ export class AddEditCourseDialogComponent implements OnInit {
     };
   }
 
-  allFieldAreFilled(): boolean {
+  notAllFieldsAreFilled(): boolean {
     return (
       !this.formGroup.controls.courseName.value ||
       !this.formGroup.controls.courseStudentYear.value ||

@@ -3,7 +3,7 @@
     <span>{{ startDate | date: 'EEEE, dd MMM yyyy' }}</span>
     <span *ngIf="isWeekly"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy' }}</span>
   </div>
-  <mat-grid-list cols="100" rowHeight="50px">
+  <mat-grid-list cols="100" rowHeight="50px" [gutterSize]="'20px'">
     <mat-grid-tile [colspan]="100" [rowspan]="1">
       <button
         mat-raised-button
@@ -11,7 +11,7 @@
         [disabled]="!allEvents"
         (click)="executeGetEvents()"
       >
-        Inregistrarile din aceasta {{ isWeekly ? 'saptamana' : 'zi' }}
+        Evenimentele din aceasta {{ isWeekly ? 'saptamana' : 'zi' }}
       </button>
       <button
         mat-raised-button
@@ -19,7 +19,7 @@
         [disabled]="allEvents"
         (click)="executeGetAllEvents()"
       >
-        Toate inregistrarile
+        Toate evenimentele
       </button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="7" [rowspan]="1">
@@ -47,7 +47,7 @@
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="16" [rowspan]="1">
+    <mat-grid-tile [colspan]="19" [rowspan]="1">
       <mat-form-field appearance="fill" class="filter-container date-filter-container">
         <mat-label>Filtreaza dupa data</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -57,12 +57,10 @@
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>
       </mat-form-field>
-    </mat-grid-tile>
-    <mat-grid-tile [colspan]="3" [rowspan]="1" class="btn-grid-tile">
       <button mat-flat-button class="remove-date-filter-btn" (click)="removeDateFilter()">&times;</button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="14" [rowspan]="1">
-      <mat-form-field appearance="fill" class="filter-container course-filter">
+      <mat-form-field appearance="fill" class="filter-container entity-filter">
         <mat-label>Filtreaza dupa curs:</mat-label>
         <mat-select [(ngModel)]="courseFilter" name="courseFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
@@ -73,7 +71,7 @@
       </mat-form-field>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="14" [rowspan]="1">
-      <mat-form-field appearance="fill" class="filter-container project-filter">
+      <mat-form-field appearance="fill" class="filter-container entity-filter">
         <mat-label>Filtreaza dupa proiect:</mat-label>
         <mat-select [(ngModel)]="projectFilter" name="projectFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
@@ -111,7 +109,7 @@
 
     <ng-container matColumnDef="subactivity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Subtipul activitatii</th>
-      <td mat-cell *matCellDef="let event">{{ event.subactivity }}</td>
+      <td mat-cell *matCellDef="let event">{{ event.subactivity || event.activity }}</td>
     </ng-container>
     <ng-container matColumnDef="activity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipul activitatii</th>
@@ -177,7 +175,7 @@
             </div>
           </div>
           <div>
-            <div class="activities row">{{ event.subactivity }} ∙ {{ event.activity }}</div>
+            <div class="activities row">{{ event.subactivity || event.activity }} ∙ {{ event.activity }}</div>
             <div class="entity row" *ngIf="event.entity">
               {{ event.entity.name }}
             </div>

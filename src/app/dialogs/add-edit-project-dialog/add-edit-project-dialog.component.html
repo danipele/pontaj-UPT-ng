@@ -5,17 +5,52 @@
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
-  <div>
-    <h6>
-      <span>Numele proiectului</span>
-    </h6>
-  </div>
   <form [formGroup]="formGroup" role="form" name="addProjectForm">
+    <div>
+      <h6>
+        <span>Numele proiectului</span>
+      </h6>
+    </div>
     <div>
       <mat-form-field class="full-width">
         <mat-label>Nume</mat-label>
         <input matInput formControlName="projectName" />
       </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-md-5">
+        <div>
+          <span>Nr. de ore pe luna</span>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Ore pe luna</mat-label>
+            <input type="number" min="0" matInput formControlName="projectHoursPerMonth" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div>
+          <span>Restrictie ora de inceput</span>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Ora de inceput</mat-label>
+            <input type="number" min="0" max="23" matInput formControlName="projectRestrictedStartHour" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div>
+          <span>Restrictie ora de sfarsit</span>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>Ora de sfarsit</mat-label>
+            <input type="number" min="1" max="24" matInput formControlName="projectRestrictedEndHour" />
+          </mat-form-field>
+        </div>
+      </div>
     </div>
     <div class="header-margin-top">
       <h6>
@@ -31,7 +66,7 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button [disabled]="allFieldAreFilled()" class="upt-btn" [mat-dialog-close]="sendProject()" cdkFocusInitial>
+  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendProject()" cdkFocusInitial>
     Salveaza
   </button>
 </div>

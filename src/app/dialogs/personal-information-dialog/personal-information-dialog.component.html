@@ -5,7 +5,7 @@
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
-  <form [formGroup]="formGroup" role="form" name="addProjectForm">
+  <form [formGroup]="formGroup" role="form" name="personalInformationForm">
     <div class="row">
       <div class="col-md-6">
         <mat-form-field class="name-field-width">
@@ -35,7 +35,7 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button [disabled]="allFieldAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
+  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
     Confirm
   </button>
 </div>
