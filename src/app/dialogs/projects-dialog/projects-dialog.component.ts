@@ -7,7 +7,7 @@ import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-ed
 import { ICourse } from '../../models/course.model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
-import { AddTimelineDialogComponent } from '../add-timeline-dialog/add-timeline-dialog.component';
+import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { saveAs } from 'file-saver';
 
@@ -18,7 +18,7 @@ import { saveAs } from 'file-saver';
 })
 export class ProjectsDialogComponent implements OnInit {
   projects = new MatTableDataSource<IProject>();
-  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete', 'add_timeline'];
+  columnNames: string[] = ['select', 'nr_crt', 'name', 'description', 'edit', 'delete', 'add_event'];
   selectedProjects: IProject[] = [];
   acceptedFileTypes = ['application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
 
@@ -192,9 +192,9 @@ export class ProjectsDialogComponent implements OnInit {
     });
   }
 
-  addTimeline(project: IProject): void {
+  addEvent(project: IProject): void {
     this.cancel();
-    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+    const dialogRef = this.dialog.open(AddEventDialogComponent, {
       width: '40%',
       data: {
         date: new Date(),

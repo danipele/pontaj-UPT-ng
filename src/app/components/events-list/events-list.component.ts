@@ -8,7 +8,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { ConfirmationDialogComponent } from '../../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { TimelinesService } from '../../services/timelines.service';
+import { EventService } from '../../services/event.service';
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
@@ -96,7 +96,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
   constructor(
     public dialog: MatDialog,
-    private timelineService: TimelinesService,
+    private eventService: EventService,
     public courseService: CourseService,
     public projectService: ProjectService
   ) {}
@@ -221,7 +221,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.timelineService.delete_selected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
+        this.eventService.delete_selected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
       }
     });
   }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTimelineDialogComponent } from '../../dialogs/add-timeline-dialog/add-timeline-dialog.component';
+import { AddEventDialogComponent } from '../../dialogs/add-event-dialog/add-event-dialog.component';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
@@ -143,8 +143,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  openAddTimelineDialog(event?: any): void {
-    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+  openAddEventDialog(event?: any): void {
+    const dialogRef = this.dialog.open(AddEventDialogComponent, {
       width: '40%',
       data: { date: event ? event.date : new Date() }
     });

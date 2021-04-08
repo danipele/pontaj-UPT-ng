@@ -27,11 +27,11 @@ interface Data {
 }
 
 @Component({
-  selector: 'app-add-timeline-dialog',
-  templateUrl: './add-timeline-dialog.component.html',
-  styleUrls: ['./add-timeline-dialog.component.sass']
+  selector: 'app-add-event-dialog',
+  templateUrl: './add-event-dialog.component.html',
+  styleUrls: ['./add-event-dialog.component.sass']
 })
-export class AddTimelineDialogComponent {
+export class AddEventDialogComponent {
   startHour: number;
   endHour: number;
   allDay = false;
@@ -97,7 +97,7 @@ export class AddTimelineDialogComponent {
   id?: string | number | undefined;
 
   constructor(
-    public dialogRef: MatDialogRef<AddTimelineDialogComponent>,
+    public dialogRef: MatDialogRef<AddEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private courseService: CourseService,
     public dialog: MatDialog,

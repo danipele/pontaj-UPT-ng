@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { TimelinesService } from '../services/timelines.service';
+import { EventService } from '../services/event.service';
 import { map } from 'rxjs/operators';
 import { IEvent } from '../models/event.model';
 import { indexOf } from 'lodash';
-import { AddTimelineDialogComponent } from '../dialogs/add-timeline-dialog/add-timeline-dialog.component';
+import { AddEventDialogComponent } from '../dialogs/add-event-dialog/add-event-dialog.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -11,7 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 export class CalendarEventsHelper {
   events: IEvent[] = [];
 
-  constructor(public dialog: MatDialog, private timelineService: TimelinesService) {}
+  constructor(public dialog: MatDialog, private eventService: EventService) {}
 
   resolveEvent(result: any): void {
     const startDate = new Date(result.date);
@@ -19,7 +19,7 @@ export class CalendarEventsHelper {
     startDate.setHours(result.startHour);
     endDate.setHours(result.endHour);
 
-    const timeline: any = {
+    const event: any = {
       start_date: startDate,
       end_date: endDate,
       activity: result.activity,
@@ -29,44 +29,44 @@ export class CalendarEventsHelper {
     };
 
     if (result.id) {
-      timeline.id = result.id;
-      this.timelineService.update(timeline).subscribe((timelineResult: {}) => {
-        this.editEvent(timelineResult);
+      event.id = result.id;
+      this.eventService.update(event).subscribe((eventResult: {}) => {
+        this.editEvent(eventResult);
       });
     } else {
-      this.timelineService.add(timeline).subscribe((timelineResult: {}) => {
-        this.addEvent(timelineResult);
+      this.eventService.add(event).subscribe((eventResult: {}) => {
+        this.addEvent(eventResult);
       });
     }
   }
 
-  createEvent(timeline: any): IEvent {
+  createEvent(event: any): IEvent {
     return {
-      id: timeline.id,
-      start: new Date(timeline.start_date),
-      end: new Date(timeline.end_date),
-      title: timeline.subactivity,
+      id: event.id,
+      start: new Date(event.start_date),
+      end: new Date(event.end_date),
+      title: event.subactivity,
       color: {
         primary: '#fff',
-        secondary: this.getEventColor(timeline.activity)
+        secondary: this.getEventColor(event.activity)
       },
-      description: timeline.description,
-      activity: timeline.activity,
-      subactivity: timeline.subactivity,
-      entity: timeline.entity
+      description: event.description,
+      activity: event.activity,
+      subactivity: event.subactivity,
+      entity: event.entity
     };
   }
 
-  addEvent(timeline: any): void {
-    const event = this.createEvent(timeline);
-    this.events.push(event);
+  addEvent(event: any): void {
+    const calendarEvent = this.createEvent(event);
+    this.events.push(calendarEvent);
   }
 
-  editEvent(timeline: any): void {
-    const ev = this.createEvent(timeline);
-    for (const event of this.events) {
-      if (event.id === ev.id) {
-        const index = indexOf(this.events, event);
+  editEvent(event: any): void {
+    const ev = this.createEvent(event);
+    for (const calendarEvent of this.events) {
+      if (calendarEvent.id === ev.id) {
+        const index = indexOf(this.events, calendarEvent);
         if (index !== -1) {
           this.events.splice(index, 1, ev);
         }
@@ -89,7 +89,7 @@ export class CalendarEventsHelper {
       project?: number;
     }
   ): Promise<IEvent[]> {
-    return this.timelineService
+    return this.eventService
       .getAll(date, { for: 'week', ...params })
       .pipe(
         map((result: []) => {
@@ -113,7 +113,7 @@ export class CalendarEventsHelper {
       project?: number;
     }
   ): Promise<IEvent[]> {
-    return this.timelineService
+    return this.eventService
       .getAll(date, { for: 'day', ...params })
       .pipe(
         map((result: []) => {
@@ -125,8 +125,8 @@ export class CalendarEventsHelper {
 
   addEvents(result: []): IEvent[] {
     this.events = [];
-    result.forEach((timeline) => {
-      this.addEvent(timeline);
+    result.forEach((event) => {
+      this.addEvent(event);
     });
     return this.getEvents();
   }
@@ -161,7 +161,7 @@ export class CalendarEventsHelper {
   }
 
   editEventAction(event: IEvent): void {
-    const dialogRef = this.dialog.open(AddTimelineDialogComponent, {
+    const dialogRef = this.dialog.open(AddEventDialogComponent, {
       width: '40%',
       data: {
         event
@@ -186,7 +186,7 @@ export class CalendarEventsHelper {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.timelineService.delete(event.id).subscribe(() => {
+        this.eventService.delete(event.id).subscribe(() => {
           this.deleteEvent(event);
         });
       }

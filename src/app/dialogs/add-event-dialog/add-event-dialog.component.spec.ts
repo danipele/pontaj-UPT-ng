@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddTimelineDialogComponent } from './add-timeline-dialog.component';
+import { AddEventDialogComponent } from './add-event-dialog.component';
 
-describe('AddTimelineDialogComponent', () => {
-  let component: AddTimelineDialogComponent;
-  let fixture: ComponentFixture<AddTimelineDialogComponent>;
+describe('AddEventDialogComponent', () => {
+  let component: AddEventDialogComponent;
+  let fixture: ComponentFixture<AddEventDialogComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddTimelineDialogComponent]
+      declarations: [AddEventDialogComponent]
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AddTimelineDialogComponent);
+    fixture = TestBed.createComponent(AddEventDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

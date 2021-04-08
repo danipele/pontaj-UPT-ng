@@ -22,7 +22,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { AddTimelineDialogComponent } from './dialogs/add-timeline-dialog/add-timeline-dialog.component';
+import { AddEventDialogComponent } from './dialogs/add-event-dialog/add-event-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
@@ -44,7 +44,7 @@ import { SignupComponent } from './components/signup/signup.component';
 import { HttpWrapper } from './helpers/http-wrapper';
 import { CookieModule, CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from './helpers/calendar-events-helper';
-import { TimelinesService } from './services/timelines.service';
+import { EventService } from './services/event.service';
 import { EventDialogComponent } from './dialogs/event-dialog/event-dialog.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { MatSortModule } from '@angular/material/sort';
@@ -63,7 +63,7 @@ export function momentAdapterFactory(): DateAdapter {
     TopBarComponent,
     CalendarHeaderComponent,
     LoginComponent,
-    AddTimelineDialogComponent,
+    AddEventDialogComponent,
     CoursesDialogComponent,
     ProjectsDialogComponent,
     PersonalInformationDialogComponent,
@@ -109,7 +109,7 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: HttpWrapper, useClass: HttpWrapper },
     { provide: CookieService, useClass: CookieService },
     { provide: CalendarEventsHelper, useClass: CalendarEventsHelper },
-    { provide: TimelinesService, useClass: TimelinesService },
+    { provide: EventService, useClass: EventService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent]
