@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
   styleUrls: ['./signup.component.sass']
 })
 export class SignupComponent implements OnInit {
-  TYPES: string[] = ['Angajat cu norma de baza', 'Angajat in regim de plata cu ora', 'Colaborator'];
+  TYPES: string[] = ['Angajat', 'Colaborator'];
   formGroup: FormGroup;
 
   constructor(private loginService: LoginService, private router: Router, private userService: UserService) {
