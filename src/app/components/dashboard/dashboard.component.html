@@ -23,10 +23,8 @@
         [viewDate]="date"
         locale="ro"
         class="calendar"
-        [dayStartHour]="8"
-        [dayEndHour]="21"
         [hourSegments]="1"
-        [hourSegmentHeight]="60"
+        [hourSegmentHeight]="50"
         [hourSegmentTemplate]="hourSegmentTemplateWeek"
         [headerTemplate]="headerTemplateWeek"
         (dayHeaderClicked)="setDay($event)"
@@ -50,10 +48,8 @@
         [viewDate]="date"
         locale="ro"
         class="calendar"
-        [dayStartHour]="8"
-        [dayEndHour]="21"
         [hourSegments]="1"
-        [hourSegmentHeight]="60"
+        [hourSegmentHeight]="50"
         [hourSegmentTemplate]="hourSegmentTemplateDay"
         (hourSegmentClicked)="openAddEventDialog($event)"
         [events]="events"
@@ -130,7 +126,8 @@
     class="cal-event"
     [ngStyle]="{
       backgroundColor: weekEvent.event.color?.secondary,
-      borderColor: weekEvent.event.color?.primary
+      borderColor: weekEvent.event.color?.primary,
+      borderRadius: '10px 10px 0 0'
     }"
     (mwlClick)="eventClicked.emit({ sourceEvent: $event })"
     tabindex="0"

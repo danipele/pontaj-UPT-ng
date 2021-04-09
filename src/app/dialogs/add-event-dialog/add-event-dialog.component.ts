@@ -42,6 +42,14 @@ export class AddEventDialogComponent {
   description: string | undefined = '';
 
   HOURS: Hour[] = [
+    { displayValue: '0:00', value: 0 },
+    { displayValue: '1:00', value: 1 },
+    { displayValue: '2:00', value: 2 },
+    { displayValue: '3:00', value: 3 },
+    { displayValue: '4:00', value: 4 },
+    { displayValue: '5:00', value: 5 },
+    { displayValue: '6:00', value: 6 },
+    { displayValue: '7:00', value: 7 },
     { displayValue: '8:00', value: 8 },
     { displayValue: '9:00', value: 9 },
     { displayValue: '10:00', value: 10 },
@@ -56,7 +64,9 @@ export class AddEventDialogComponent {
     { displayValue: '19:00', value: 19 },
     { displayValue: '20:00', value: 20 },
     { displayValue: '21:00', value: 21 },
-    { displayValue: '22:00', value: 22 }
+    { displayValue: '22:00', value: 22 },
+    { displayValue: '23:00', value: 23 },
+    { displayValue: '24:00', value: 24 }
   ];
 
   ACTIVITIES: string[] = ['Activitate didactica', 'Proiect', 'Concediu', 'Alta activitate'];
@@ -102,13 +112,8 @@ export class AddEventDialogComponent {
     private projectService: ProjectService
   ) {
     if (data.date) {
-      if (data.date.getHours() >= 8 && data.date.getHours() < 22) {
-        this.startHour = data.date.getHours();
-        this.endHour = this.startHour + 1;
-      } else {
-        this.startHour = 8;
-        this.endHour = 9;
-      }
+      this.startHour = data.date.getHours();
+      this.endHour = this.startHour + 1;
       data.date.setMinutes(0);
       data.date.setSeconds(0);
       data.date.setMilliseconds(0);
