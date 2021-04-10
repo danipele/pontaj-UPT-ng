@@ -125,19 +125,34 @@
     </ng-container>
     <ng-container matColumnDef="start">
       <th mat-header-cell *matHeaderCellDef>Ora de inceput</th>
-      <td mat-cell *matCellDef="let event">{{ event.start | date: 'HH:mm' }}</td>
+      <td mat-cell *matCellDef="let event">
+        <div *ngIf="event.start.getHours() !== 0 || event.end.getHours() !== 0">
+          {{ event.start | date: 'HH:mm' }}
+        </div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="-">
       <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let event">-</td>
+      <td mat-cell *matCellDef="let event">
+        <div *ngIf="event.start.getHours() !== 0 || event.end.getHours() !== 0">-</div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="end">
       <th mat-header-cell *matHeaderCellDef>Ora de sfarsit</th>
-      <td mat-cell *matCellDef="let event">{{ event.end | date: 'HH:mm' }}</td>
+      <td mat-cell *matCellDef="let event">
+        <div *ngIf="event.start.getHours() !== 0 || event.end.getHours() !== 0">
+          {{ event.end.getHours() == 0 ? '24:00' : (event.end | date: 'HH:mm') }}
+        </div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="hours">
       <th mat-header-cell *matHeaderCellDef>Ore</th>
-      <td mat-cell *matCellDef="let event">{{ event.end.getHours() - event.start.getHours() }} ore</td>
+      <td mat-cell *matCellDef="let event">
+        <div *ngIf="event.start.getHours() !== 0 || event.end.getHours() !== 0">
+          {{ (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours() }} ore
+        </div>
+        <div *ngIf="event.start.getHours() === 0 && event.end.getHours() === 0">Toata ziua</div>
+      </td>
     </ng-container>
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>

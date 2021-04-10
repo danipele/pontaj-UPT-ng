@@ -168,7 +168,7 @@ export class AddEventDialogComponent {
   }
 
   endHours(): Hour[] {
-    return this.HOURS.slice(this.startHour - 7, this.HOURS.length);
+    return this.HOURS.slice(this.startHour + 1, this.HOURS.length);
   }
 
   setAllDay(event: any): void {
@@ -178,8 +178,8 @@ export class AddEventDialogComponent {
   sendData(): {} {
     return {
       date: this.data.date,
-      startHour: this.allDay ? 8 : this.startHour,
-      endHour: this.allDay ? 22 : this.endHour,
+      startHour: this.allDay ? 0 : this.startHour,
+      endHour: this.allDay ? 24 : this.endHour,
       activity: this.activity,
       subactivity: this.subactivity,
       entity: this.entity,
