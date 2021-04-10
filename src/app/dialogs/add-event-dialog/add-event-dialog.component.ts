@@ -7,6 +7,7 @@ import { ProjectService } from '../../services/project.service';
 import { IEvent } from '../../models/event.model';
 import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
+import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 
 interface Hour {
   displayValue: string;
@@ -103,12 +104,14 @@ export class AddEventDialogComponent {
   subactivities: string[] = [];
   dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
+  events: IEvent[];
 
   constructor(
     public dialogRef: MatDialogRef<AddEventDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private courseService: CourseService,
     public dialog: MatDialog,
+    private calendarEventsHelper: CalendarEventsHelper,
     private projectService: ProjectService
   ) {
     if (data.date) {
@@ -143,6 +146,8 @@ export class AddEventDialogComponent {
       this.description = event.description;
       this.id = event.id;
     }
+
+    this.calendarEventsHelper.getUserEventsForCurrentDay(this.data.date as Date).then((events) => (this.events = events));
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
@@ -164,11 +169,51 @@ export class AddEventDialogComponent {
   }
 
   startHours(): Hour[] {
-    return this.HOURS.slice(0, this.HOURS.length - 1);
+    const startHours: Hour[] = [];
+    this.HOURS.slice(0, this.HOURS.length - 1).forEach((hour) => startHours.push(hour));
+    if (this.events) {
+      this.events.forEach((event) => {
+        const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
+        const startHour = event.start.getHours();
+        let startHourIndex = -1;
+        let index = 0;
+        for (const hour of startHours) {
+          if (hour.value === startHour) {
+            startHourIndex = index;
+            break;
+          }
+          index += 1;
+        }
+        if (startHourIndex !== -1) {
+          startHours.splice(startHourIndex, nrOfHours);
+        }
+      });
+    }
+    return startHours;
   }
 
   endHours(): Hour[] {
-    return this.HOURS.slice(this.startHour + 1, this.HOURS.length);
+    const availableHours: Hour[] = [];
+    this.HOURS.slice(this.startHour + 1, this.HOURS.length).forEach((hour) => availableHours.push(hour));
+    if (this.events) {
+      const endHours: Hour[] = [];
+      for (const hour of availableHours) {
+        endHours.push(hour);
+        let startsAnEvent = false;
+        for (const event of this.events) {
+          if (event.start.getHours() === hour.value) {
+            startsAnEvent = true;
+            break;
+          }
+        }
+        if (startsAnEvent) {
+          break;
+        }
+      }
+      return endHours;
+    }
+
+    return availableHours;
   }
 
   setAllDay(event: any): void {

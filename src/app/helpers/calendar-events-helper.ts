@@ -85,8 +85,8 @@ export class CalendarEventsHelper {
       start_date_filter?: string;
       end_date_filter?: string;
       all?: boolean;
-      course?: number;
-      project?: number;
+      course?: string;
+      project?: string;
     }
   ): Promise<IEvent[]> {
     return this.eventService
@@ -109,8 +109,8 @@ export class CalendarEventsHelper {
       start_date_filter?: string;
       end_date_filter?: string;
       all?: boolean;
-      course?: number;
-      project?: number;
+      course?: string;
+      project?: string;
     }
   ): Promise<IEvent[]> {
     return this.eventService

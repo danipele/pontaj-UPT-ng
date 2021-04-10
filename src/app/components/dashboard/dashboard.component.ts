@@ -28,8 +28,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     start_date_filter?: string;
     end_date_filter?: string;
     all?: boolean;
-    course?: number;
-    project?: number;
+    course?: string;
+    project?: string;
   };
 
   constructor(
@@ -109,15 +109,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setDayEvents(): void {
-    this.calendarEventsHelper.getUserEventsForCurrentDay(this.date, this.filterParams).then((events) => {
-      this.events = events;
-    });
+    this.calendarEventsHelper.getUserEventsForCurrentDay(this.date, this.filterParams).then((events) => (this.events = events));
   }
 
   setWeekEvents(): void {
-    this.calendarEventsHelper.getUserEventsForCurrentWeek(this.date, this.filterParams).then((events) => {
-      this.events = events;
-    });
+    this.calendarEventsHelper.getUserEventsForCurrentWeek(this.date, this.filterParams).then((events) => (this.events = events));
   }
 
   setDay(event: any): void {
@@ -235,8 +231,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       start_date_filter: '',
       end_date_filter: '',
       all: false,
-      course: -1,
-      project: -1
+      course: '',
+      project: ''
     };
   }
 
@@ -249,8 +245,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       start_date_filter: '',
       end_date_filter: '',
       all: false,
-      course: -1,
-      project: -1
+      course: '',
+      project: ''
     };
   }
 
@@ -269,8 +265,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     start_date_filter?: string;
     end_date_filter?: string;
     all?: boolean;
-    course?: number;
-    project?: number;
+    course?: string;
+    project?: string;
   }): void {
     this.filterParams = params;
 

@@ -42,8 +42,8 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     start_date_filter?: string;
     end_date_filter?: string;
     all?: boolean;
-    course?: number;
-    project?: number;
+    course?: string;
+    project?: string;
   }>();
   @Output() goToDay = new EventEmitter<{ day: { date: Date } }>();
   @Output() editEvent = new EventEmitter<IEvent>();
@@ -135,8 +135,8 @@ export class EventsListComponent implements OnInit, AfterViewInit {
       start_date_filter: this.startDateFilter || '',
       end_date_filter: this.endDateFilter || '',
       all: this.allEvents,
-      course: this.courseFilter?.id || -1,
-      project: this.projectFilter?.id || -1
+      course: this.courseFilter?.id || '',
+      project: this.projectFilter?.id || ''
     };
 
     this.filterEvents.emit(params);
