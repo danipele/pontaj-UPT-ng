@@ -34,7 +34,13 @@ export class CalendarEventsHelper {
         this.editEvent(eventResult);
       });
     } else {
-      this.eventService.add(event).subscribe((eventResult: {}) => {
+      const params: any = {
+        ...event,
+        recurrent: result.recurrent,
+        recurrent_date: result.recurrentDate,
+        weekends_too: result.weekendsToo
+      };
+      this.eventService.add(params).subscribe((eventResult: {}) => {
         this.addEvent(eventResult);
       });
     }

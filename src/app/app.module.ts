@@ -50,6 +50,7 @@ import { EventsListComponent } from './components/events-list/events-list.compon
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { DateFormatDirective } from './directives/date-format/date-format.directive';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -73,7 +74,8 @@ export function momentAdapterFactory(): DateAdapter {
     ConfirmationDialogComponent,
     SignupComponent,
     EventDialogComponent,
-    EventsListComponent
+    EventsListComponent,
+    DateFormatDirective
   ],
   imports: [
     BrowserModule,
@@ -112,6 +114,7 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: EventService, useClass: EventService },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [DateFormatDirective]
 })
 export class AppModule {}

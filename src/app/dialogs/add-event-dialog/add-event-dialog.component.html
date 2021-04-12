@@ -83,6 +83,50 @@
       <textarea matInput class="description-textarea" [(ngModel)]="description"></textarea>
     </mat-form-field>
   </div>
+  <div>
+    <mat-form-field appearance="fill" class="activity-field">
+      <mat-label>Recurenta</mat-label>
+      <mat-select [(ngModel)]="recurrent" name="recurrent" (selectionChange)="setRecurrentDate()">
+        <mat-option *ngFor="let recurrent of recurrentValues()" [value]="recurrent">
+          {{ recurrent }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="recurrent-end-date" *ngIf="recurrentSelected()">
+      <mat-label>Pana in</mat-label>
+      <input matInput [readonly]="true" [value]="recurrentEnding" />
+      <input
+        [matDatepicker]="picker"
+        hidden
+        appDateFormat
+        [recurrent]="recurrent"
+        (recurrentValue)="setRecurrentEnding($event)"
+        [recurrentDate]="recurrentEndingDate"
+        [min]="getMinDate()"
+        (dateChange)="daySelected($event, picker)"
+        [matDatepickerFilter]="weeklyRecurrentDateFilter"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker
+        #picker
+        startView="multi-year"
+        (yearSelected)="yearSelected($event, picker)"
+        (monthSelected)="monthSelected($event, picker)"
+      ></mat-datepicker>
+    </mat-form-field>
+    <span class="reset-recurrent" (click)="resetRecurrent()" *ngIf="recurrentSelected()"><u>Reseteaza recurenta</u></span>
+  </div>
+  <div>
+    <mat-checkbox
+      class="weekends-too"
+      [checked]="weekendsToo"
+      [color]="'primary'"
+      (change)="setWeekendsToo($event.checked)"
+      *ngIf="!isWeeklyRecurrent()"
+    >
+      Include si zilele de weekend
+    </mat-checkbox>
+  </div>
 </div>
 <div class="modal-footer">
   <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>

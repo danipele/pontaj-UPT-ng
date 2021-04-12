@@ -8,6 +8,9 @@ import { IEvent } from '../../models/event.model';
 import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { MatDatepicker } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 
 interface Hour {
   displayValue: string;
@@ -27,10 +30,21 @@ interface Data {
   event?: IEvent;
 }
 
+export enum RECURRENT {
+  DAILY = 'Zilnic',
+  WEEKLY = 'Saptamanal',
+  MONTHLY = 'Lunar',
+  YEARLY = 'Anual'
+}
+
 @Component({
   selector: 'app-add-event-dialog',
   templateUrl: './add-event-dialog.component.html',
-  styleUrls: ['./add-event-dialog.component.sass']
+  styleUrls: ['./add-event-dialog.component.sass'],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
+    { provide: DateAdapter, useClass: CustomDateAdapter }
+  ]
 })
 export class AddEventDialogComponent {
   startHour: number;
@@ -105,6 +119,14 @@ export class AddEventDialogComponent {
   dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
   events: IEvent[];
+  recurrent?: RECURRENT;
+  recurrentEndingDate = new Date();
+  recurrentEnding = '';
+  weekendsToo = false;
+
+  weeklyRecurrentDateFilter = (date: Date | null): boolean => {
+    return this.recurrent !== RECURRENT.WEEKLY || date?.getDay() === this.data.date?.getDay();
+  }
 
   constructor(
     public dialogRef: MatDialogRef<AddEventDialogComponent>,
@@ -229,7 +251,10 @@ export class AddEventDialogComponent {
       subactivity: this.subactivity,
       entity: this.entity,
       description: this.description,
-      id: this.id
+      id: this.id,
+      recurrent: this.recurrent,
+      recurrentDate: this.recurrentEndingDate,
+      weekendsToo: this.weekendsToo
     };
   }
 
@@ -346,5 +371,73 @@ export class AddEventDialogComponent {
       (this.activity !== 'Proiect' && !this.subactivity) ||
       (this.activity !== 'Alta activitate' && this.activity !== 'Concediu' && !this.entity)
     );
+  }
+
+  recurrentValues(): string[] {
+    return Object.values(RECURRENT);
+  }
+
+  recurrentSelected(): boolean {
+    return this.recurrent !== undefined;
+  }
+
+  resetRecurrent(): void {
+    this.recurrent = undefined;
+    this.recurrentEndingDate = new Date();
+  }
+
+  getMinDate(): Date {
+    return new Date();
+  }
+
+  yearSelected(event: any, picker: MatDatepicker<Date>): void {
+    this.dateSelected(RECURRENT.YEARLY, event, picker);
+  }
+
+  monthSelected(event: any, picker: MatDatepicker<Date>): void {
+    this.dateSelected(RECURRENT.MONTHLY, event, picker);
+  }
+
+  daySelected(event: any, picker: MatDatepicker<Date>): void {
+    this.dateSelected(RECURRENT.DAILY, event.value, picker);
+  }
+
+  dateSelected(recurrent: RECURRENT, event: any, picker: MatDatepicker<Date>): void {
+    this.recurrentEndingDate = event;
+    if (this.recurrent === recurrent) {
+      this.recurrentEndingDate = new Date(this.recurrentEndingDate);
+      picker.close();
+    }
+  }
+
+  setRecurrentDate(): void {
+    const date = new Date(this.data.date as Date);
+    switch (this.recurrent) {
+      case RECURRENT.YEARLY:
+        date.setFullYear(date.getFullYear() + 1);
+        break;
+      case RECURRENT.MONTHLY:
+        date.setMonth(date.getMonth() + 1);
+        break;
+      case RECURRENT.WEEKLY:
+        date.setDate(date.getDate() + 7);
+        break;
+      case RECURRENT.DAILY:
+        date.setDate(date.getDate() + 1);
+        break;
+    }
+    this.recurrentEndingDate = date;
+  }
+
+  setRecurrentEnding(value: string): void {
+    this.recurrentEnding = value;
+  }
+
+  setWeekendsToo(event: boolean): void {
+    this.weekendsToo = event;
+  }
+
+  isWeeklyRecurrent(): boolean {
+    return this.recurrent === RECURRENT.WEEKLY;
   }
 }
