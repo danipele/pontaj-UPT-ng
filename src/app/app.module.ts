@@ -51,6 +51,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { DateFormatDirective } from './directives/date-format/date-format.directive';
+import { CopyEventsDialogComponent } from './dialogs/copy-events-dialog/copy-events-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -75,7 +76,8 @@ export function momentAdapterFactory(): DateAdapter {
     SignupComponent,
     EventDialogComponent,
     EventsListComponent,
-    DateFormatDirective
+    DateFormatDirective,
+    CopyEventsDialogComponent
   ],
   imports: [
     BrowserModule,

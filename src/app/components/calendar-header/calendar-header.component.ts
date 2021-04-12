@@ -28,6 +28,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   @Output() addEvent = new EventEmitter<{ date: Date }>();
   @Output() changeMode = new EventEmitter();
   @Input() mode: string;
+  @Output() copyEvents = new EventEmitter();
 
   format: string;
   endWeekDay: Date;
@@ -74,5 +75,9 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
 
   executeChangeMode(): void {
     this.changeMode.emit();
+  }
+
+  executeCopy(): void {
+    this.copyEvents.emit();
   }
 }

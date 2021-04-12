@@ -9,6 +9,8 @@ import { CookieService } from 'ngx-cookie';
 import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.component';
 import { IEvent } from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
+import { CopyEventsDialogComponent } from '../../dialogs/copy-events-dialog/copy-events-dialog.component';
+import { EventService } from '../../services/event.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,7 +39,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private router: Router,
     private calendarEventsHelper: CalendarEventsHelper,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private eventService: EventService
   ) {
     this.viewType = 'Saptamanal';
     this.date = moment().startOf('week').toDate();
@@ -287,5 +290,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   deleteEvent(event: IEvent): void {
     this.calendarEventsHelper.deleteEventAction(event);
+  }
+
+  openCopyEventsDialog(): void {
+    const dialogRef = this.dialog.open(CopyEventsDialogComponent, {
+      width: '40%',
+      data: {
+        mode: this.isDaily() ? 'daily' : 'weekly',
+        date: this.date
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.eventService.copy_events(result).subscribe();
+      }
+    });
   }
 }

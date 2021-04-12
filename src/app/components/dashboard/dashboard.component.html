@@ -15,6 +15,7 @@
       (addEvent)="openAddEventDialog($event)"
       (changeMode)="changeMode()"
       [mode]="viewMode"
+      (copyEvents)="openCopyEventsDialog()"
     ></app-calendar-header>
   </div>
   <div *ngIf="viewMode === 'calendar'">

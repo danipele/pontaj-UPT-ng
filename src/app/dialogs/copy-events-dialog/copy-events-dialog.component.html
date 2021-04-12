@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <div class="row">
+      <span>Copiaza evenimente</span>
+    </div>
+  </h5>
+  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+</div>
+<div class="modal-body">
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>Ce doresti sa copiezi?</mat-label>
+      <mat-select [(ngModel)]="data.mode" name="mode">
+        <mat-option [value]="'daily'">Zi</mat-option>
+        <mat-option [value]="'weekly'">Saptamana</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="title">
+    <h6>
+      <span>Copiaza toate evenimentele din {{ data.mode === 'daily' ? 'ziua' : 'saptamana' }}</span>
+    </h6>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" *ngIf="data.mode === 'weekly'">
+      <mat-label>Alege saptamana</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="data.date" />
+        <input matEndDate [value]="endDate" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="data.mode === 'daily'">
+      <mat-label>Alege ziua</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="data.date" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="title">
+    <h6>
+      <span>In {{ data.mode === 'daily' ? 'ziua' : 'saptamana' }}</span>
+    </h6>
+  </div>
+  <div>
+    <mat-form-field appearance="fill" *ngIf="data.mode === 'weekly'">
+      <mat-label>Alege saptamana</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate [(ngModel)]="copyDate" />
+        <input matEndDate [value]="endCopyDate" />
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <mat-form-field appearance="fill" *ngIf="data.mode === 'daily'">
+      <mat-label>Alege ziua</mat-label>
+      <input matInput [matDatepicker]="picker" [(ngModel)]="copyDate" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+<div class="modal-footer">
+  <button mat-raised-button class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>Copiaza</button>
+</div>
