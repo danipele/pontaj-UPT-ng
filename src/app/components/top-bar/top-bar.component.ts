@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,6 +17,8 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
   styleUrls: ['./top-bar.component.sass']
 })
 export class TopBarComponent implements OnInit {
+  @Output() setEvents = new EventEmitter<any>();
+
   constructor(
     private loginService: LoginService,
     private router: Router,
@@ -42,7 +44,9 @@ export class TopBarComponent implements OnInit {
         top: '100px'
       },
       width: '80%',
-      data: {}
+      data: {
+        emitter: this.setEvents
+      }
     });
   }
 
@@ -52,7 +56,9 @@ export class TopBarComponent implements OnInit {
         top: '100px'
       },
       width: '80%',
-      data: {}
+      data: {
+        emitter: this.setEvents
+      }
     });
   }
 

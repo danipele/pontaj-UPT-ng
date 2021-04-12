@@ -6,9 +6,11 @@ import { IProject } from '../../models/project.model';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
+import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 
 interface Data {
   event: IEvent;
+  setEvents: any;
 }
 
 @Component({
@@ -34,7 +36,20 @@ export class EventDialogComponent implements OnInit {
 
   editEvent(): void {
     this.cancel();
-    this.calendarEventsHelper.editEventAction(this.data.event);
+    this.editEventAction(this.data.event);
+  }
+
+  editEventAction(event: IEvent): void {
+    const dialogRef = this.dialog.open(AddEventDialogComponent, {
+      width: '40%',
+      data: { event }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.data.setEvents(result);
+      }
+    });
   }
 
   deleteEvent(): void {

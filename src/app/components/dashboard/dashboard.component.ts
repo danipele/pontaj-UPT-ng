@@ -32,6 +32,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     all?: boolean;
     course?: string;
     project?: string;
+    for?: string;
   };
 
   constructor(
@@ -47,6 +48,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.events = [];
     this.viewMode = 'calendar';
     this.initCalendarFilters();
+    this.filterParams.for = 'week';
   }
 
   ngOnInit(): void {
@@ -75,6 +77,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.viewType = 'Saptamanal';
     this.date = moment(this.date).startOf('week').toDate();
     this.filterParams.all = false;
+    this.filterParams.for = 'week';
     this.setWeekEvents();
   }
 
@@ -127,6 +130,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   setDaily(): void {
     this.filterParams.all = false;
+    this.filterParams.for = 'day';
     this.setDay({ day: { date: this.date } });
   }
 
@@ -150,9 +154,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.calendarEventsHelper.resolveEvent(result);
+        this.resolveEvent(result);
       }
     });
+  }
+
+  resolveEvent(event: any): void {
+    this.calendarEventsHelper.resolveEvent(event, this.date, this.filterParams).then((events) => (this.events = events));
   }
 
   goToDay(event: any): void {
@@ -166,7 +174,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   isToday(date: Date): boolean {
     const today = new Date();
-    return today.getDay() === date.getDay() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
+    return today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
   }
 
   isWeekend(date: Date): boolean {
@@ -176,7 +184,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   openEvent(event: any): void {
     const dialogRef = this.dialog.open(EventDialogComponent, {
       width: '300px',
-      data: { event: event.event },
+      data: {
+        event: event.event,
+        setEvents: (result: any) => {
+          this.resolveEvent(result);
+        }
+      },
       position: this.getEventDialogPosition(event, event.event),
       backdropClass: 'event-background'
     });
@@ -270,6 +283,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     all?: boolean;
     course?: string;
     project?: string;
+    for?: string;
   }): void {
     this.filterParams = params;
 
@@ -285,7 +299,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   editEvent(event: IEvent): void {
-    this.calendarEventsHelper.editEventAction(event);
+    this.editEventAction(event);
   }
 
   deleteEvent(event: IEvent): void {
@@ -304,6 +318,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.eventService.copy_events(result).subscribe();
+      }
+    });
+  }
+
+  editEventAction(event: IEvent): void {
+    const dialogRef = this.dialog.open(AddEventDialogComponent, {
+      width: '40%',
+      data: { event }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.resolveEvent(result);
       }
     });
   }

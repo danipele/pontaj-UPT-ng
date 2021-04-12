@@ -11,7 +11,7 @@ export class EventService {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events`, event, this.httpWrapper.getAuthOptions());
   }
 
-  getAll(date: Date, filter: {}): Observable<any> {
+  getAll(date: Date, filter?: {}): Observable<any> {
     return this.httpWrapper.get(`http://localhost:8000/api/v1/events`, {
       params: { date, ...filter },
       ...this.httpWrapper.getAuthOptions()

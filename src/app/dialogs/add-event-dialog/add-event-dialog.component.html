@@ -83,7 +83,7 @@
       <textarea matInput class="description-textarea" [(ngModel)]="description"></textarea>
     </mat-form-field>
   </div>
-  <div>
+  <div *ngIf="!isEditMode()">
     <mat-form-field appearance="fill" class="activity-field">
       <mat-label>Recurenta</mat-label>
       <mat-select [(ngModel)]="recurrent" name="recurrent" (selectionChange)="setRecurrentDate()">
@@ -116,7 +116,7 @@
     </mat-form-field>
     <span class="reset-recurrent" (click)="resetRecurrent()" *ngIf="recurrentSelected()"><u>Reseteaza recurenta</u></span>
   </div>
-  <div>
+  <div *ngIf="!isEditMode()">
     <mat-checkbox
       class="weekends-too"
       [checked]="weekendsToo"

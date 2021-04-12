@@ -11,6 +11,8 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
+import { EventService } from '../../services/event.service';
+import { map } from 'rxjs/operators';
 
 interface Hour {
   displayValue: string;
@@ -134,7 +136,8 @@ export class AddEventDialogComponent {
     private courseService: CourseService,
     public dialog: MatDialog,
     private calendarEventsHelper: CalendarEventsHelper,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private eventService: EventService
   ) {
     if (data.date) {
       this.startHour = data.date.getHours();
@@ -169,7 +172,15 @@ export class AddEventDialogComponent {
       this.id = event.id;
     }
 
-    this.calendarEventsHelper.getUserEventsForCurrentDay(this.data.date as Date).then((events) => (this.events = events));
+    this.eventService
+      .getAll(this.data.date as Date, { for: 'day' })
+      .pipe(
+        map((result: []) => {
+          return this.calendarEventsHelper.addEvents(result);
+        })
+      )
+      .toPromise()
+      .then((events) => (this.events = events));
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
@@ -195,19 +206,21 @@ export class AddEventDialogComponent {
     this.HOURS.slice(0, this.HOURS.length - 1).forEach((hour) => startHours.push(hour));
     if (this.events) {
       this.events.forEach((event) => {
-        const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
-        const startHour = event.start.getHours();
-        let startHourIndex = -1;
-        let index = 0;
-        for (const hour of startHours) {
-          if (hour.value === startHour) {
-            startHourIndex = index;
-            break;
+        if (!this.id || this.startHour !== event.start.getHours()) {
+          const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
+          const startHour = event.start.getHours();
+          let startHourIndex = -1;
+          let index = 0;
+          for (const hour of startHours) {
+            if (hour.value === startHour) {
+              startHourIndex = index;
+              break;
+            }
+            index += 1;
           }
-          index += 1;
-        }
-        if (startHourIndex !== -1) {
-          startHours.splice(startHourIndex, nrOfHours);
+          if (startHourIndex !== -1) {
+            startHours.splice(startHourIndex, nrOfHours);
+          }
         }
       });
     }
@@ -387,7 +400,7 @@ export class AddEventDialogComponent {
   }
 
   getMinDate(): Date {
-    return new Date();
+    return this.data.date as Date;
   }
 
   yearSelected(event: any, picker: MatDatepicker<Date>): void {
@@ -439,5 +452,9 @@ export class AddEventDialogComponent {
 
   isWeeklyRecurrent(): boolean {
     return this.recurrent === RECURRENT.WEEKLY;
+  }
+
+  isEditMode(): boolean {
+    return this.id !== undefined && this.id !== null && !this.data.course && !this.data.project;
   }
 }

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, EventEmitter, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { IProject } from '../../models/project.model';
 import { ProjectService } from '../../services/project.service';
@@ -8,7 +8,6 @@ import { ICourse } from '../../models/course.model';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { indexOf } from 'lodash';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
-import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -37,7 +36,7 @@ export class ProjectsDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ProjectsDialogComponent>,
     public dialog: MatDialog,
     public projectService: ProjectService,
-    private calendarEventsHelper: CalendarEventsHelper
+    @Inject(MAT_DIALOG_DATA) public data: { emitter: EventEmitter<any> }
   ) {}
 
   ngOnInit(): void {
@@ -215,7 +214,7 @@ export class ProjectsDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.calendarEventsHelper.resolveEvent(result);
+        this.data.emitter.emit(result);
       }
     });
   }

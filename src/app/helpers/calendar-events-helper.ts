@@ -3,7 +3,6 @@ import { EventService } from '../services/event.service';
 import { map } from 'rxjs/operators';
 import { IEvent } from '../models/event.model';
 import { indexOf } from 'lodash';
-import { AddEventDialogComponent } from '../dialogs/add-event-dialog/add-event-dialog.component';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -13,7 +12,7 @@ export class CalendarEventsHelper {
 
   constructor(public dialog: MatDialog, private eventService: EventService) {}
 
-  resolveEvent(result: any): void {
+  resolveEvent(result: any, date: Date, filterParams: any): Promise<IEvent[]> {
     const startDate = new Date(result.date);
     const endDate = new Date(result.date);
     startDate.setHours(result.startHour);
@@ -27,22 +26,39 @@ export class CalendarEventsHelper {
       entity: result.entity ? result.entity.id : undefined,
       description: result.description
     };
+    let params: any = {
+      ...event,
+      filter: {
+        date,
+        ...filterParams
+      }
+    };
 
     if (result.id) {
-      event.id = result.id;
-      this.eventService.update(event).subscribe((eventResult: {}) => {
-        this.editEvent(eventResult);
-      });
+      params.id = result.id;
+      return this.eventService
+        .update(params)
+        .pipe(
+          map((eventsResult: []) => {
+            return this.addEvents(eventsResult);
+          })
+        )
+        .toPromise();
     } else {
-      const params: any = {
-        ...event,
+      params = {
+        ...params,
         recurrent: result.recurrent,
         recurrent_date: result.recurrentDate,
         weekends_too: result.weekendsToo
       };
-      this.eventService.add(params).subscribe((eventResult: {}) => {
-        this.addEvent(eventResult);
-      });
+      return this.eventService
+        .add(params)
+        .pipe(
+          map((eventsResult: []) => {
+            return this.addEvents(eventsResult);
+          })
+        )
+        .toPromise();
     }
   }
 
@@ -93,10 +109,11 @@ export class CalendarEventsHelper {
       all?: boolean;
       course?: string;
       project?: string;
+      for?: string;
     }
   ): Promise<IEvent[]> {
     return this.eventService
-      .getAll(date, { for: 'week', ...params })
+      .getAll(date, params)
       .pipe(
         map((result: []) => {
           return this.addEvents(result);
@@ -117,10 +134,11 @@ export class CalendarEventsHelper {
       all?: boolean;
       course?: string;
       project?: string;
+      for?: string;
     }
   ): Promise<IEvent[]> {
     return this.eventService
-      .getAll(date, { for: 'day', ...params })
+      .getAll(date, params)
       .pipe(
         map((result: []) => {
           return this.addEvents(result);
@@ -164,21 +182,6 @@ export class CalendarEventsHelper {
     if (index !== -1) {
       this.events.splice(index, 1);
     }
-  }
-
-  editEventAction(event: IEvent): void {
-    const dialogRef = this.dialog.open(AddEventDialogComponent, {
-      width: '40%',
-      data: {
-        event
-      }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.resolveEvent(result);
-      }
-    });
   }
 
   deleteEventAction(event: IEvent): void {
