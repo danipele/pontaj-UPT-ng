@@ -42,7 +42,7 @@ export class EventDialogComponent implements OnInit {
   editEventAction(event: IEvent): void {
     const dialogRef = this.dialog.open(AddEventDialogComponent, {
       width: '40%',
-      data: { event }
+      data: { event, setStartHour: false }
     });
 
     dialogRef.afterClosed().subscribe((result) => {

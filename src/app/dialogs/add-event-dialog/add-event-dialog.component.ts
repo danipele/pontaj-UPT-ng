@@ -30,6 +30,7 @@ interface Data {
     projects: IProject[];
   };
   event?: IEvent;
+  setStartHour: boolean;
 }
 
 export enum RECURRENT {
@@ -49,8 +50,8 @@ export enum RECURRENT {
   ]
 })
 export class AddEventDialogComponent {
-  startHour: number;
-  endHour: number;
+  startHour?: number;
+  endHour?: number;
   allDay = false;
   activity: string;
   subactivity: string | undefined;
@@ -171,7 +172,10 @@ export class AddEventDialogComponent {
       this.description = event.description;
       this.id = event.id;
     }
+    this.getDayEvents();
+  }
 
+  getDayEvents(): void {
     this.eventService
       .getAll(this.data.date as Date, { for: 'day' })
       .pipe(
@@ -180,7 +184,13 @@ export class AddEventDialogComponent {
         })
       )
       .toPromise()
-      .then((events) => (this.events = events));
+      .then((events) => {
+        this.events = events;
+        if (this.data.setStartHour) {
+          this.startHour = this.startHours()[0].value;
+          this.endHour = this.endHours()[0].value;
+        }
+      });
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
@@ -229,7 +239,7 @@ export class AddEventDialogComponent {
 
   endHours(): Hour[] {
     const availableHours: Hour[] = [];
-    this.HOURS.slice(this.startHour + 1, this.HOURS.length).forEach((hour) => availableHours.push(hour));
+    this.HOURS.slice((this.startHour as number) + 1, this.HOURS.length).forEach((hour) => availableHours.push(hour));
     if (this.events) {
       const endHours: Hour[] = [];
       for (const hour of availableHours) {
@@ -269,6 +279,13 @@ export class AddEventDialogComponent {
       recurrentDate: this.recurrentEndingDate,
       weekendsToo: this.weekendsToo
     };
+  }
+
+  dateChanged(): void {
+    this.getDayEvents();
+    this.startHour = undefined;
+    this.endHour = undefined;
+    const a = this.startHours();
   }
 
   activitySelected(subactivity?: string, entity?: ICourse | IProject): void {

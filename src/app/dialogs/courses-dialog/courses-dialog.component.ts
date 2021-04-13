@@ -208,7 +208,8 @@ export class CoursesDialogComponent implements OnInit {
       width: '40%',
       data: {
         date: new Date(),
-        course: { selected: course, courses: this.courses.data }
+        course: { selected: course, courses: this.courses.data },
+        setStartHour: true
       }
     });
 

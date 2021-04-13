@@ -70,7 +70,7 @@ export class CalendarHeaderComponent implements OnInit, OnChanges {
   }
 
   executeAddEvent(): void {
-    this.addEvent.emit({ date: this.date });
+    this.addEvent.emit();
   }
 
   executeChangeMode(): void {

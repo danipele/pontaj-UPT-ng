@@ -208,7 +208,8 @@ export class ProjectsDialogComponent implements OnInit {
       width: '40%',
       data: {
         date: new Date(),
-        project: { selected: project, projects: this.projects.data }
+        project: { selected: project, projects: this.projects.data },
+        setStartHour: true
       }
     });
 
