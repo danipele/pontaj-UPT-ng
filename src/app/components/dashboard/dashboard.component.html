@@ -1,6 +1,32 @@
 <app-top-bar (setEvents)="resolveEvent($event)"></app-top-bar>
 
 <div class="calendar-container">
+  <div class="date-label">
+    <span>{{ date | date: 'EEEE, dd MMM yyyy' }}</span>
+    <span *ngIf="isWeekly()"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy' }}</span>
+    <button
+      mat-icon-button
+      class="info-btn"
+      matTooltip="Informatii despre {{ this.isDaily() ? 'ziua' : 'saptamana' }} actuala:
+                  {{ this.date.toLocaleDateString() }}{{ this.isWeekly() ? ' - ' + this.getEndDateForWeekly().toLocaleDateString() : '' }}
+                  &#13;
+                  Evenimente: {{ this.events.length }}
+                  Ore inregistrate: {{ this.getNrOfHours() }}
+                  &#13;
+                  Activitatate didactica: {{ this.getNrOfActivityTypeEvents('Activitate didactica') }} ({{
+        getNrOfHoursForTypeEvents('Activitate didactica')
+      }} ore)
+                  Proiect: {{ this.getNrOfActivityTypeEvents('Proiect') }} ({{ getNrOfHoursForTypeEvents('Proiect') }} ore)
+                  Concediu: {{ this.getNrOfActivityTypeEvents('Concediu') }} ({{ getNrOfHoursForTypeEvents('Concediu') }} ore)
+                  Alta activitate: {{ this.getNrOfActivityTypeEvents('Alta activitate') }}  ({{
+        getNrOfHoursForTypeEvents('Alta activitate')
+      }} ore)"
+      matTooltipPosition="left"
+      matTooltipClass="info-tooltip"
+    >
+      <mat-icon>info</mat-icon>
+    </button>
+  </div>
   <div class="calendar-header">
     <app-calendar-header
       (goBackwards)="goBackwards()"
@@ -117,7 +143,7 @@
       <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b> -
       <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
       <br />
-      <span>{{ getNrOfHoursOnDay(day.date) }} ore</span>
+      <span>{{ getNrOfHoursOnDay(day.date) === 24 ? 'Toata ziua' : getNrOfHoursOnDay(day.date) + ' ore' }}</span>
     </div>
   </div>
 </ng-template>

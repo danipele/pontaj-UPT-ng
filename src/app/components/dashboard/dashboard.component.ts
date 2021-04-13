@@ -221,7 +221,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const start = event.start;
       const end = event.end;
       if (start.getDay() === date.getDay() && start.getMonth() === date.getMonth() && start.getFullYear() === date.getFullYear()) {
-        hours += end.getHours() - start.getHours();
+        hours += (end.getHours() === 0 ? 24 : end.getHours()) - start.getHours();
       }
     });
     return hours;
@@ -333,5 +333,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.resolveEvent(result);
       }
     });
+  }
+
+  getEndDateForWeekly(): Date {
+    const endDate = new Date(this.date);
+    endDate.setDate(this.date.getDate() + 6);
+    return endDate;
+  }
+
+  getTooltipText(): string {
+    let result = 'Informatii despre ' + (this.isDaily() ? 'ziua' : 'saptamana') + ' actuala:&#13;' + this.date.toLocaleDateString();
+    if (this.isWeekly()) {
+      result += ' - ' + this.getEndDateForWeekly().toLocaleDateString();
+    }
+    result += '&#13;&#13;Evenimente: ' + this.events.length + '&#13;Ore inregistrate: ' + this.getNrOfHours();
+    return result;
+  }
+
+  getNrOfHours(): number {
+    if (this.isDaily()) {
+      return this.getNrOfHoursOnDay(this.date);
+    } else {
+      let totalHoursOnWeek = 0;
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(this.date);
+        date.setDate(this.date.getDate() + i);
+        totalHoursOnWeek += this.getNrOfHoursOnDay(date);
+      }
+      return totalHoursOnWeek;
+    }
+  }
+
+  getNrOfActivityTypeEvents(type: string): number {
+    return this.events.filter((event) => event.activity === type).length;
+  }
+
+  getNrOfHoursForTypeEvents(type: string): number {
+    const events: IEvent[] = this.events.filter((event) => event.activity === type);
+    let hours = 0;
+    events.forEach((event) => {
+      const startHour = event.start.getHours();
+      const endHour = event.end.getHours();
+      hours += (endHour === 0 ? 24 : endHour) - startHour;
+    });
+    return hours;
   }
 }

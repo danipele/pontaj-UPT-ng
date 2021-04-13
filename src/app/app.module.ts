@@ -52,6 +52,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { DateFormatDirective } from './directives/date-format/date-format.directive';
 import { CopyEventsDialogComponent } from './dialogs/copy-events-dialog/copy-events-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -103,7 +104,8 @@ export function momentAdapterFactory(): DateAdapter {
     CookieModule.forRoot(),
     MatSortModule,
     MatPaginatorModule,
-    MatGridListModule
+    MatGridListModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },

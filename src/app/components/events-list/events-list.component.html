@@ -1,8 +1,4 @@
 <div class="table-container">
-  <div class="date-label">
-    <span>{{ startDate | date: 'EEEE, dd MMM yyyy' }}</span>
-    <span *ngIf="isWeekly"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy' }}</span>
-  </div>
   <mat-grid-list cols="100" rowHeight="50px" [gutterSize]="'20px'">
     <mat-grid-tile [colspan]="100" [rowspan]="1">
       <button
