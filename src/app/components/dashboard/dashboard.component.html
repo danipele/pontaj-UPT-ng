@@ -7,8 +7,15 @@
     <button
       mat-icon-button
       class="info-btn"
-      matTooltip="Informatii despre {{ this.isDaily() ? 'ziua' : 'saptamana' }} actuala:
-                  {{ this.date.toLocaleDateString() }}{{ this.isWeekly() ? ' - ' + this.getEndDateForWeekly().toLocaleDateString() : '' }}
+      matTooltip="{{
+        filterParams.all
+          ? 'Toate evenimentele'
+          : 'Informatii despre ' +
+            (this.isDaily() ? 'ziua' : 'saptamana') +
+            ' actuala: &#13;' +
+            this.date.toLocaleDateString() +
+            (this.isWeekly() ? ' - ' + this.getEndDateForWeekly().toLocaleDateString() : '')
+      }}
                   &#13;
                   Evenimente: {{ this.events.length }}
                   Ore inregistrate: {{ this.getNrOfHours() }}
