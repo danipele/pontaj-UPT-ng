@@ -74,4 +74,15 @@
   >
     <mat-icon>edit</mat-icon>
   </button>
+
+  <button
+    mat-fab
+    title="Copiaza"
+    class="action-button"
+    aria-label="Copy"
+    (click)="copyEvent()"
+    [ngStyle]="{ backgroundColor: getIconsColor() }"
+  >
+    <mat-icon>file_copy</mat-icon>
+  </button>
 </div>

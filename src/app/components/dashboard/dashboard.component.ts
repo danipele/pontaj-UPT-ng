@@ -186,8 +186,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       width: '300px',
       data: {
         event: event.event,
-        setEvents: (result: any) => {
-          this.resolveEvent(result);
+        resolveEvent: (result: any) => this.resolveEvent(result),
+        filter: { date: this.date, ...this.filterParams },
+        setEvents: (events: IEvent[]) => {
+          this.events = events;
         }
       },
       position: this.getEventDialogPosition(event, event.event),

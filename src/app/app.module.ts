@@ -53,6 +53,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { DateFormatDirective } from './directives/date-format/date-format.directive';
 import { CopyEventsDialogComponent } from './dialogs/copy-events-dialog/copy-events-dialog.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CopyEventDialogComponent } from './dialogs/copy-event-dialog/copy-event-dialog.component';
+import { ValidStartHoursHelper } from './helpers/valid-start-hours-helper';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -78,7 +80,8 @@ export function momentAdapterFactory(): DateAdapter {
     EventDialogComponent,
     EventsListComponent,
     DateFormatDirective,
-    CopyEventsDialogComponent
+    CopyEventsDialogComponent,
+    CopyEventDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -116,6 +119,7 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: CookieService, useClass: CookieService },
     { provide: CalendarEventsHelper, useClass: CalendarEventsHelper },
     { provide: EventService, useClass: EventService },
+    { provide: ValidStartHoursHelper, useClass: ValidStartHoursHelper },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent],

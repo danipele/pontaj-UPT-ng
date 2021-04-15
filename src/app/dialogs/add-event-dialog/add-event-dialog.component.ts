@@ -13,11 +13,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { EventService } from '../../services/event.service';
 import { map } from 'rxjs/operators';
-
-interface Hour {
-  displayValue: string;
-  value: number;
-}
+import { Hour, HOURS, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
 
 interface Data {
   date?: Date;
@@ -58,34 +54,6 @@ export class AddEventDialogComponent {
   entities: ICourse[] | IProject[] = [];
   entity: ICourse | IProject | undefined;
   description: string | undefined = '';
-
-  HOURS: Hour[] = [
-    { displayValue: '0:00', value: 0 },
-    { displayValue: '1:00', value: 1 },
-    { displayValue: '2:00', value: 2 },
-    { displayValue: '3:00', value: 3 },
-    { displayValue: '4:00', value: 4 },
-    { displayValue: '5:00', value: 5 },
-    { displayValue: '6:00', value: 6 },
-    { displayValue: '7:00', value: 7 },
-    { displayValue: '8:00', value: 8 },
-    { displayValue: '9:00', value: 9 },
-    { displayValue: '10:00', value: 10 },
-    { displayValue: '11:00', value: 11 },
-    { displayValue: '12:00', value: 12 },
-    { displayValue: '13:00', value: 13 },
-    { displayValue: '14:00', value: 14 },
-    { displayValue: '15:00', value: 15 },
-    { displayValue: '16:00', value: 16 },
-    { displayValue: '17:00', value: 17 },
-    { displayValue: '18:00', value: 18 },
-    { displayValue: '19:00', value: 19 },
-    { displayValue: '20:00', value: 20 },
-    { displayValue: '21:00', value: 21 },
-    { displayValue: '22:00', value: 22 },
-    { displayValue: '23:00', value: 23 },
-    { displayValue: '24:00', value: 24 }
-  ];
 
   ACTIVITIES: string[] = ['Activitate didactica', 'Proiect', 'Concediu', 'Alta activitate'];
   COURSE_SUBACTIVITIES: string[] = [
@@ -138,7 +106,8 @@ export class AddEventDialogComponent {
     public dialog: MatDialog,
     private calendarEventsHelper: CalendarEventsHelper,
     private projectService: ProjectService,
-    private eventService: EventService
+    private eventService: EventService,
+    private validStartHoursHelper: ValidStartHoursHelper
   ) {
     if (data.date) {
       this.startHour = data.date.getHours();
@@ -212,34 +181,27 @@ export class AddEventDialogComponent {
   }
 
   startHours(): Hour[] {
-    const startHours: Hour[] = [];
-    this.HOURS.slice(0, this.HOURS.length - 1).forEach((hour) => startHours.push(hour));
-    if (this.events) {
-      this.events.forEach((event) => {
-        if (!this.id || this.startHour !== event.start.getHours()) {
-          const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
-          const startHour = event.start.getHours();
-          let startHourIndex = -1;
-          let index = 0;
-          for (const hour of startHours) {
-            if (hour.value === startHour) {
-              startHourIndex = index;
-              break;
-            }
-            index += 1;
-          }
-          if (startHourIndex !== -1) {
-            startHours.splice(startHourIndex, nrOfHours);
-          }
-        }
-      });
+    if (!this.events) {
+      return [];
     }
-    return startHours;
+
+    const startHour = this.data.event?.start.getHours() as number;
+    const endHour = this.data.event?.end.getHours() === 0 ? 24 : (this.data.event?.end.getHours() as number);
+    const isEditEvent = this.id && !this.data.course && !this.data.project;
+    return this.validStartHoursHelper.setStartHours(
+      this.events,
+      isEditEvent ? endHour - startHour : undefined,
+      isEditEvent ? this.data.event : undefined
+    );
   }
 
   endHours(): Hour[] {
+    if (!this.events) {
+      return [];
+    }
+
     const availableHours: Hour[] = [];
-    this.HOURS.slice((this.startHour as number) + 1, this.HOURS.length).forEach((hour) => availableHours.push(hour));
+    HOURS.slice((this.startHour as number) + 1, HOURS.length).forEach((hour) => availableHours.push(hour));
     if (this.events) {
       const endHours: Hour[] = [];
       for (const hour of availableHours) {

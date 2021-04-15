@@ -7,9 +7,13 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
+import { CopyEventDialogComponent } from '../copy-event-dialog/copy-event-dialog.component';
+import { EventService } from '../../services/event.service';
 
 interface Data {
   event: IEvent;
+  resolveEvent: any;
+  filter: {};
   setEvents: any;
 }
 
@@ -25,7 +29,8 @@ export class EventDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private calendarEventsHelper: CalendarEventsHelper,
     private courseService: CourseService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private eventService: EventService
   ) {}
 
   ngOnInit(): void {}
@@ -47,7 +52,7 @@ export class EventDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.data.setEvents(result);
+        this.data.resolveEvent(result);
       }
     });
   }
@@ -83,5 +88,37 @@ export class EventDialogComponent implements OnInit {
       }
     }
     return '';
+  }
+
+  copyEvent(): void {
+    this.cancel();
+    const endHour = this.data.event.end.getHours();
+    const dialogRef = this.dialog.open(CopyEventDialogComponent, {
+      width: '40%',
+      data: { eventLength: (endHour === 0 ? 24 : endHour) - this.data.event.start.getHours() }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const start = new Date(result.date);
+        start.setHours(result.startHour);
+        const end = new Date(result.date);
+        end.setHours(result.startHour + (endHour === 0 ? 24 : endHour) - this.data.event.start.getHours());
+        const event = this.data.event;
+
+        const eventData: any = {
+          start_date: start,
+          end_date: end,
+          activity: event.activity,
+          subactivity: event.subactivity,
+          entity: event.entity ? event.entity.id : undefined,
+          description: event.description
+        };
+        this.eventService.add({ ...eventData, filter: this.data.filter }).subscribe((events) => {
+          const resolvedEvents = this.calendarEventsHelper.addEvents(events);
+          this.data.setEvents(resolvedEvents);
+        });
+      }
+    });
   }
 }
