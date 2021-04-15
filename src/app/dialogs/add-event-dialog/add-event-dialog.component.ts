@@ -153,13 +153,16 @@ export class AddEventDialogComponent {
         })
       )
       .toPromise()
-      .then((events) => {
-        this.events = events;
-        if (this.data.setStartHour) {
-          this.startHour = this.startHours()[0].value;
-          this.endHour = this.endHours()[0].value;
-        }
-      });
+      .then(
+        (events) => {
+          this.events = events;
+          if (this.data.setStartHour) {
+            this.startHour = this.startHours()[0].value;
+            this.endHour = this.endHours()[0].value;
+          }
+        },
+        () => this.cancel()
+      );
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {

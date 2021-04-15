@@ -59,9 +59,12 @@ export class CopyEventDialogComponent implements OnInit {
         })
       )
       .toPromise()
-      .then((events) => {
-        this.hours = this.validStartHoursHelper.setStartHours(events, this.data.eventLength);
-        this.hour = this.hours[0].value;
-      });
+      .then(
+        (events) => {
+          this.hours = this.validStartHoursHelper.setStartHours(events, this.data.eventLength);
+          this.hour = this.hours[0].value;
+        },
+        () => this.cancel()
+      );
   }
 }
