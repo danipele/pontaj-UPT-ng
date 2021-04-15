@@ -139,7 +139,7 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   downloadTemplate(): void {
-    this.courseService.download_template_api_url().subscribe(
+    this.courseService.downloadTemplateApiUrl().subscribe(
       (result) => {
         saveAs(result, 'Cursuri.xls');
       },
@@ -152,7 +152,7 @@ export class CoursesDialogComponent implements OnInit {
     if (this.acceptedFileTypes.includes(file.type)) {
       const formData: FormData = new FormData();
       formData.append('courses_file', file);
-      this.courseService.import_courses(formData).subscribe(
+      this.courseService.importCourses(formData).subscribe(
         (courses) => {
           this.courses.data = courses;
           this.refresh();
@@ -186,7 +186,7 @@ export class CoursesDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.courseService.delete_selected(this.selectedCourses).subscribe(
+        this.courseService.deleteSelected(this.selectedCourses).subscribe(
           () => {
             if (this.selectedCourses.length === this.courses.data.length) {
               this.courses.data = [];
@@ -221,7 +221,7 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   exportCourses(): void {
-    this.courseService.export_courses(this.selectedCourses).subscribe(
+    this.courseService.exportCourses(this.selectedCourses).subscribe(
       (result) => {
         saveAs(result, 'Cursuri.xls');
       },

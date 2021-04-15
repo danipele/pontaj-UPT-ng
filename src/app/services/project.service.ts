@@ -24,19 +24,19 @@ export class ProjectService {
     return this.httpWrapper.delete(`http://localhost:8000/api/v1/projects/${projectId}`, this.httpWrapper.getAuthOptions());
   }
 
-  delete_selected(projects: IProject[]): Observable<any> {
+  deleteSelected(projects: IProject[]): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/projects/destroy_selected`, { projects }, this.httpWrapper.getAuthOptions());
   }
 
-  download_template_api_url(): Observable<any> {
+  downloadTemplateApiUrl(): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/projects/download_template`, {}, this.httpWrapper.getDownloadOptions());
   }
 
-  import_projects(formData: FormData): Observable<any> {
+  importProjects(formData: FormData): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/projects/import_projects`, formData, this.httpWrapper.getImportOptions());
   }
 
-  export_projects(projects: IProject[]): Observable<any> {
+  exportProjects(projects: IProject[]): Observable<any> {
     return this.httpWrapper.post(
       `http://localhost:8000/api/v1/projects/export_projects`,
       { projects },

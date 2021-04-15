@@ -139,7 +139,7 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   downloadTemplate(): void {
-    this.projectService.download_template_api_url().subscribe(
+    this.projectService.downloadTemplateApiUrl().subscribe(
       (result) => {
         saveAs(result, 'Proiecte.xls');
       },
@@ -152,7 +152,7 @@ export class ProjectsDialogComponent implements OnInit {
     if (this.acceptedFileTypes.includes(file.type)) {
       const formData: FormData = new FormData();
       formData.append('projects_file', file);
-      this.projectService.import_projects(formData).subscribe(
+      this.projectService.importProjects(formData).subscribe(
         (projects) => {
           this.projects.data = projects;
           this.refresh();
@@ -186,7 +186,7 @@ export class ProjectsDialogComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.projectService.delete_selected(this.selectedProjects).subscribe(
+        this.projectService.deleteSelected(this.selectedProjects).subscribe(
           () => {
             if (this.selectedProjects.length === this.projects.data.length) {
               this.projects.data = [];
@@ -221,7 +221,7 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   exportProjects(): void {
-    this.projectService.export_projects(this.selectedProjects).subscribe(
+    this.projectService.exportProjects(this.selectedProjects).subscribe(
       (result) => {
         saveAs(result, 'Proiecte.xls');
       },

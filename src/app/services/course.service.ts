@@ -23,19 +23,19 @@ export class CourseService {
     return this.httpWrapper.delete(`http://localhost:8000/api/v1/courses/${courseId}`, this.httpWrapper.getAuthOptions());
   }
 
-  delete_selected(courses: ICourse[]): Observable<any> {
+  deleteSelected(courses: ICourse[]): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/destroy_selected`, { courses }, this.httpWrapper.getAuthOptions());
   }
 
-  download_template_api_url(): Observable<any> {
+  downloadTemplateApiUrl(): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/download_template`, {}, this.httpWrapper.getDownloadOptions());
   }
 
-  import_courses(formData: FormData): Observable<any> {
+  importCourses(formData: FormData): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/import_courses`, formData, this.httpWrapper.getImportOptions());
   }
 
-  export_courses(courses: ICourse[]): Observable<any> {
+  exportCourses(courses: ICourse[]): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/export_courses`, { courses }, this.httpWrapper.getDownloadOptions());
   }
 

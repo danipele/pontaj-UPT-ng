@@ -225,7 +225,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.eventService.delete_selected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
+        this.eventService.deleteSelected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
       }
     });
   }

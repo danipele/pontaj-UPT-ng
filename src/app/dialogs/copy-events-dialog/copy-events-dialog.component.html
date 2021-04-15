@@ -61,6 +61,9 @@
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
+  <div>
+    <mat-checkbox [checked]="move" [color]="'primary'" (change)="setMove($event.checked)"> Muta evenimentele </mat-checkbox>
+  </div>
 </div>
 <div class="modal-footer">
   <button mat-raised-button class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>Copiaza</button>

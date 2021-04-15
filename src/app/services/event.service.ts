@@ -26,11 +26,11 @@ export class EventService {
     return this.httpWrapper.put(`http://localhost:8000/api/v1/events/${params.id}`, params, this.httpWrapper.getAuthOptions());
   }
 
-  delete_selected(events: IEvent[]): Observable<any> {
+  deleteSelected(events: IEvent[]): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/destroy_selected`, { events }, this.httpWrapper.getAuthOptions());
   }
 
-  copy_events(params: {}): Observable<any> {
+  copyEvents(params: {}): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/copy_events`, params, this.httpWrapper.getAuthOptions());
   }
 }

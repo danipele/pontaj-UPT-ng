@@ -319,7 +319,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.eventService.copy_events(result).subscribe();
+        this.eventService.copyEvents({ ...result, filter: { date: this.date, ...this.filterParams } }).subscribe((events) => {
+          this.events = this.calendarEventsHelper.addEvents(events);
+        });
       }
     });
   }

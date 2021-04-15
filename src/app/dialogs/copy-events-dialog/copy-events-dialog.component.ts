@@ -24,6 +24,7 @@ export class CopyEventsDialogComponent implements OnInit {
   endDate: Date;
   copyDate: Date;
   endCopyDate: Date;
+  move: boolean;
 
   constructor(public dialogRef: MatDialogRef<CopyEventsDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
     if (data.mode === 'weekly') {
@@ -49,7 +50,12 @@ export class CopyEventsDialogComponent implements OnInit {
     return {
       date: this.data.date,
       copy_date: this.copyDate,
-      mode: this.data.mode
+      mode: this.data.mode,
+      move: this.move
     };
+  }
+
+  setMove(value: boolean): void {
+    this.move = value;
   }
 }
