@@ -214,9 +214,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     const windowHeight = window.innerHeight;
-    if (windowHeight - positions.bottom > windowHeight / 1.8) {
+
+    if (windowHeight - positions.top > windowHeight - 150) {
       return {
-        top: `${positions.top - 100}px`,
+        top: `5px`,
+        left: `${left}px`
+      };
+    } else if (windowHeight - positions.bottom > windowHeight / 2) {
+      return {
+        top: `${positions.top - 150}px`,
         left: `${left}px`
       };
     } else if (windowHeight - positions.bottom > windowHeight / 4) {
