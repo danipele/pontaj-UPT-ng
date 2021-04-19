@@ -129,10 +129,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.setDayEvents();
   }
 
-  setDaily(): void {
+  setDaily(event?: any): void {
     this.filterParams.all = false;
     this.filterParams.for = 'day';
-    this.setDay({ day: { date: this.date } });
+    this.setDay({ day: { date: event || this.date } });
   }
 
   isTodayVisible(): boolean {
@@ -184,7 +184,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   openEvent(event: any): void {
     const dialogRef = this.dialog.open(EventDialogComponent, {
-      width: '300px',
+      width: '400px',
       data: {
         event: event.event,
         resolveEvent: (result: any) => this.resolveEvent(result),
@@ -207,15 +207,39 @@ export class DashboardComponent implements OnInit, OnDestroy {
     } else {
       const day = eventObj.start.getDay();
       if (day === 6 || day === 0) {
-        left = positions.left - 310;
+        left = positions.left - 410;
       } else {
         left = positions.right + 10;
       }
     }
-    return {
-      top: `${positions.top - 100}px`,
-      left: `${left}px`
-    };
+
+    const windowHeight = window.innerHeight;
+    if (windowHeight - positions.bottom > windowHeight / 1.8) {
+      return {
+        top: `${positions.top - 100}px`,
+        left: `${left}px`
+      };
+    } else if (windowHeight - positions.bottom > windowHeight / 4) {
+      return {
+        bottom: `${windowHeight - positions.bottom - 200}px`,
+        left: `${left}px`
+      };
+    } else if (windowHeight - positions.bottom > 50) {
+      return {
+        bottom: `${windowHeight - positions.bottom - 20}px`,
+        left: `${left}px`
+      };
+    } else if (windowHeight - positions.bottom > 0) {
+      return {
+        bottom: `${windowHeight - positions.bottom}px`,
+        left: `${left}px`
+      };
+    } else {
+      return {
+        bottom: `5px`,
+        left: `${left}px`
+      };
+    }
   }
 
   getNrOfHoursOnDay(date: Date): number {

@@ -46,7 +46,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
     project?: string;
     for?: string;
   }>();
-  @Output() goToDay = new EventEmitter<{ day: { date: Date } }>();
+  @Output() goToDay = new EventEmitter<Date>();
   @Output() editEvent = new EventEmitter<IEvent>();
   @Output() deleteEvent = new EventEmitter<IEvent>();
   @Input() startDate: Date;
@@ -156,7 +156,7 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   }
 
   executeGoToDay(event: IEvent): void {
-    this.goToDay.emit({ day: { date: event.start } });
+    this.goToDay.emit(event.start);
   }
 
   executeEditEvent(event: IEvent): void {
