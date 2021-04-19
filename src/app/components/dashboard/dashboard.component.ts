@@ -11,6 +11,7 @@ import { IEvent } from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CopyEventsDialogComponent } from '../../dialogs/copy-events-dialog/copy-events-dialog.component';
 import { EventService } from '../../services/event.service';
+import { CopyEventDialogComponent } from '../../dialogs/copy-event-dialog/copy-event-dialog.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -188,8 +189,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         event: event.event,
         resolveEvent: (result: any) => this.resolveEvent(result),
         filter: { date: this.date, ...this.filterParams },
-        setEvents: (events: IEvent[]) => {
-          this.events = events;
+        copyEvent: (copyEvent: IEvent) => {
+          this.copyEvent(copyEvent);
         }
       },
       position: this.getEventDialogPosition(event, event.event),
@@ -385,5 +386,42 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   isEmployee(): boolean {
     return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+  }
+
+  copyEvent(event: IEvent): void {
+    const endHour = event.end.getHours();
+    const dialogRef = this.dialog.open(CopyEventDialogComponent, {
+      width: '40%',
+      data: { eventLength: (endHour === 0 ? 24 : endHour) - event.start.getHours() }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        const start = new Date(result.date);
+        start.setHours(result.startHour);
+        const end = new Date(result.date);
+        end.setHours(result.startHour + (endHour === 0 ? 24 : endHour) - event.start.getHours());
+
+        const eventData: any = {
+          start_date: start,
+          end_date: end,
+          activity: event.activity,
+          subactivity: event.subactivity,
+          entity: event.entity ? event.entity.id : undefined,
+          description: event.description
+        };
+
+        const params: any = {
+          ...eventData,
+          filter: {
+            date: this.date as Date,
+            ...this.filterParams
+          }
+        };
+        this.eventService.add(params).subscribe((events) => {
+          this.events = this.calendarEventsHelper.addEvents(events);
+        });
+      }
+    });
   }
 }

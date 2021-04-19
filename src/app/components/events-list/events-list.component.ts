@@ -52,9 +52,10 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   @Input() startDate: Date;
   @Input() isWeekly: boolean;
   @Input() allEvents: boolean | undefined = false;
+  @Output() copyEvent = new EventEmitter<IEvent>();
 
   selectedEvents: IEvent[] = [];
-  columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete'];
+  columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete', 'copy'];
   expandedEvent: IEvent | null;
 
   subactivityFilter = '';
@@ -228,5 +229,9 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
   isEmployee(): boolean {
     return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+  }
+
+  executeCopyEvent(event: IEvent): void {
+    this.copyEvent.emit(event);
   }
 }

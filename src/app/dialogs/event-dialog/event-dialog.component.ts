@@ -7,14 +7,12 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
-import { CopyEventDialogComponent } from '../copy-event-dialog/copy-event-dialog.component';
 import { EventService } from '../../services/event.service';
 
 interface Data {
   event: IEvent;
   resolveEvent: any;
-  filter: {};
-  setEvents: any;
+  copyEvent: any;
 }
 
 @Component({
@@ -92,33 +90,6 @@ export class EventDialogComponent implements OnInit {
 
   copyEvent(): void {
     this.cancel();
-    const endHour = this.data.event.end.getHours();
-    const dialogRef = this.dialog.open(CopyEventDialogComponent, {
-      width: '40%',
-      data: { eventLength: (endHour === 0 ? 24 : endHour) - this.data.event.start.getHours() }
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        const start = new Date(result.date);
-        start.setHours(result.startHour);
-        const end = new Date(result.date);
-        end.setHours(result.startHour + (endHour === 0 ? 24 : endHour) - this.data.event.start.getHours());
-        const event = this.data.event;
-
-        const eventData: any = {
-          start_date: start,
-          end_date: end,
-          activity: event.activity,
-          subactivity: event.subactivity,
-          entity: event.entity ? event.entity.id : undefined,
-          description: event.description
-        };
-        this.eventService.add({ ...eventData, filter: this.data.filter }).subscribe((events) => {
-          const resolvedEvents = this.calendarEventsHelper.addEvents(events);
-          this.data.setEvents(resolvedEvents);
-        });
-      }
-    });
+    this.data.copyEvent(this.data.event);
   }
 }

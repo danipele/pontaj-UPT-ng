@@ -32,7 +32,7 @@
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="23" [rowspan]="1" *ngIf="isEmployee()">
+    <mat-grid-tile [colspan]="20" [rowspan]="1" *ngIf="isEmployee()">
       <mat-form-field appearance="fill" class="filter-container">
         <mat-label>Filtreaza dupa tipul activitatii:</mat-label>
         <mat-select [(ngModel)]="activityFilter" name="activityFilter" (selectionChange)="executeFilterEvents()">
@@ -43,7 +43,7 @@
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="19" [rowspan]="1">
+    <mat-grid-tile [colspan]="22" [rowspan]="1">
       <mat-form-field appearance="fill" class="filter-container date-filter-container">
         <mat-label>Filtreaza dupa data</mat-label>
         <mat-date-range-input [rangePicker]="picker">
@@ -163,6 +163,14 @@
       <td mat-cell *matCellDef="let event">
         <button mat-mini-fab title="Sterge" class="action-button" aria-label="Delete" (click)="executeDeleteEvent(event)">
           <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="copy">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let event">
+        <button mat-mini-fab title="Copiaza" class="action-button" aria-label="Copy" (click)="executeCopyEvent(event)">
+          <mat-icon>file_copy</mat-icon>
         </button>
       </td>
     </ng-container>

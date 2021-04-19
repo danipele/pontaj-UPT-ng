@@ -119,6 +119,7 @@
       [startDate]="date"
       [isWeekly]="isWeekly()"
       [allEvents]="filterParams.all"
+      (copyEvent)="copyEvent($event)"
     ></app-events-list>
   </div>
 </div>
