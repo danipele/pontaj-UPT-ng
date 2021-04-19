@@ -26,18 +26,18 @@
         <mat-label>Filtreaza dupa subtipul activitatii:</mat-label>
         <mat-select [(ngModel)]="subactivityFilter" name="subactivityFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
-          <mat-option *ngFor="let subactivity of SUBACTIVITIES" [value]="subactivity">
+          <mat-option *ngFor="let subactivity of subactivities" [value]="subactivity">
             {{ subactivity }}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="23" [rowspan]="1">
+    <mat-grid-tile [colspan]="23" [rowspan]="1" *ngIf="isEmployee()">
       <mat-form-field appearance="fill" class="filter-container">
         <mat-label>Filtreaza dupa tipul activitatii:</mat-label>
         <mat-select [(ngModel)]="activityFilter" name="activityFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
-          <mat-option *ngFor="let activity of ACTIVITIES" [value]="activity">
+          <mat-option *ngFor="let activity of activities" [value]="activity">
             {{ activity }}
           </mat-option>
         </mat-select>
@@ -66,7 +66,7 @@
         </mat-select>
       </mat-form-field>
     </mat-grid-tile>
-    <mat-grid-tile [colspan]="14" [rowspan]="1">
+    <mat-grid-tile [colspan]="14" [rowspan]="1" *ngIf="isEmployee()">
       <mat-form-field appearance="fill" class="filter-container entity-filter">
         <mat-label>Filtreaza dupa proiect:</mat-label>
         <mat-select [(ngModel)]="projectFilter" name="projectFilter" (selectionChange)="executeFilterEvents()">

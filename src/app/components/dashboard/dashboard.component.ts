@@ -382,4 +382,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     return hours;
   }
+
+  isEmployee(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+  }
 }

@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
     this.loginService.login(params).subscribe((result) => {
       if (result.success === true) {
         this.cookieService.put('auth_token', result.auth_token);
+        localStorage.setItem('user', JSON.stringify(result.user));
         this.router.navigate(['/dashboard']);
       } else {
         this.error = result.message;

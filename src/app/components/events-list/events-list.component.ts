@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
-import { IEvent } from '../../models/event.model';
+import { ACTIVITIES, COURSE_SUBACTIVITIES, HOLIDAYS, IEvent, OTHER_SUBACTIVITIES } from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { indexOf } from 'lodash';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -53,35 +53,6 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   @Input() isWeekly: boolean;
   @Input() allEvents: boolean | undefined = false;
 
-  ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Concediu', 'Proiect'];
-  SUBACTIVITIES: string[] = [
-    'Absente nemotivate',
-    'Alte activitati',
-    'Concediu crestere copil',
-    'Concediu de maternitate',
-    'Concediu de odihna',
-    'Concediu fara salariu',
-    'Concediu medical',
-    'Consultatii',
-    'Curs',
-    'Documentare oportunitati de finantare proiecte',
-    'Documentare pentru cercetare',
-    'Elaborare proiecte de cercetare',
-    'Evaluare',
-    'Executie proiecte de cercetare',
-    'Gestiune cooperari',
-    'Implicare neremunerată în problematica societății',
-    'Indrumare doctoranzi',
-    'Laborator',
-    'Ora de proiect',
-    'Plecati cu bursa',
-    'Pregatire pentru activitatea didactica',
-    'Proiect',
-    'Seminar',
-    'Zile delegatie (Deplasare externa)',
-    'Zile delegatie (Deplasare interna)'
-  ];
-
   selectedEvents: IEvent[] = [];
   columnNames: string[] = ['select', 'nr_crt', 'subactivity', 'activity', 'date', 'start', '-', 'end', 'hours', 'edit', 'delete'];
   expandedEvent: IEvent | null;
@@ -96,12 +67,23 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   courses: ICourse[];
   projects: IProject[];
 
+  activities: string[];
+  subactivities: string[];
+
   constructor(
     public dialog: MatDialog,
     private eventService: EventService,
     public courseService: CourseService,
     public projectService: ProjectService
-  ) {}
+  ) {
+    if (this.isEmployee()) {
+      this.activities = ACTIVITIES;
+      this.subactivities = [...COURSE_SUBACTIVITIES, ...OTHER_SUBACTIVITIES, ...HOLIDAYS].sort((a, b) => a.localeCompare(b));
+    } else {
+      this.activities = ['Activitate didactica'];
+      this.subactivities = COURSE_SUBACTIVITIES;
+    }
+  }
 
   ngOnInit(): void {
     this.getCourses();
@@ -242,5 +224,9 @@ export class EventsListComponent implements OnInit, AfterViewInit {
       }
     }
     return '';
+  }
+
+  isEmployee(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
   }
 }

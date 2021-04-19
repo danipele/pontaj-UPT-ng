@@ -5,7 +5,7 @@
     </div>
   </a>
   <button mat-flat-button class="upt-btn top-bar-btn" (click)="openCoursesDialog()">Cursurile mele</button>
-  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openProjectsDialog()">Proiectele mele</button>
+  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openProjectsDialog()" *ngIf="isEmployee()">Proiectele mele</button>
   <button mat-flat-button class="upt-btn top-bar-btn">Exporta rapoarte</button>
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="account" class="account">
     <mat-icon class="user_icon">person_pin</mat-icon>

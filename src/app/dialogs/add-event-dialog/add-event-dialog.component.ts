@@ -4,7 +4,7 @@ import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
-import { IEvent } from '../../models/event.model';
+import { ACTIVITIES, COURSE_SUBACTIVITIES, HOLIDAYS, IEvent, OTHER_SUBACTIVITIES } from '../../models/event.model';
 import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
@@ -55,37 +55,7 @@ export class AddEventDialogComponent {
   entity: ICourse | IProject | undefined;
   description: string | undefined = '';
 
-  ACTIVITIES: string[] = ['Activitate didactica', 'Proiect', 'Concediu', 'Alta activitate'];
-  COURSE_SUBACTIVITIES: string[] = [
-    'Curs',
-    'Seminar',
-    'Laborator',
-    'Ora de proiect',
-    'Evaluare',
-    'Consultatii',
-    'Pregatire pentru activitatea didactica'
-  ];
-  OTHER_SUBACTIVITIES: string[] = [
-    'Indrumare doctoranzi',
-    'Implicare neremunerată în problematica societății',
-    'Gestiune cooperari',
-    'Zile delegatie (Deplasare interna)',
-    'Zile delegatie (Deplasare externa)',
-    'Plecati cu bursa',
-    'Documentare pentru cercetare',
-    'Documentare oportunitati de finantare proiecte',
-    'Elaborare proiecte de cercetare',
-    'Executie proiecte de cercetare',
-    'Alte activitati'
-  ];
-  HOLIDAYS: string[] = [
-    'Concediu de odihna',
-    'Concediu medical',
-    'Concediu crestere copil',
-    'Concediu de maternitate',
-    'Concediu fara salariu',
-    'Absente nemotivate'
-  ];
+  activities: string[];
   subactivities: string[] = [];
   dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
@@ -142,6 +112,14 @@ export class AddEventDialogComponent {
       this.id = event.id;
     }
     this.getDayEvents();
+
+    if (this.isEmployee()) {
+      this.activities = ACTIVITIES;
+    } else {
+      this.activities = ['Activitate didactica'];
+      this.activity = 'Activitate didactica';
+      this.subactivities = COURSE_SUBACTIVITIES;
+    }
   }
 
   getDayEvents(): void {
@@ -167,7 +145,7 @@ export class AddEventDialogComponent {
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
     this.activity = 'Activitate didactica';
-    this.subactivities = this.COURSE_SUBACTIVITIES;
+    this.subactivities = COURSE_SUBACTIVITIES;
     this.subactivity = 'Curs';
     this.entities = data.courses;
     this.entity = data.selected;
@@ -258,7 +236,7 @@ export class AddEventDialogComponent {
     this.subactivity = subactivity;
     switch (this.activity) {
       case 'Activitate didactica': {
-        this.subactivities = this.COURSE_SUBACTIVITIES;
+        this.subactivities = COURSE_SUBACTIVITIES;
         break;
       }
       case 'Proiect': {
@@ -266,11 +244,11 @@ export class AddEventDialogComponent {
         break;
       }
       case 'Concediu': {
-        this.subactivities = this.HOLIDAYS;
+        this.subactivities = HOLIDAYS;
         break;
       }
       case 'Alta activitate': {
-        this.subactivities = this.OTHER_SUBACTIVITIES;
+        this.subactivities = OTHER_SUBACTIVITIES;
         break;
       }
     }
@@ -438,5 +416,9 @@ export class AddEventDialogComponent {
 
   isEditMode(): boolean {
     return this.id !== undefined && this.id !== null && !this.data.course && !this.data.project;
+  }
+
+  isEmployee(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
   }
 }

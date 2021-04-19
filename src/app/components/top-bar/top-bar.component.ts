@@ -63,19 +63,18 @@ export class TopBarComponent implements OnInit {
   }
 
   openPersonalInfoDialog(): void {
-    this.userService.getAuthenticatedUser().subscribe((user: IUser) => {
-      const dialogRef = this.dialog.open(PersonalInformationDialogComponent, {
-        width: '50%',
-        data: { user }
-      });
+    const user = JSON.parse(localStorage.getItem('user') as string);
+    const dialogRef = this.dialog.open(PersonalInformationDialogComponent, {
+      width: '50%',
+      data: { user }
+    });
 
-      dialogRef.afterClosed().subscribe((result) => {
-        if (result) {
-          if (user.first_name !== result.firstName || user.last_name !== result.lastName) {
-            this.userService.updateCurrentUser(result).subscribe();
-          }
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        if (user.first_name !== result.firstName || user.last_name !== result.lastName) {
+          this.userService.updateCurrentUser(result).subscribe();
         }
-      });
+      }
     });
   }
 
@@ -84,5 +83,9 @@ export class TopBarComponent implements OnInit {
       width: '50%',
       data: {}
     });
+  }
+
+  isEmployee(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
   }
 }
