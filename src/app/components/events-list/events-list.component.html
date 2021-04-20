@@ -57,10 +57,10 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="14" [rowspan]="1">
       <mat-form-field appearance="fill" class="filter-container entity-filter">
-        <mat-label>Filtreaza dupa curs:</mat-label>
+        <mat-label class="course-filter">Filtreaza dupa curs:</mat-label>
         <mat-select [(ngModel)]="courseFilter" name="courseFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
-          <mat-option *ngFor="let course of courses" [value]="course">
+          <mat-option *ngFor="let course of courses" [value]="course" class="course-filter">
             {{ course.name }}
           </mat-option>
         </mat-select>
@@ -68,10 +68,10 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="14" [rowspan]="1" *ngIf="isEmployee()">
       <mat-form-field appearance="fill" class="filter-container entity-filter">
-        <mat-label>Filtreaza dupa proiect:</mat-label>
+        <mat-label class="project-filter">Filtreaza dupa proiect:</mat-label>
         <mat-select [(ngModel)]="projectFilter" name="projectFilter" (selectionChange)="executeFilterEvents()">
           <mat-option></mat-option>
-          <mat-option *ngFor="let project of projects" [value]="project">
+          <mat-option *ngFor="let project of projects" [value]="project" class="project-filter">
             {{ project.name }}
           </mat-option>
         </mat-select>
@@ -121,7 +121,16 @@
     </ng-container>
     <ng-container matColumnDef="activity">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipul activitatii</th>
-      <td mat-cell *matCellDef="let event">{{ event.activity }}</td>
+      <td
+        mat-cell
+        *matCellDef="let event"
+        [class.color-activity-course]="event.activity === 'Activitate didactica'"
+        [class.color-activity-project]="event.activity === 'Proiect'"
+        [class.color-activity-other-activity]="event.activity === 'Alta activitate'"
+        [class.color-activity-holiday]="event.activity === 'Concediu'"
+      >
+        <b>{{ event.activity }}</b>
+      </td>
     </ng-container>
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Ziua</th>
@@ -165,7 +174,17 @@
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let event">
-        <button mat-mini-fab title="Editeaza" class="action-button" aria-label="Edit" (click)="executeEditEvent(event)">
+        <button
+          mat-mini-fab
+          title="Editeaza"
+          class="action-button"
+          aria-label="Edit"
+          (click)="executeEditEvent(event)"
+          [class.activity-course]="event.activity === 'Activitate didactica'"
+          [class.activity-project]="event.activity === 'Proiect'"
+          [class.activity-other-activity]="event.activity === 'Alta activitate'"
+          [class.activity-holiday]="event.activity === 'Concediu'"
+        >
           <mat-icon>edit</mat-icon>
         </button>
       </td>
@@ -173,7 +192,17 @@
     <ng-container matColumnDef="delete">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let event">
-        <button mat-mini-fab title="Sterge" class="action-button" aria-label="Delete" (click)="executeDeleteEvent(event)">
+        <button
+          mat-mini-fab
+          title="Sterge"
+          class="action-button"
+          aria-label="Delete"
+          (click)="executeDeleteEvent(event)"
+          [class.activity-course]="event.activity === 'Activitate didactica'"
+          [class.activity-project]="event.activity === 'Proiect'"
+          [class.activity-other-activity]="event.activity === 'Alta activitate'"
+          [class.activity-holiday]="event.activity === 'Concediu'"
+        >
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -181,7 +210,17 @@
     <ng-container matColumnDef="copy">
       <th mat-header-cell *matHeaderCellDef></th>
       <td mat-cell *matCellDef="let event">
-        <button mat-mini-fab title="Copiaza" class="action-button" aria-label="Copy" (click)="executeCopyEvent(event)">
+        <button
+          mat-mini-fab
+          title="Copiaza"
+          class="action-button"
+          aria-label="Copy"
+          (click)="executeCopyEvent(event)"
+          [class.activity-course]="event.activity === 'Activitate didactica'"
+          [class.activity-project]="event.activity === 'Proiect'"
+          [class.activity-other-activity]="event.activity === 'Alta activitate'"
+          [class.activity-holiday]="event.activity === 'Concediu'"
+        >
           <mat-icon>file_copy</mat-icon>
         </button>
       </td>
@@ -190,16 +229,40 @@
     <ng-container matColumnDef="expandedDetail">
       <td mat-cell *matCellDef="let event" [attr.colspan]="columnNames.length">
         <div class="example-element-detail" [@detailExpand]="event == expandedEvent ? 'expanded' : 'collapsed'">
-          <div class="expanded-date-container">
-            <div class="year-container">
+          <div
+            class="expanded-date-container"
+            [class.border-activity-course]="event.activity === 'Activitate didactica'"
+            [class.border-activity-project]="event.activity === 'Proiect'"
+            [class.border-activity-other-activity]="event.activity === 'Alta activitate'"
+            [class.border-activity-holiday]="event.activity === 'Concediu'"
+          >
+            <div
+              class="year-container"
+              [class.activity-course]="event.activity === 'Activitate didactica'"
+              [class.activity-project]="event.activity === 'Proiect'"
+              [class.activity-other-activity]="event.activity === 'Alta activitate'"
+              [class.activity-holiday]="event.activity === 'Concediu'"
+            >
               {{ event.start | date: 'y' }}
             </div>
-            <div class="day-container">
+            <div
+              class="day-container"
+              [class.color-activity-course]="event.activity === 'Activitate didactica'"
+              [class.color-activity-project]="event.activity === 'Proiect'"
+              [class.color-activity-other-activity]="event.activity === 'Alta activitate'"
+              [class.color-activity-holiday]="event.activity === 'Concediu'"
+            >
               <div>
                 <b>{{ event.start | date: 'd' }}</b>
               </div>
             </div>
-            <div class="month-container">
+            <div
+              class="month-container"
+              [class.color-activity-course]="event.activity === 'Activitate didactica'"
+              [class.color-activity-project]="event.activity === 'Proiect'"
+              [class.color-activity-other-activity]="event.activity === 'Alta activitate'"
+              [class.color-activity-holiday]="event.activity === 'Concediu'"
+            >
               <div>
                 <b>{{ event.start | date: 'MMMM' }}</b>
               </div>
