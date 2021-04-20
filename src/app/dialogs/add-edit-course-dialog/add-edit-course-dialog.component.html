@@ -86,7 +86,14 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendCourse()" cdkFocusInitial>
+  <button
+    mat-raised-button
+    [disabled]="notAllFieldsAreFilled()"
+    [class.hover-btn]="!notAllFieldsAreFilled()"
+    class="upt-btn"
+    [mat-dialog-close]="sendCourse()"
+    cdkFocusInitial
+  >
     Salveaza
   </button>
 </div>
