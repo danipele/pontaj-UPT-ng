@@ -37,6 +37,7 @@
     "lodash-es": "^4.17.11",
     "moment": "^2.29.1",
     "ngx-cookie": "^5.0.1",
+    "ngx-infinite-scroll": "^10.0.1",
     "ngx-tour-ng-bootstrap": "ssh://git@bitbucket.org:unifiedpost/ngx-tour-ng-bootstrap.git#a895c86",
     "prettier": "^2.0.2",
     "query-string": "^6.1.0",

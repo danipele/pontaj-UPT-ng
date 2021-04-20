@@ -55,6 +55,7 @@ import { CopyEventsDialogComponent } from './dialogs/copy-events-dialog/copy-eve
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CopyEventDialogComponent } from './dialogs/copy-event-dialog/copy-event-dialog.component';
 import { ValidStartHoursHelper } from './helpers/valid-start-hours-helper';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -108,7 +109,8 @@ export function momentAdapterFactory(): DateAdapter {
     MatSortModule,
     MatPaginatorModule,
     MatGridListModule,
-    MatTooltipModule
+    MatTooltipModule,
+    InfiniteScrollModule
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },

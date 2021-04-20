@@ -6308,6 +6308,14 @@ ngx-cookie@^5.0.1:
   dependencies:
     tslib "^2.0.0"
 
+ngx-infinite-scroll@^10.0.1:
+  version "10.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-infinite-scroll/-/ngx-infinite-scroll-10.0.1.tgz#6f51f2f8775a7c50d1dd8bad125d4e748abbe880"
+  integrity sha512-7is0eJZ9kJPsaHohRmMhJ/QFHAW9jp9twO5HcHRvFM/Yl/R8QCiokgjwmH0/CR3MuxUanxfHZMfO3PbYTwlBEg==
+  dependencies:
+    "@scarf/scarf" "^1.1.0"
+    opencollective-postinstall "^2.0.2"
+
 "ngx-tour-ng-bootstrap@ssh://git@bitbucket.org:unifiedpost/ngx-tour-ng-bootstrap.git#a895c86":
   version "5.0.0"
   resolved "ssh://git@bitbucket.org:unifiedpost/ngx-tour-ng-bootstrap.git#a895c862cca411f05d9d7c1a8a9c151d3ef15a38"

@@ -78,7 +78,19 @@
       </mat-form-field>
     </mat-grid-tile>
   </mat-grid-list>
-  <table mat-table [dataSource]="events" matSort matSortActive="date" matSortDirection="desc" matSortDisableClear multiTemplateDataRows>
+  <table
+    mat-table
+    [dataSource]="displayEvents"
+    matSort
+    matSortActive="date"
+    matSortDirection="desc"
+    matSortDisableClear
+    multiTemplateDataRows
+    infiniteScroll
+    [infiniteScrollDistance]="0"
+    [infiniteScrollThrottle]="0"
+    (scrolled)="onScroll()"
+  >
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox
@@ -100,7 +112,7 @@
 
     <ng-container matColumnDef="nr_crt">
       <th mat-header-cell *matHeaderCellDef>Nr. crt.</th>
-      <td mat-cell *matCellDef="let event">{{ events.data.indexOf(event) + 1 }}</td>
+      <td mat-cell *matCellDef="let event">{{ displayEvents.data.indexOf(event) + 1 }}</td>
     </ng-container>
 
     <ng-container matColumnDef="subactivity">

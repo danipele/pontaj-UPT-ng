@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { ACTIVITIES, COURSE_SUBACTIVITIES, HOLIDAYS, IEvent, OTHER_SUBACTIVITIES } from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { indexOf } from 'lodash';
@@ -31,7 +31,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
     ])
   ]
 })
-export class EventsListComponent implements OnInit, AfterViewInit {
+export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @Input() events: MatTableDataSource<IEvent>;
   @Output() filterEvents = new EventEmitter<{
@@ -71,6 +71,9 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   activities: string[];
   subactivities: string[];
 
+  page = 1;
+  displayEvents = new MatTableDataSource<IEvent>();
+
   constructor(
     public dialog: MatDialog,
     private eventService: EventService,
@@ -89,6 +92,14 @@ export class EventsListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.getCourses();
     this.getProjects();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.events && (!changes.events.previousValue || changes.events.currentValue.data !== changes.events.previousValue.data)) {
+      this.displayEvents = new MatTableDataSource<IEvent>();
+      this.page = 1;
+      this.setDisplayEvents();
+    }
   }
 
   ngAfterViewInit(): void {
@@ -233,5 +244,19 @@ export class EventsListComponent implements OnInit, AfterViewInit {
 
   executeCopyEvent(event: IEvent): void {
     this.copyEvent.emit(event);
+  }
+
+  onScroll(): void {
+    if (20 * this.page < this.events.data.length) {
+      this.page += 1;
+      this.setDisplayEvents();
+    }
+  }
+
+  setDisplayEvents(): void {
+    for (let i = 20 * (this.page - 1); i < 20 * this.page && i < this.events.data.length; i++) {
+      this.displayEvents.data.push(this.events.data[i]);
+    }
+    this.displayEvents.data = this.displayEvents.data;
   }
 }
