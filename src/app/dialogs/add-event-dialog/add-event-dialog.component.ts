@@ -14,6 +14,7 @@ import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { EventService } from '../../services/event.service';
 import { map } from 'rxjs/operators';
 import { Hour, HOURS, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 interface Data {
   date?: Date;
@@ -77,7 +78,8 @@ export class AddEventDialogComponent {
     private calendarEventsHelper: CalendarEventsHelper,
     private projectService: ProjectService,
     private eventService: EventService,
-    private validStartHoursHelper: ValidStartHoursHelper
+    private validStartHoursHelper: ValidStartHoursHelper,
+    private notificationHelper: NotificationHelper
   ) {
     if (data.date) {
       this.startHour = data.date.getHours();
@@ -262,7 +264,10 @@ export class AddEventDialogComponent {
           this.setEntity(entity);
         }
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -274,7 +279,10 @@ export class AddEventDialogComponent {
           this.setEntity(entity);
         }
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -313,8 +321,12 @@ export class AddEventDialogComponent {
         this.courseService.add(result).subscribe(
           (coursesResult) => {
             this.getCourses(coursesResult[0]);
+            this.notificationHelper.openNotification('Cursul a fost adaugat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.cancel();
+            this.notificationHelper.notifyWithError(error);
+          }
         );
       }
     });
@@ -331,8 +343,12 @@ export class AddEventDialogComponent {
         this.projectService.add(result).subscribe(
           (projectsResult) => {
             this.getProjects(projectsResult[0]);
+            this.notificationHelper.openNotification('Proiectul a fost adaugat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.cancel();
+            this.notificationHelper.notifyWithError(error);
+          }
         );
       }
     });

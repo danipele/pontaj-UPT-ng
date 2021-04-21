@@ -5,14 +5,15 @@ import { IEvent } from '../models/event.model';
 import { indexOf } from 'lodash';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationHelper } from './notification-helper';
 
 @Injectable()
 export class CalendarEventsHelper {
   events: IEvent[] = [];
 
-  constructor(public dialog: MatDialog, private eventService: EventService) {}
+  constructor(public dialog: MatDialog, private eventService: EventService, private notificationHelper: NotificationHelper) {}
 
-  resolveEvent(result: any, date: Date, filterParams: any): Promise<IEvent[]> {
+  resolveEvent(result: any, date: Date, filterParams: any): Promise<{ events: IEvent[]; mode: string }> {
     const startDate = new Date(result.date);
     const endDate = new Date(result.date);
     startDate.setHours(result.startHour);
@@ -40,7 +41,7 @@ export class CalendarEventsHelper {
         .update(params)
         .pipe(
           map((eventsResult: []) => {
-            return this.addEvents(eventsResult);
+            return { events: this.addEvents(eventsResult), mode: 'edit' };
           })
         )
         .toPromise();
@@ -55,7 +56,7 @@ export class CalendarEventsHelper {
         .add(params)
         .pipe(
           map((eventsResult: []) => {
-            return this.addEvents(eventsResult);
+            return { events: this.addEvents(eventsResult), mode: 'add' };
           })
         )
         .toPromise();
@@ -195,9 +196,13 @@ export class CalendarEventsHelper {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.eventService.delete(event.id).subscribe(() => {
-          this.deleteEvent(event);
-        });
+        this.eventService.delete(event.id).subscribe(
+          () => {
+            this.deleteEvent(event);
+            this.notificationHelper.openNotification('Evenimentul a fost sters cu succes!', 'success');
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
       }
     });
   }

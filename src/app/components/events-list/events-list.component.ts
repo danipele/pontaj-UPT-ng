@@ -14,6 +14,7 @@ import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-events-list',
@@ -78,7 +79,8 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
     public dialog: MatDialog,
     private eventService: EventService,
     public courseService: CourseService,
-    public projectService: ProjectService
+    public projectService: ProjectService,
+    private notificationHelper: NotificationHelper
   ) {
     if (this.isEmployee()) {
       this.activities = ACTIVITIES;
@@ -103,7 +105,10 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.sort.sortChange.pipe(tap(() => this.executeFilterEvents())).subscribe();
+    this.sort.sortChange.pipe(tap(() => this.executeFilterEvents())).subscribe(
+      () => {},
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
 
     this.events.sort = this.sort;
 
@@ -114,11 +119,17 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getCourses(): void {
-    this.courseService.getAll().subscribe((result) => (this.courses = result));
+    this.courseService.getAll().subscribe(
+      (result) => (this.courses = result),
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   getProjects(): void {
-    this.projectService.getAll().subscribe((result) => (this.projects = result));
+    this.projectService.getAll().subscribe(
+      (result) => (this.projects = result),
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   executeFilterEvents(): void {
@@ -219,7 +230,13 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
 
     dialogRef.afterClosed().subscribe((confirmation) => {
       if (confirmation) {
-        this.eventService.deleteSelected(this.selectedEvents).subscribe(() => this.executeFilterEvents());
+        this.eventService.deleteSelected(this.selectedEvents).subscribe(
+          () => {
+            this.executeFilterEvents();
+            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedEvents.length} evenimente!`, 'success');
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
       }
     });
   }

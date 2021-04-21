@@ -20,9 +20,6 @@
           <div class="form-group-button" [hidden]="resetPassOn">
             <button mat-raised-button (click)="login()" class="upt-btn">Autentificare</button>
           </div>
-          <div class="errorContainer" *ngIf="error !== ''" [hidden]="resetPassOn">
-            <span>{{ this.error }}</span>
-          </div>
           <div>
             <button (click)="resetPassword()" class="upt-btn reset-password-btn" [hidden]="resetPassOn">Resetare parola</button>
           </div>

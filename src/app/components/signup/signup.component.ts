@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-signup',
@@ -13,7 +14,12 @@ export class SignupComponent implements OnInit {
   TYPES: string[] = ['Angajat', 'Colaborator'];
   formGroup: FormGroup;
 
-  constructor(private loginService: LoginService, private router: Router, private userService: UserService) {
+  constructor(
+    private loginService: LoginService,
+    private router: Router,
+    private userService: UserService,
+    private notificationHelper: NotificationHelper
+  ) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
       userPassword: new FormControl(),
@@ -24,11 +30,14 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAuthenticatedUser().subscribe((user) => {
-      if (user) {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+    this.userService.getAuthenticatedUser().subscribe(
+      (user) => {
+        if (user) {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   createAccount(): void {
@@ -40,10 +49,16 @@ export class SignupComponent implements OnInit {
       type: this.formGroup.controls.type.value
     };
 
-    this.loginService.signup(params).subscribe((result) => {
-      if (result.success === true) {
-        this.router.navigate(['/login']);
-      }
-    });
+    this.loginService.signup(params).subscribe(
+      (result) => {
+        if (result.success === true) {
+          this.router.navigate(['/login']);
+          this.notificationHelper.openNotification('Cont creat cu succes! Acum te poti autentifica cu emailul si parola!', 'success');
+        } else {
+          this.notificationHelper.openNotification(result.error, 'error');
+        }
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 }

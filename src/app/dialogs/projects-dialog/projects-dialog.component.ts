@@ -9,6 +9,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { indexOf } from 'lodash';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { saveAs } from 'file-saver';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -36,6 +37,7 @@ export class ProjectsDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ProjectsDialogComponent>,
     public dialog: MatDialog,
     public projectService: ProjectService,
+    private notificationHelper: NotificationHelper,
     @Inject(MAT_DIALOG_DATA) public data: { emitter: EventEmitter<any> }
   ) {}
 
@@ -45,7 +47,10 @@ export class ProjectsDialogComponent implements OnInit {
         this.projects.data = result;
         this.refresh();
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -69,8 +74,12 @@ export class ProjectsDialogComponent implements OnInit {
           (projectsResult) => {
             this.projects.data = projectsResult;
             this.refresh();
+            this.notificationHelper.openNotification('Proiectul a fost adaugat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -87,8 +96,12 @@ export class ProjectsDialogComponent implements OnInit {
           (projectsResult) => {
             this.projects.data = projectsResult;
             this.refresh();
+            this.notificationHelper.openNotification('Proiectul a fost editat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -108,8 +121,12 @@ export class ProjectsDialogComponent implements OnInit {
         this.projectService.delete(project.id).subscribe(
           () => {
             this.deleteProjectFromList(project);
+            this.notificationHelper.openNotification('Proiectul a fost sters cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -143,7 +160,10 @@ export class ProjectsDialogComponent implements OnInit {
       (result) => {
         saveAs(result, 'Proiecte.xls');
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -153,11 +173,15 @@ export class ProjectsDialogComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('projects_file', file);
       this.projectService.importProjects(formData).subscribe(
-        (projects) => {
-          this.projects.data = projects;
+        (result) => {
+          this.projects.data = result.projects;
           this.refresh();
+          this.notificationHelper.openNotification(`Au fost adaugate cu succes ${result.added} proiecte.`, 'success');
         },
-        () => this.cancel()
+        (error) => {
+          this.notificationHelper.notifyWithError(error);
+          this.cancel();
+        }
       );
     }
   }
@@ -193,10 +217,14 @@ export class ProjectsDialogComponent implements OnInit {
             } else {
               this.selectedProjects.forEach((project) => this.deleteProjectFromList(project));
             }
+            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedProjects.length} proiecte.`, 'success');
             this.selectedProjects = [];
             this.refresh();
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -224,8 +252,12 @@ export class ProjectsDialogComponent implements OnInit {
     this.projectService.exportProjects(this.selectedProjects).subscribe(
       (result) => {
         saveAs(result, 'Proiecte.xls');
+        this.notificationHelper.openNotification(`Au fost exportate cu succes ${this.selectedProjects.length} proiecte.`, 'success');
       },
-      () => this.cancel()
+      (error) => {
+        this.notificationHelper.notifyWithError(error);
+        this.cancel();
+      }
     );
   }
 }

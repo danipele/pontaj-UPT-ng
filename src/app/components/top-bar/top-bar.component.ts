@@ -5,11 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { CoursesDialogComponent } from '../../dialogs/courses-dialog/courses-dialog.component';
 import { ProjectsDialogComponent } from '../../dialogs/projects-dialog/projects-dialog.component';
 import { PersonalInformationDialogComponent } from '../../dialogs/personal-information-dialog/personal-information-dialog.component';
-import { IUser } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-dialog.component';
 import { CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-top-bar',
@@ -25,17 +25,21 @@ export class TopBarComponent implements OnInit {
     public dialog: MatDialog,
     private userService: UserService,
     private cookieService: CookieService,
-    private calendarEventsHelper: CalendarEventsHelper
+    private calendarEventsHelper: CalendarEventsHelper,
+    private notificationHelper: NotificationHelper
   ) {}
 
   ngOnInit(): void {}
 
   logout(): void {
-    this.loginService.logout().subscribe(() => {
-      this.cookieService.remove('auth_token');
-      this.calendarEventsHelper.deleteEvents();
-      this.router.navigate(['/login']);
-    });
+    this.loginService.logout().subscribe(
+      () => {
+        this.cookieService.remove('auth_token');
+        this.calendarEventsHelper.deleteEvents();
+        this.router.navigate(['/login']);
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   openCoursesDialog(): void {
@@ -72,7 +76,13 @@ export class TopBarComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         if (user.first_name !== result.firstName || user.last_name !== result.lastName) {
-          this.userService.updateCurrentUser(result).subscribe();
+          this.userService.updateCurrentUser(result).subscribe(
+            (updateResult) => {
+              localStorage.setItem('user', JSON.stringify(updateResult));
+              this.notificationHelper.openNotification('Informatiile personale au fost actualizate cu succes!', 'success');
+            },
+            (error) => this.notificationHelper.notifyWithError(error)
+          );
         }
       }
     });

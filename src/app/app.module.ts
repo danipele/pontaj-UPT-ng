@@ -56,6 +56,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CopyEventDialogComponent } from './dialogs/copy-event-dialog/copy-event-dialog.component';
 import { ValidStartHoursHelper } from './helpers/valid-start-hours-helper';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NotificationHelper } from './helpers/notification-helper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -122,6 +124,8 @@ export function momentAdapterFactory(): DateAdapter {
     { provide: CalendarEventsHelper, useClass: CalendarEventsHelper },
     { provide: EventService, useClass: EventService },
     { provide: ValidStartHoursHelper, useClass: ValidStartHoursHelper },
+    { provide: NotificationHelper, useClass: NotificationHelper },
+    { provide: MatSnackBar, useClass: MatSnackBar },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent],

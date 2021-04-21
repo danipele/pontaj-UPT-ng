@@ -8,6 +8,7 @@ import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation
 import { indexOf } from 'lodash';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { saveAs } from 'file-saver';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -36,6 +37,7 @@ export class CoursesDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<CoursesDialogComponent>,
     public dialog: MatDialog,
     public courseService: CourseService,
+    private notificationHelper: NotificationHelper,
     @Inject(MAT_DIALOG_DATA) public data: { emitter: EventEmitter<any> }
   ) {}
 
@@ -45,7 +47,10 @@ export class CoursesDialogComponent implements OnInit {
         this.courses.data = result;
         this.refresh();
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -69,8 +74,12 @@ export class CoursesDialogComponent implements OnInit {
           (coursesResult) => {
             this.courses.data = coursesResult;
             this.refresh();
+            this.notificationHelper.openNotification('Cursul a fost adaugat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -87,8 +96,12 @@ export class CoursesDialogComponent implements OnInit {
           (coursesResult) => {
             this.courses.data = coursesResult;
             this.refresh();
+            this.notificationHelper.openNotification('Cursul a fost editat cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -108,8 +121,12 @@ export class CoursesDialogComponent implements OnInit {
         this.courseService.delete(course.id).subscribe(
           () => {
             this.deleteCourseFromList(course);
+            this.notificationHelper.openNotification('Cursul a fost sters cu succes!', 'success');
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -143,7 +160,10 @@ export class CoursesDialogComponent implements OnInit {
       (result) => {
         saveAs(result, 'Cursuri.xls');
       },
-      () => this.cancel()
+      (error) => {
+        this.cancel();
+        this.notificationHelper.notifyWithError(error);
+      }
     );
   }
 
@@ -153,11 +173,15 @@ export class CoursesDialogComponent implements OnInit {
       const formData: FormData = new FormData();
       formData.append('courses_file', file);
       this.courseService.importCourses(formData).subscribe(
-        (courses) => {
-          this.courses.data = courses;
+        (result) => {
+          this.courses.data = result.courses;
           this.refresh();
+          this.notificationHelper.openNotification(`Au fost adaugate cu succes ${result.added} cursuri.`, 'success');
         },
-        () => this.cancel()
+        (error) => {
+          this.notificationHelper.notifyWithError(error);
+          this.cancel();
+        }
       );
     }
   }
@@ -193,10 +217,14 @@ export class CoursesDialogComponent implements OnInit {
             } else {
               this.selectedCourses.forEach((course) => this.deleteCourseFromList(course));
             }
+            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedCourses.length} cursuri.`, 'success');
             this.selectedCourses = [];
             this.refresh();
           },
-          () => this.cancel()
+          (error) => {
+            this.notificationHelper.notifyWithError(error);
+            this.cancel();
+          }
         );
       }
     });
@@ -224,8 +252,12 @@ export class CoursesDialogComponent implements OnInit {
     this.courseService.exportCourses(this.selectedCourses).subscribe(
       (result) => {
         saveAs(result, 'Cursuri.xls');
+        this.notificationHelper.openNotification(`Au fost exportate cu succes ${this.selectedCourses.length} cursuri.`, 'success');
       },
-      () => this.cancel()
+      (error) => {
+        this.notificationHelper.notifyWithError(error);
+        this.cancel();
+      }
     );
   }
 }

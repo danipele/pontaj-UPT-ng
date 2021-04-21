@@ -8,7 +8,7 @@ export class UserService {
   constructor(private httpWrapper: HttpWrapper, private http: HttpClient) {}
 
   resetPassword(email: string): Observable<any> {
-    return this.httpWrapper.post(`http://localhost:8000/api/v1/users/reset_password`, { email }, this.httpWrapper.getAuthOptions());
+    return this.http.post(`http://localhost:8000/api/v1/users/reset_password`, { email }, this.httpWrapper.getAuthOptions());
   }
 
   getAuthenticatedUser(): Observable<any> {

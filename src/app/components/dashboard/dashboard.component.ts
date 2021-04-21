@@ -12,6 +12,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CopyEventsDialogComponent } from '../../dialogs/copy-events-dialog/copy-events-dialog.component';
 import { EventService } from '../../services/event.service';
 import { CopyEventDialogComponent } from '../../dialogs/copy-event-dialog/copy-event-dialog.component';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-dashboard',
@@ -42,7 +43,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private calendarEventsHelper: CalendarEventsHelper,
     private cookieService: CookieService,
-    private eventService: EventService
+    private eventService: EventService,
+    private notificationHelper: NotificationHelper
   ) {
     this.viewType = 'Saptamanal';
     this.date = moment().startOf('week').toDate();
@@ -61,7 +63,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (error.status === 401) {
           this.calendarEventsHelper.deleteEvents();
           this.router.navigate(['/login']);
+          this.notificationHelper.openNotification('Trebuie sa te loghezi pentru a intra in cont.', 'success');
         }
+        this.notificationHelper.notifyWithError(error);
       }
     );
   }
@@ -161,7 +165,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   resolveEvent(event: any): void {
-    this.calendarEventsHelper.resolveEvent(event, this.date, this.filterParams).then((events) => (this.events = events));
+    this.calendarEventsHelper.resolveEvent(event, this.date, this.filterParams).then(
+      (result) => {
+        this.events = result.events;
+        this.notificationHelper.openNotification(
+          `Evenimentul a fost ${result.mode === 'add' ? 'adaugat' : 'editat'} cu succes!`,
+          'success'
+        );
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   goToDay(event: any): void {
@@ -350,9 +363,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.eventService.copyEvents({ ...result, filter: { date: this.date, ...this.filterParams } }).subscribe((events) => {
-          this.events = this.calendarEventsHelper.addEvents(events);
-        });
+        this.eventService.copyEvents({ ...result, filter: { date: this.date, ...this.filterParams } }).subscribe(
+          (copyResult) => {
+            this.events = this.calendarEventsHelper.addEvents(copyResult.events);
+            this.notificationHelper.openNotification(
+              `Au fost ${result.move ? 'mutate' : 'copiate'} cu succes ${copyResult.successfully} evenimente!`,
+              'success'
+            );
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
       }
     });
   }
@@ -448,9 +468,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
             ...this.filterParams
           }
         };
-        this.eventService.add(params).subscribe((events) => {
-          this.events = this.calendarEventsHelper.addEvents(events);
-        });
+        this.eventService.add(params).subscribe(
+          (events) => {
+            this.events = this.calendarEventsHelper.addEvents(events);
+            this.notificationHelper.openNotification('Evenimentul a fost copiat cu succes!', 'success');
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
       }
     });
   }

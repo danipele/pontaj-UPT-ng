@@ -4,6 +4,7 @@ import { LoginService } from '../../services/login.service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CookieService } from 'ngx-cookie';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 @Component({
   selector: 'app-login',
@@ -12,14 +13,14 @@ import { CookieService } from 'ngx-cookie';
 })
 export class LoginComponent implements OnInit {
   formGroup: FormGroup;
-  error = '';
   resetPassOn = false;
 
   constructor(
     private loginService: LoginService,
     private router: Router,
     private userService: UserService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private notificationHelper: NotificationHelper
   ) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
@@ -28,11 +29,14 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userService.getAuthenticatedUser().subscribe((user) => {
-      if (user) {
-        this.router.navigate(['/dashboard']);
-      }
-    });
+    this.userService.getAuthenticatedUser().subscribe(
+      (user) => {
+        if (user) {
+          this.router.navigate(['/dashboard']);
+        }
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   login(): void {
@@ -41,15 +45,19 @@ export class LoginComponent implements OnInit {
       password: this.formGroup.controls.userPassword.value
     };
 
-    this.loginService.login(params).subscribe((result) => {
-      if (result.success === true) {
-        this.cookieService.put('auth_token', result.auth_token);
-        localStorage.setItem('user', JSON.stringify(result.user));
-        this.router.navigate(['/dashboard']);
-      } else {
-        this.error = result.message;
-      }
-    });
+    this.loginService.login(params).subscribe(
+      (result) => {
+        if (result.success === true) {
+          this.cookieService.put('auth_token', result.auth_token);
+          localStorage.setItem('user', JSON.stringify(result.user));
+          this.router.navigate(['/dashboard']);
+          this.notificationHelper.openNotification('Esti autentificat cu success!', 'success');
+        } else {
+          this.notificationHelper.openNotification(result.message, 'error');
+        }
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   resetPassword(): void {
@@ -59,7 +67,15 @@ export class LoginComponent implements OnInit {
   sendEmail(): void {
     this.resetPassOn = false;
     const email = this.formGroup.controls.userEmail.value;
-    this.userService.resetPassword(email).subscribe();
+    this.userService.resetPassword(email).subscribe(
+      (result) => {
+        this.notificationHelper.openNotification(
+          `Un email de resetare a parolei a fost trimis cu succes pe adresa de email: ${email}.`,
+          'success'
+        );
+      },
+      (error) => this.notificationHelper.notifyWithError(error)
+    );
   }
 
   signup(): void {
