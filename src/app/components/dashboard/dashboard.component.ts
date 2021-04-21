@@ -167,11 +167,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   resolveEvent(event: any): void {
     this.calendarEventsHelper.resolveEvent(event, this.date, this.filterParams).then(
       (result) => {
+        let message: string;
+        if (result.successfully) {
+          message = `Au fost create cu succes ${result.successfully} evenimente!`;
+        } else {
+          message = `Evenimentul a fost ${result.mode === 'add' ? 'adaugat' : 'editat'} cu succes!`;
+        }
         this.events = result.events;
-        this.notificationHelper.openNotification(
-          `Evenimentul a fost ${result.mode === 'add' ? 'adaugat' : 'editat'} cu succes!`,
-          'success'
-        );
+        this.notificationHelper.openNotification(message, 'success');
       },
       (error) => this.notificationHelper.notifyWithError(error)
     );

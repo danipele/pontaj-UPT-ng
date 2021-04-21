@@ -13,7 +13,7 @@ export class CalendarEventsHelper {
 
   constructor(public dialog: MatDialog, private eventService: EventService, private notificationHelper: NotificationHelper) {}
 
-  resolveEvent(result: any, date: Date, filterParams: any): Promise<{ events: IEvent[]; mode: string }> {
+  resolveEvent(result: any, date: Date, filterParams: any): Promise<{ events: IEvent[]; mode: string; successfully?: number }> {
     const startDate = new Date(result.date);
     const endDate = new Date(result.date);
     startDate.setHours(result.startHour);
@@ -40,8 +40,12 @@ export class CalendarEventsHelper {
       return this.eventService
         .update(params)
         .pipe(
-          map((eventsResult: []) => {
-            return { events: this.addEvents(eventsResult), mode: 'edit' };
+          map((eventsResult: any) => {
+            if (eventsResult.successfully) {
+              return { events: this.addEvents(eventsResult.events), mode: 'edit', successfully: eventsResult.successfully };
+            } else {
+              return { events: this.addEvents(eventsResult), mode: 'edit' };
+            }
           })
         )
         .toPromise();
@@ -55,8 +59,12 @@ export class CalendarEventsHelper {
       return this.eventService
         .add(params)
         .pipe(
-          map((eventsResult: []) => {
-            return { events: this.addEvents(eventsResult), mode: 'add' };
+          map((eventsResult: any) => {
+            if (eventsResult.successfully) {
+              return { events: this.addEvents(eventsResult.events), mode: 'add', successfully: eventsResult.successfully };
+            } else {
+              return { events: this.addEvents(eventsResult), mode: 'add' };
+            }
           })
         )
         .toPromise();
