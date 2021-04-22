@@ -4,7 +4,14 @@ import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
-import { ACTIVITIES, COURSE_SUBACTIVITIES, HOLIDAYS, IEvent, OTHER_SUBACTIVITIES } from '../../models/event.model';
+import {
+  ACTIVITIES,
+  COLLABORATOR_SUBACTIVITIES,
+  COURSE_SUBACTIVITIES,
+  HOLIDAYS,
+  IEvent,
+  OTHER_SUBACTIVITIES
+} from '../../models/event.model';
 import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
@@ -65,6 +72,8 @@ export class AddEventDialogComponent {
   recurrentEndingDate = new Date();
   recurrentEnding = '';
   weekendsToo = false;
+  typeMessage = '';
+  type = '';
 
   weeklyRecurrentDateFilter = (date: Date | null): boolean => {
     return this.recurrent !== RECURRENT.WEEKLY || date?.getDay() === this.data.date?.getDay();
@@ -120,7 +129,7 @@ export class AddEventDialogComponent {
     } else {
       this.activities = ['Activitate didactica'];
       this.activity = 'Activitate didactica';
-      this.subactivities = COURSE_SUBACTIVITIES;
+      this.subactivities = COLLABORATOR_SUBACTIVITIES;
     }
   }
 
@@ -140,6 +149,10 @@ export class AddEventDialogComponent {
             this.startHour = this.startHours()[0].value;
             this.endHour = this.endHours()[0].value;
           }
+          if (this.activity) {
+            this.setType();
+          }
+          this.setActivitiesForBasic();
         },
         () => this.cancel()
       );
@@ -185,25 +198,28 @@ export class AddEventDialogComponent {
 
     const availableHours: Hour[] = [];
     HOURS.slice((this.startHour as number) + 1, HOURS.length).forEach((hour) => availableHours.push(hour));
-    if (this.events) {
-      const endHours: Hour[] = [];
-      for (const hour of availableHours) {
-        endHours.push(hour);
-        let startsAnEvent = false;
-        for (const event of this.events) {
-          if (event.start.getHours() === hour.value) {
-            startsAnEvent = true;
-            break;
-          }
-        }
-        if (startsAnEvent) {
+    const endHours: Hour[] = [];
+    for (const hour of availableHours) {
+      endHours.push(hour);
+      let startsAnEvent = false;
+      for (const event of this.events) {
+        if (event.start.getHours() === hour.value) {
+          startsAnEvent = true;
           break;
         }
       }
-      return endHours;
+      if (startsAnEvent) {
+        break;
+      }
     }
 
-    return availableHours;
+    if (this.type === 'norma de baza') {
+      const availableBasicHours = 8 - this.getBasicHours();
+      if (endHours.length > availableBasicHours) {
+        endHours.splice(availableBasicHours);
+      }
+    }
+    return endHours;
   }
 
   setAllDay(event: any): void {
@@ -222,15 +238,13 @@ export class AddEventDialogComponent {
       id: this.id,
       recurrent: this.recurrent,
       recurrentDate: this.recurrentEndingDate,
-      weekendsToo: this.weekendsToo
+      weekendsToo: this.weekendsToo,
+      type: this.type
     };
   }
 
   dateChanged(): void {
     this.getDayEvents();
-    this.startHour = undefined;
-    this.endHour = undefined;
-    const a = this.startHours();
   }
 
   activitySelected(subactivity?: string, entity?: ICourse | IProject): void {
@@ -254,6 +268,7 @@ export class AddEventDialogComponent {
         break;
       }
     }
+    this.setType();
   }
 
   getCourses(entity?: ICourse | IProject | undefined): void {
@@ -300,6 +315,7 @@ export class AddEventDialogComponent {
     if (this.activity === 'Activitate didactica') {
       this.getCourses(entity);
     }
+    this.setType();
   }
 
   addNewEntity(): void {
@@ -436,5 +452,89 @@ export class AddEventDialogComponent {
 
   isEmployee(): boolean {
     return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+  }
+
+  setType(): void {
+    if (!this.isEmployee()) {
+      this.type = 'plata cu ora';
+    } else {
+      const hours = this.getBasicHours();
+      if (this.activity === 'Proiect') {
+        this.setProjectType(hours);
+      } else if (hours < 8) {
+        this.setBasicType(hours);
+      } else {
+        this.setHourPay();
+      }
+    }
+  }
+
+  setProjectType(hours: number): void {
+    if (!this.entity) {
+      this.typeMessage = this.type = '';
+      return;
+    }
+
+    const entity = this.entity as IProject;
+    this.type = 'proiect';
+    this.typeMessage = `Aveti pontate ${hours} ore pe proiectul ${entity.name} pentru luna ${this.data.date?.toLocaleString('ro-RO', {
+      month: 'long'
+    })} ${this.data.date?.getFullYear()}.`;
+    if (entity.hours_per_month) {
+      if (entity.hours_per_month - hours >= 0) {
+        this.typeMessage += ` Mai aveti ${entity.hours_per_month - hours} ore ramase.`;
+      } else {
+        this.typeMessage += ` Ati depasit deja norma lunara de ${entity.hours_per_month}.`;
+      }
+    } else {
+      this.typeMessage += ` Nu aveti norma lunara de ore pe acest proiect.`;
+    }
+  }
+
+  setBasicType(hours: number): void {
+    this.type = 'norma de baza';
+    this.typeMessage = `Aveti pontate ${hours} ore din norma de baza in data de ${this.data.date
+      ?.toLocaleDateString()
+      .replace(/\/(.*)\//, '.$1.')}.`;
+    this.typeMessage += ` Mai aveti ${8 - hours} ore ramase.`;
+  }
+
+  setHourPay(): void {
+    const length = this.events.filter((event) => event.type === 'plata cu ora').length;
+    this.type = 'plata cu ora';
+    this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${length} ore in regim de plata cu ora in data de ${this.data.date
+      ?.toLocaleDateString()
+      .replace(/\/(.*)\//, '.$1.')}.`;
+    this.typeMessage += ' Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra la plata cu ora.';
+  }
+
+  getBasicHours(): number {
+    let events: IEvent[];
+    if (this.activity === 'Proiect' && this.entity) {
+      events = this.events.filter((event) => event.type === 'proiect' && event.entity?.id === this.entity?.id);
+    } else if (this.activity === 'Concediu') {
+      events = [];
+    } else {
+      events = this.events.filter((event) => event.type === 'norma de baza');
+    }
+    let sum = 0;
+    events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
+    return sum;
+  }
+
+  entitySelected(): void {
+    this.setType();
+  }
+
+  setActivitiesForBasic(): void {
+    if (this.getBasicHours() === 8) {
+      const index = this.activities.indexOf('Alta activitate');
+      if (index !== -1) {
+        this.activities.splice(index, 1);
+      }
+      if (this.activity === 'Activitate didactica') {
+        this.subactivities = COLLABORATOR_SUBACTIVITIES;
+      }
+    }
   }
 }

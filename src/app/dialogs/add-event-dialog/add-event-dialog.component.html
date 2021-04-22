@@ -65,7 +65,7 @@
       *ngIf="(activity === 'Activitate didactica' && subactivity != undefined) || activity === 'Proiect'"
     >
       <mat-label>{{ activity }}</mat-label>
-      <mat-select [(ngModel)]="entity" name="entity">
+      <mat-select [(ngModel)]="entity" name="entity" (selectionChange)="entitySelected()">
         <mat-option *ngFor="let entity of entities" [value]="entity">
           {{ entity.name }}
         </mat-option>
@@ -132,7 +132,19 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
+  <div class="type-message-container row" *ngIf="isEmployee() && this.activity && (!(this.activity === 'Proiect') || this.entity)">
+    <div class="col-xs-1"><mat-icon>info</mat-icon></div>
+    <div class="col-sm-10 type-message-grid">
+      <span class="type-message">{{ typeMessage }}</span>
+    </div>
+  </div>
+  <button
+    mat-raised-button
+    [disabled]="notAllFieldsAreFilled()"
+    class="upt-btn confirm-btn"
+    [mat-dialog-close]="sendData()"
+    cdkFocusInitial
+  >
     Confirm
   </button>
 </div>

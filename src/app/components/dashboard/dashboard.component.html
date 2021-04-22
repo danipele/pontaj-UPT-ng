@@ -187,6 +187,7 @@
   >
     <div class="activity-event">
       {{ weekEvent.event.activity == 'Proiect' ? weekEvent.event.activity : weekEvent.event.subactivity }}
+      <span *ngIf="weekEvent.event.type === 'plata cu ora' && isEmployee()"> - Plata cu ora</span>
     </div>
     <div class="activity-event" *ngIf="weekEvent.event.start.getHours() !== 0 || weekEvent.event.end.getHours() !== 0">
       {{ weekEvent.event.start | date: 'HH:mm' | titlecase }} -

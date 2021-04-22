@@ -1,5 +1,12 @@
 import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { ACTIVITIES, COURSE_SUBACTIVITIES, HOLIDAYS, IEvent, OTHER_SUBACTIVITIES } from '../../models/event.model';
+import {
+  ACTIVITIES,
+  COLLABORATOR_SUBACTIVITIES,
+  COURSE_SUBACTIVITIES,
+  HOLIDAYS,
+  IEvent,
+  OTHER_SUBACTIVITIES
+} from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { indexOf } from 'lodash';
 import { MatSort, Sort } from '@angular/material/sort';
@@ -87,7 +94,7 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
       this.subactivities = [...COURSE_SUBACTIVITIES, ...OTHER_SUBACTIVITIES, ...HOLIDAYS].sort((a, b) => a.localeCompare(b));
     } else {
       this.activities = ['Activitate didactica'];
-      this.subactivities = COURSE_SUBACTIVITIES;
+      this.subactivities = COLLABORATOR_SUBACTIVITIES;
     }
   }
 

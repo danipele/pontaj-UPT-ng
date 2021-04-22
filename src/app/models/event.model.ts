@@ -12,6 +12,7 @@ export interface IEvent {
   subactivity: string;
   entity?: ICourse | IProject;
   description?: string;
+  type?: string;
 }
 
 export const ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Concediu', 'Proiect'];
@@ -46,3 +47,4 @@ export const HOLIDAYS: string[] = [
   'Concediu fara salariu',
   'Absente nemotivate'
 ];
+export const COLLABORATOR_SUBACTIVITIES: string[] = ['Curs', 'Seminar', 'Laborator', 'Ora de proiect'];

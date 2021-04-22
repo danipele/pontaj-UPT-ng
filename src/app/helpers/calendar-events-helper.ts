@@ -25,7 +25,8 @@ export class CalendarEventsHelper {
       activity: result.activity,
       subactivity: result.subactivity,
       entity: result.entity ? result.entity.id : undefined,
-      description: result.description
+      description: result.description,
+      type: result.type
     };
     let params: any = {
       ...event,
@@ -84,7 +85,8 @@ export class CalendarEventsHelper {
       description: event.description,
       activity: event.activity,
       subactivity: event.subactivity,
-      entity: event.entity
+      entity: event.entity,
+      type: event.type
     };
   }
 
