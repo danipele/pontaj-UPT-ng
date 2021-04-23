@@ -160,7 +160,7 @@ export class AddEventDialogComponent {
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
     this.activity = 'Activitate didactica';
-    this.subactivities = COURSE_SUBACTIVITIES;
+    this.subactivities = this.type === 'plata cu ora' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
     this.subactivity = 'Curs';
     this.entities = data.courses;
     this.entity = data.selected;
@@ -248,11 +248,15 @@ export class AddEventDialogComponent {
   }
 
   activitySelected(subactivity?: string, entity?: ICourse | IProject): void {
+    if (this.events) {
+      this.setType();
+    }
+
     this.entity = undefined;
     this.subactivity = subactivity;
     switch (this.activity) {
       case 'Activitate didactica': {
-        this.subactivities = COURSE_SUBACTIVITIES;
+        this.subactivities = this.type === 'plata cu ora' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
         break;
       }
       case 'Proiect': {
@@ -268,7 +272,6 @@ export class AddEventDialogComponent {
         break;
       }
     }
-    this.setType();
   }
 
   getCourses(entity?: ICourse | IProject | undefined): void {
@@ -315,7 +318,9 @@ export class AddEventDialogComponent {
     if (this.activity === 'Activitate didactica') {
       this.getCourses(entity);
     }
-    this.setType();
+    if (this.events) {
+      this.setType();
+    }
   }
 
   addNewEntity(): void {
@@ -500,9 +505,8 @@ export class AddEventDialogComponent {
   }
 
   setHourPay(): void {
-    const length = this.events.filter((event) => event.type === 'plata cu ora').length;
     this.type = 'plata cu ora';
-    this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${length} ore in regim de plata cu ora in data de ${this.data.date
+    this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
       ?.toLocaleDateString()
       .replace(/\/(.*)\//, '.$1.')}.`;
     this.typeMessage += ' Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra la plata cu ora.';
@@ -519,11 +523,30 @@ export class AddEventDialogComponent {
     }
     let sum = 0;
     events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
+
+    if (this.data.event && this.data.event.type === 'norma de baza') {
+      sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
+    }
+
+    return sum;
+  }
+
+  getHourPayHours(): number {
+    const events = this.events.filter((event) => event.type === 'plata cu ora');
+    let sum = 0;
+    events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
+
+    if (this.data.event && this.data.event.type === 'plata cu ora') {
+      sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
+    }
+
     return sum;
   }
 
   entitySelected(): void {
-    this.setType();
+    if (this.events) {
+      this.setType();
+    }
   }
 
   setActivitiesForBasic(): void {

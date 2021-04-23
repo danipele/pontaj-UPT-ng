@@ -33,4 +33,8 @@ export class EventService {
   copyEvents(params: {}): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/copy_events`, params, this.httpWrapper.getAuthOptions());
   }
+
+  copyEvent(params: {}): Observable<any> {
+    return this.httpWrapper.post(`http://localhost:8000/api/v1/events/copy_event`, params, this.httpWrapper.getAuthOptions());
+  }
 }

@@ -169,7 +169,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       (result) => {
         let message: string;
         if (result.successfully) {
-          message = `Au fost create cu succes ${result.successfully} evenimente!`;
+          message = `Au fost create cu succes ${result.successfully + 1} evenimente!`;
         } else {
           message = `Evenimentul a fost ${result.mode === 'add' ? 'adaugat' : 'editat'} cu succes!`;
         }
@@ -369,10 +369,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.eventService.copyEvents({ ...result, filter: { date: this.date, ...this.filterParams } }).subscribe(
           (copyResult) => {
             this.events = this.calendarEventsHelper.addEvents(copyResult.events);
-            this.notificationHelper.openNotification(
-              `Au fost ${result.move ? 'mutate' : 'copiate'} cu succes ${copyResult.successfully} evenimente!`,
-              'success'
-            );
+            if (copyResult.successfully === 0) {
+              this.notificationHelper.openNotification(`Nu a putut fi copiat niciun eveniment`, 'error');
+            } else {
+              this.notificationHelper.openNotification(
+                `Au fost ${result.move ? 'mutate' : 'copiate'} cu succes ${copyResult.successfully} evenimente!`,
+                'success'
+              );
+            }
           },
           (error) => this.notificationHelper.notifyWithError(error)
         );
@@ -452,32 +456,24 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (result) {
         const start = new Date(result.date);
         start.setHours(result.startHour);
-        const end = new Date(result.date);
-        end.setHours(result.startHour + (endHour === 0 ? 24 : endHour) - event.start.getHours());
 
-        const eventData: any = {
-          start_date: start,
-          end_date: end,
-          activity: event.activity,
-          subactivity: event.subactivity,
-          entity: event.entity ? event.entity.id : undefined,
-          description: event.description
-        };
-
-        const params: any = {
-          ...eventData,
-          filter: {
-            date: this.date as Date,
-            ...this.filterParams
-          }
-        };
-        this.eventService.add(params).subscribe(
-          (events) => {
-            this.events = this.calendarEventsHelper.addEvents(events);
-            this.notificationHelper.openNotification('Evenimentul a fost copiat cu succes!', 'success');
-          },
-          (error) => this.notificationHelper.notifyWithError(error)
-        );
+        this.eventService
+          .copyEvent({
+            event_id: event.id,
+            date: start,
+            filter: { date: this.date, ...this.filterParams }
+          })
+          .subscribe(
+            (copyResult) => {
+              this.events = this.calendarEventsHelper.addEvents(copyResult.events);
+              if (copyResult.successfully === 0) {
+                this.notificationHelper.openNotification(`Evenimentul nu a putut fi copiat!`, 'error');
+              } else {
+                this.notificationHelper.openNotification(`Au fost create cu succes ${copyResult.successfully} evenimente!`, 'success');
+              }
+            },
+            (error) => this.notificationHelper.notifyWithError(error)
+          );
       }
     });
   }
