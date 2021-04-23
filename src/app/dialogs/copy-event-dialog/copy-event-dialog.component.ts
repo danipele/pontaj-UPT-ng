@@ -72,7 +72,7 @@ export class CopyEventDialogComponent implements OnInit {
   }
 
   restrictEndHour(): void {
-    const availableEndHour = this.data.restrictedEndHour - this.data.eventLength;
+    const availableEndHour = this.data.restrictedEndHour || 24 - this.data.eventLength;
     while (this.hours[this.hours.length - 1].value > availableEndHour) {
       this.hours = this.hours.splice(0, this.hours.length - 1);
     }
