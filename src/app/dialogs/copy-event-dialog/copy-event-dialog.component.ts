@@ -9,6 +9,8 @@ import { Hour, ValidStartHoursHelper } from '../../helpers/valid-start-hours-hel
 
 interface Data {
   eventLength: number;
+  restrictedStartHour: number;
+  restrictedEndHour: number;
 }
 
 @Component({
@@ -61,10 +63,18 @@ export class CopyEventDialogComponent implements OnInit {
       .toPromise()
       .then(
         (events) => {
-          this.hours = this.validStartHoursHelper.setStartHours(events, this.data.eventLength);
+          this.hours = this.validStartHoursHelper.setStartHours(events, this.data.restrictedStartHour, this.data.eventLength);
+          this.restrictEndHour();
           this.hour = this.hours[0].value;
         },
         () => this.cancel()
       );
+  }
+
+  restrictEndHour(): void {
+    const availableEndHour = this.data.restrictedEndHour - this.data.eventLength;
+    while (this.hours[this.hours.length - 1].value > availableEndHour) {
+      this.hours = this.hours.splice(0, this.hours.length - 1);
+    }
   }
 }

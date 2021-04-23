@@ -36,7 +36,7 @@ export const HOURS: Hour[] = [
 
 @Injectable()
 export class ValidStartHoursHelper {
-  setStartHours(events: IEvent[], eventLength?: number, editEvent?: IEvent): Hour[] {
+  setStartHours(events: IEvent[], projectRestrictedStartHour?: number, eventLength?: number, editEvent?: IEvent): Hour[] {
     let hours: Hour[] = [];
     HOURS.slice(0, HOURS.length - 1).forEach((hour) => hours.push(hour));
     if (eventLength) {
@@ -56,6 +56,9 @@ export class ValidStartHoursHelper {
         }
       }
     });
+    if (projectRestrictedStartHour) {
+      hours = this.removeOutOfRestrictedHours(projectRestrictedStartHour, hours);
+    }
     return hours;
   }
 
@@ -72,5 +75,12 @@ export class ValidStartHoursHelper {
     if (startHourIndex !== -1) {
       hours.splice(startHourIndex, nrOfHours);
     }
+  }
+
+  removeOutOfRestrictedHours(startHour: number, hours: Hour[]): Hour[] {
+    while (hours[0].value < startHour) {
+      hours = hours.splice(1);
+    }
+    return hours;
   }
 }

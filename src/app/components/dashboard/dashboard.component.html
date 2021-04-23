@@ -23,24 +23,34 @@
         isEmployee()
           ? '&#13;
          Activitatate didactica: ' +
-            this.getNrOfActivityTypeEvents('Activitate didactica') +
+            getNrOfActivityTypeEvents('Activitate didactica') +
             ' (' +
-            getNrOfHoursForTypeEvents('Activitate didactica') +
+            getNrOfHoursForActivityTypeEvents('Activitate didactica') +
             ' ore)
          Proiect: ' +
-            this.getNrOfActivityTypeEvents('Proiect') +
+            getNrOfActivityTypeEvents('Proiect') +
             ' (' +
-            getNrOfHoursForTypeEvents('Proiect') +
+            getNrOfHoursForActivityTypeEvents('Proiect') +
             ' ore)
          Concediu: ' +
-            this.getNrOfActivityTypeEvents('Concediu') +
+            getNrOfActivityTypeEvents('Concediu') +
             ' (' +
-            getNrOfHoursForTypeEvents('Concediu') +
+            getNrOfHoursForActivityTypeEvents('Concediu') +
             ' ore)
          Alta activitate: ' +
-            this.getNrOfActivityTypeEvents('Alta activitate') +
+            getNrOfActivityTypeEvents('Alta activitate') +
             ' (' +
-            getNrOfHoursForTypeEvents('Alta activitate') +
+            getNrOfHoursForActivityTypeEvents('Alta activitate') +
+            ' ore)
+         &#13;Norma de baza: ' +
+            getNrOfTypeEvents('norma de baza') +
+            ' (' +
+            getNrOfHoursForTypeEvents('norma de baza') +
+            ' ore)
+         Plata cu ora: ' +
+            getNrOfTypeEvents('plata cu ora') +
+            ' (' +
+            getNrOfHoursForTypeEvents('plata cu ora') +
             ' ore)'
           : ''
       }}"

@@ -186,6 +186,7 @@ export class AddEventDialogComponent {
     const isEditEvent = this.id && !this.data.course && !this.data.project;
     return this.validStartHoursHelper.setStartHours(
       this.events,
+      (this.entity as IProject)?.restricted_start_hour,
       isEditEvent ? endHour - startHour : undefined,
       isEditEvent ? this.data.event : undefined
     );
@@ -198,7 +199,7 @@ export class AddEventDialogComponent {
 
     const availableHours: Hour[] = [];
     HOURS.slice((this.startHour as number) + 1, HOURS.length).forEach((hour) => availableHours.push(hour));
-    const endHours: Hour[] = [];
+    let endHours: Hour[] = [];
     for (const hour of availableHours) {
       endHours.push(hour);
       let startsAnEvent = false;
@@ -219,6 +220,14 @@ export class AddEventDialogComponent {
         endHours.splice(availableBasicHours);
       }
     }
+
+    const projectRestrictedHour = (this.entity as IProject)?.restricted_end_hour;
+    if (projectRestrictedHour) {
+      while (endHours[endHours.length - 1].value > projectRestrictedHour) {
+        endHours = endHours.splice(0, endHours.length - 1);
+      }
+    }
+
     return endHours;
   }
 
@@ -547,6 +556,8 @@ export class AddEventDialogComponent {
     if (this.events) {
       this.setType();
     }
+    this.startHour = this.startHours()[0].value;
+    this.endHour = this.endHours()[0].value;
   }
 
   setActivitiesForBasic(): void {

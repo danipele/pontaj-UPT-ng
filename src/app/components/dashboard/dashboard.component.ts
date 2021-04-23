@@ -13,6 +13,7 @@ import { CopyEventsDialogComponent } from '../../dialogs/copy-events-dialog/copy
 import { EventService } from '../../services/event.service';
 import { CopyEventDialogComponent } from '../../dialogs/copy-event-dialog/copy-event-dialog.component';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { IProject } from '../../models/project.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -430,8 +431,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
     return this.events.filter((event) => event.activity === type).length;
   }
 
-  getNrOfHoursForTypeEvents(type: string): number {
+  getNrOfTypeEvents(type: string): number {
+    return this.events.filter((event) => event.type === type).length;
+  }
+
+  getNrOfHoursForActivityTypeEvents(type: string): number {
     const events: IEvent[] = this.events.filter((event) => event.activity === type);
+    return this.getNrOfHoursForEvents(events);
+  }
+
+  getNrOfHoursForTypeEvents(type: string): number {
+    const events: IEvent[] = this.events.filter((event) => event.type === type);
+    return this.getNrOfHoursForEvents(events);
+  }
+
+  getNrOfHoursForEvents(events: IEvent[]): number {
     let hours = 0;
     events.forEach((event) => {
       const startHour = event.start.getHours();
@@ -449,7 +463,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const endHour = event.end.getHours();
     const dialogRef = this.dialog.open(CopyEventDialogComponent, {
       width: '40%',
-      data: { eventLength: (endHour === 0 ? 24 : endHour) - event.start.getHours() }
+      data: {
+        eventLength: (endHour === 0 ? 24 : endHour) - event.start.getHours(),
+        restrictedStartHour: (event.entity as IProject)?.restricted_start_hour,
+        restrictedEndHour: (event.entity as IProject)?.restricted_end_hour
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
