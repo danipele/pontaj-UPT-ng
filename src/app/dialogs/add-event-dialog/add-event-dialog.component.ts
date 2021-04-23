@@ -63,7 +63,7 @@ export class AddEventDialogComponent {
   entity: ICourse | IProject | undefined;
   description: string | undefined = '';
 
-  activities: string[];
+  activities: string[] = [];
   subactivities: string[] = [];
   dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
@@ -125,7 +125,7 @@ export class AddEventDialogComponent {
     this.getDayEvents();
 
     if (this.isEmployee()) {
-      this.activities = ACTIVITIES;
+      ACTIVITIES.forEach((activity) => this.activities.push(activity));
     } else {
       this.activities = ['Activitate didactica'];
       this.activity = 'Activitate didactica';
