@@ -19,7 +19,10 @@
         <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
       </div>
       <div class="hour-date">
-        <span>{{ data.event.start | date: 'HH:mm' | titlecase }} - {{ data.event.end | date: 'HH:mm' | titlecase }}</span>
+        <span
+          >{{ data.event.start | date: 'HH:mm' | titlecase }} -
+          {{ data.event.end.getHours() === 0 ? '24:00' : (data.event.end | date: 'HH:mm' | titlecase) }}</span
+        >
       </div>
     </div>
   </div>

@@ -194,6 +194,7 @@
     (mwlClick)="eventClicked.emit({ sourceEvent: $event })"
     tabindex="0"
     role="application"
+    [class.allDayEvent]="weekEvent.event.allDay"
   >
     <div class="activity-event">
       {{ weekEvent.event.activity == 'Proiect' ? weekEvent.event.activity : weekEvent.event.subactivity }}
@@ -203,6 +204,5 @@
       {{ weekEvent.event.start | date: 'HH:mm' | titlecase }} -
       {{ weekEvent.event.end.getHours() === 0 ? '24:00' : (weekEvent.event.end | date: 'HH:mm' | titlecase) }}
     </div>
-    <div class="activity-event" *ngIf="weekEvent.event.start.getHours() === 0 && weekEvent.event.end.getHours() === 0">Toata ziua</div>
   </div>
 </ng-template>

@@ -22,7 +22,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <span class="hours-delimiter">-</span>
+    <span class="hours-delimiter" [class.grey-delimiter]="allDay">-</span>
     <mat-form-field appearance="fill" class="hour-field">
       <mat-label>Ora de sfarsit</mat-label>
       <mat-select [(ngModel)]="endHour" name="endHour" [disabled]="allDay">
@@ -31,9 +31,6 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-checkbox class="check-all-day" [checked]="allDay" [color]="'primary'" (change)="setAllDay($event.checked)"
-      >Toata ziua</mat-checkbox
-    >
   </div>
   <div class="choose-activity">
     <h6>
@@ -132,7 +129,7 @@
   </div>
 </div>
 <div class="modal-footer">
-  <div class="type-message-container row" *ngIf="isEmployee() && this.activity && (!(this.activity === 'Proiect') || this.entity)">
+  <div class="type-message-container row" *ngIf="type !== 'concediu'">
     <div class="col-xs-1"><mat-icon>info</mat-icon></div>
     <div class="col-sm-10 type-message-grid">
       <span class="type-message">{{ typeMessage }}</span>

@@ -76,7 +76,7 @@ export class CalendarEventsHelper {
     return {
       id: event.id,
       start: new Date(event.start_date),
-      end: new Date(event.end_date),
+      end: event.activity === 'Concediu' ? new Date(event.start_date) : new Date(event.end_date),
       title: event.subactivity,
       color: {
         primary: '#fff',
@@ -86,7 +86,8 @@ export class CalendarEventsHelper {
       activity: event.activity,
       subactivity: event.subactivity,
       entity: event.entity,
-      type: event.type
+      type: event.type,
+      allDay: event.activity === 'Concediu'
     };
   }
 

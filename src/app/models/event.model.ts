@@ -13,9 +13,12 @@ export interface IEvent {
   entity?: ICourse | IProject;
   description?: string;
   type?: string;
+  allDay: boolean;
 }
 
 export const ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Concediu', 'Proiect'];
+export const NO_HOLIDAY_ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Proiect'];
+export const WEEKEND_ACTIVITIES: string[] = ['Activitate didactica', 'Proiect'];
 
 export const COURSE_SUBACTIVITIES: string[] = [
   'Curs',

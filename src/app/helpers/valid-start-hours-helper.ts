@@ -36,12 +36,14 @@ export const HOURS: Hour[] = [
 
 @Injectable()
 export class ValidStartHoursHelper {
-  setStartHours(events: IEvent[], projectRestrictedStartHour?: number, eventLength?: number, editEvent?: IEvent): Hour[] {
-    let hours: Hour[] = [];
-    HOURS.slice(0, HOURS.length - 1).forEach((hour) => hours.push(hour));
-    if (eventLength) {
-      hours = hours.slice(0, hours.length - eventLength + 1);
-    }
+  setStartHours(
+    events: IEvent[],
+    projectRestrictedStartHour?: number,
+    projectRestrictedEndHour?: number,
+    eventLength?: number,
+    editEvent?: IEvent
+  ): Hour[] {
+    const hours = this.setAllHours(eventLength, projectRestrictedStartHour, projectRestrictedEndHour);
 
     events.forEach((event) => {
       if (!editEvent || event.start.getHours() !== editEvent.start.getHours()) {
@@ -56,9 +58,6 @@ export class ValidStartHoursHelper {
         }
       }
     });
-    if (projectRestrictedStartHour) {
-      hours = this.removeOutOfRestrictedHours(projectRestrictedStartHour, hours);
-    }
     return hours;
   }
 
@@ -77,10 +76,29 @@ export class ValidStartHoursHelper {
     }
   }
 
-  removeOutOfRestrictedHours(startHour: number, hours: Hour[]): Hour[] {
-    while (hours[0].value < startHour) {
-      hours = hours.splice(1);
+  removeOutOfRestrictedHours(hours: Hour[], startHour?: number, endHour?: number): Hour[] {
+    if (startHour) {
+      while (hours[0].value < startHour) {
+        hours = hours.splice(1);
+      }
     }
+
+    if (endHour) {
+      while (hours[hours.length - 1].value > endHour - 1) {
+        hours = hours.splice(0, hours.length - 1);
+      }
+    }
+    return hours;
+  }
+
+  setAllHours(eventLength?: number, projectRestrictedStartHour?: number, projectRestrictedEndHour?: number): Hour[] {
+    let hours: Hour[] = [];
+    HOURS.slice(0, HOURS.length - 1).forEach((hour) => hours.push(hour));
+    if (eventLength) {
+      hours = hours.slice(0, hours.length - eventLength + 1);
+    }
+    hours = this.removeOutOfRestrictedHours(hours, projectRestrictedStartHour, projectRestrictedEndHour);
+
     return hours;
   }
 }

@@ -466,14 +466,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
       data: {
         eventLength: (endHour === 0 ? 24 : endHour) - event.start.getHours(),
         restrictedStartHour: (event.entity as IProject)?.restricted_start_hour,
-        restrictedEndHour: (event.entity as IProject)?.restricted_end_hour
+        restrictedEndHour: (event.entity as IProject)?.restricted_end_hour,
+        type: event.type
       }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const start = new Date(result.date);
-        start.setHours(result.startHour);
+        if (event.type === 'concediu') {
+          start.setHours(0);
+        } else {
+          start.setHours(result.startHour);
+        }
 
         this.eventService
           .copyEvent({

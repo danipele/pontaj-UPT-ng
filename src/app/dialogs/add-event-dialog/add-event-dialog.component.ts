@@ -10,7 +10,9 @@ import {
   COURSE_SUBACTIVITIES,
   HOLIDAYS,
   IEvent,
-  OTHER_SUBACTIVITIES
+  NO_HOLIDAY_ACTIVITIES,
+  OTHER_SUBACTIVITIES,
+  WEEKEND_ACTIVITIES
 } from '../../models/event.model';
 import { AddEditCourseDialogComponent } from '../add-edit-course-dialog/add-edit-course-dialog.component';
 import { AddEditProjectDialogComponent } from '../add-edit-project-dialog/add-edit-project-dialog.component';
@@ -72,8 +74,8 @@ export class AddEventDialogComponent {
   recurrentEndingDate = new Date();
   recurrentEnding = '';
   weekendsToo = false;
-  typeMessage = '';
-  type = '';
+  typeMessage: string | undefined = '';
+  type: string | undefined = '';
 
   weeklyRecurrentDateFilter = (date: Date | null): boolean => {
     return this.recurrent !== RECURRENT.WEEKLY || date?.getDay() === this.data.date?.getDay();
@@ -123,14 +125,6 @@ export class AddEventDialogComponent {
       this.id = event.id;
     }
     this.getDayEvents();
-
-    if (this.isEmployee()) {
-      ACTIVITIES.forEach((activity) => this.activities.push(activity));
-    } else {
-      this.activities = ['Activitate didactica'];
-      this.activity = 'Activitate didactica';
-      this.subactivities = COLLABORATOR_SUBACTIVITIES;
-    }
   }
 
   getDayEvents(): void {
@@ -152,6 +146,7 @@ export class AddEventDialogComponent {
           if (this.activity) {
             this.setType();
           }
+          this.setActivities();
           this.setActivitiesForBasic();
         },
         () => this.cancel()
@@ -184,12 +179,21 @@ export class AddEventDialogComponent {
     const startHour = this.data.event?.start.getHours() as number;
     const endHour = this.data.event?.end.getHours() === 0 ? 24 : (this.data.event?.end.getHours() as number);
     const isEditEvent = this.id && !this.data.course && !this.data.project;
-    return this.validStartHoursHelper.setStartHours(
-      this.events,
-      (this.entity as IProject)?.restricted_start_hour,
-      isEditEvent ? endHour - startHour : undefined,
-      isEditEvent ? this.data.event : undefined
-    );
+    if (this.events.length === 1 && this.events[0].allDay) {
+      return this.validStartHoursHelper.setAllHours(
+        isEditEvent ? endHour - startHour : undefined,
+        (this.entity as IProject)?.restricted_start_hour,
+        (this.entity as IProject)?.restricted_end_hour
+      );
+    } else {
+      return this.validStartHoursHelper.setStartHours(
+        this.events,
+        (this.entity as IProject)?.restricted_start_hour,
+        (this.entity as IProject)?.restricted_end_hour,
+        isEditEvent ? endHour - startHour : undefined,
+        isEditEvent ? this.data.event : undefined
+      );
+    }
   }
 
   endHours(): Hour[] {
@@ -266,18 +270,22 @@ export class AddEventDialogComponent {
     switch (this.activity) {
       case 'Activitate didactica': {
         this.subactivities = this.type === 'plata cu ora' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
+        this.allDay = false;
         break;
       }
       case 'Proiect': {
         this.getProjects(entity);
+        this.allDay = false;
         break;
       }
       case 'Concediu': {
         this.subactivities = HOLIDAYS;
+        this.allDay = true;
         break;
       }
       case 'Alta activitate': {
         this.subactivities = OTHER_SUBACTIVITIES;
+        this.allDay = false;
         break;
       }
     }
@@ -475,7 +483,10 @@ export class AddEventDialogComponent {
       const hours = this.getBasicHours();
       if (this.activity === 'Proiect') {
         this.setProjectType(hours);
-      } else if (hours < 8) {
+      } else if (this.activity === 'Concediu') {
+        this.typeMessage = undefined;
+        this.type = 'concediu';
+      } else if (hours < 8 && !this.isWeekend()) {
         this.setBasicType(hours);
       } else {
         this.setHourPay();
@@ -515,10 +526,16 @@ export class AddEventDialogComponent {
 
   setHourPay(): void {
     this.type = 'plata cu ora';
-    this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
-      ?.toLocaleDateString()
-      .replace(/\/(.*)\//, '.$1.')}.`;
-    this.typeMessage += ' Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra la plata cu ora.';
+    if (this.isWeekend()) {
+      this.typeMessage = `Aveti pontate ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
+        ?.toLocaleDateString()
+        .replace(/\/(.*)\//, '.$1.')}.`;
+    } else {
+      this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
+        ?.toLocaleDateString()
+        .replace(/\/(.*)\//, '.$1.')}.`;
+      this.typeMessage += ' Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra la plata cu ora.';
+    }
   }
 
   getBasicHours(): number {
@@ -556,8 +573,10 @@ export class AddEventDialogComponent {
     if (this.events) {
       this.setType();
     }
-    this.startHour = this.startHours()[0].value;
-    this.endHour = this.endHours()[0].value;
+    if ((this.entity as IProject)?.restricted_start_hour) {
+      this.startHour = this.startHours()[0].value;
+      this.endHour = this.endHours()[0].value;
+    }
   }
 
   setActivitiesForBasic(): void {
@@ -569,6 +588,31 @@ export class AddEventDialogComponent {
       if (this.activity === 'Activitate didactica') {
         this.subactivities = COLLABORATOR_SUBACTIVITIES;
       }
+    }
+  }
+
+  isWeekend(): boolean {
+    return this.data.date?.getDay() === 6 || this.data.date?.getDay() === 0;
+  }
+
+  setActivities(): void {
+    if (this.isEmployee()) {
+      if (this.events.length === 1 && this.events[0].allDay) {
+        this.activities = ['Proiect'];
+        this.activity = 'Proiect';
+        this.getProjects();
+      } else if (this.isWeekend()) {
+        WEEKEND_ACTIVITIES.forEach((activity) => this.activities.push(activity));
+        this.type = 'plata cu ora';
+      } else if (this.events.length > 0) {
+        NO_HOLIDAY_ACTIVITIES.forEach((activity) => this.activities.push(activity));
+      } else {
+        ACTIVITIES.forEach((activity) => this.activities.push(activity));
+      }
+    } else {
+      this.activities = ['Activitate didactica'];
+      this.activity = 'Activitate didactica';
+      this.subactivities = COLLABORATOR_SUBACTIVITIES;
     }
   }
 }

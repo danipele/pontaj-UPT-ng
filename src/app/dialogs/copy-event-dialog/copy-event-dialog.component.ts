@@ -11,6 +11,7 @@ interface Data {
   eventLength: number;
   restrictedStartHour: number;
   restrictedEndHour: number;
+  type: string;
 }
 
 @Component({
@@ -25,7 +26,12 @@ interface Data {
 export class CopyEventDialogComponent implements OnInit {
   date: Date;
   hours: Hour[];
-  hour: number;
+  hour?: number;
+  canCopyHolidayEvent: boolean;
+
+  holidayFilter = (date: Date | null): boolean => {
+    return this.data.type !== 'concediu' || (date?.getDay() !== 6 && date?.getDay() !== 0);
+  }
 
   constructor(
     public dialogRef: MatDialogRef<CopyEventDialogComponent>,
@@ -53,26 +59,43 @@ export class CopyEventDialogComponent implements OnInit {
   }
 
   setHours(): void {
-    this.eventService
-      .getAll(this.date as Date, { for: 'day' })
-      .pipe(
-        map((result: []) => {
-          return this.calendarEventsHelper.addEvents(result);
-        })
-      )
-      .toPromise()
-      .then(
-        (events) => {
-          this.hours = this.validStartHoursHelper.setStartHours(events, this.data.restrictedStartHour, this.data.eventLength);
-          this.restrictEndHour();
-          this.hour = this.hours[0].value;
-        },
-        () => this.cancel()
-      );
+    const isWeekend = this.date.getDay() === 6 || this.date.getDay() === 0;
+    const isNotTypeForWeekend = this.data.type === 'norma de baza';
+    if (isWeekend && isNotTypeForWeekend) {
+      this.hours = [];
+      this.hour = undefined;
+    } else {
+      this.eventService
+        .getAll(this.date as Date, { for: 'day' })
+        .pipe(
+          map((result: []) => {
+            return this.calendarEventsHelper.addEvents(result);
+          })
+        )
+        .toPromise()
+        .then(
+          (events) => {
+            if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
+              this.hours = [];
+              this.hour = undefined;
+            } else {
+              this.hours = this.validStartHoursHelper.setStartHours(
+                events,
+                this.data.restrictedStartHour,
+                this.data.restrictedEndHour,
+                this.data.eventLength
+              );
+              this.restrictEndHour();
+              this.hour = this.hours[0].value;
+            }
+          },
+          () => this.cancel()
+        );
+    }
   }
 
   restrictEndHour(): void {
-    const availableEndHour = this.data.restrictedEndHour || 24 - this.data.eventLength;
+    const availableEndHour = (this.data.restrictedEndHour || 24) - this.data.eventLength;
     while (this.hours[this.hours.length - 1].value > availableEndHour) {
       this.hours = this.hours.splice(0, this.hours.length - 1);
     }
