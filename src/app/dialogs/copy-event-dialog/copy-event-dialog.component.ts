@@ -27,7 +27,7 @@ export class CopyEventDialogComponent implements OnInit {
   date: Date;
   hours: Hour[];
   hour?: number;
-  canCopyHolidayEvent: boolean;
+  badHolidayDateMessage: string | undefined;
 
   holidayFilter = (date: Date | null): boolean => {
     return this.data.type !== 'concediu' || (date?.getDay() !== 6 && date?.getDay() !== 0);
@@ -44,7 +44,7 @@ export class CopyEventDialogComponent implements OnInit {
   ngOnInit(): void {}
 
   notAllFieldsAreFilled(): boolean {
-    return !this.hours && !this.hour;
+    return !this.hours && !this.hour && this.badHolidayDateMessage;
   }
 
   cancel(): void {
@@ -58,39 +58,43 @@ export class CopyEventDialogComponent implements OnInit {
     };
   }
 
-  setHours(): void {
-    const isWeekend = this.date.getDay() === 6 || this.date.getDay() === 0;
-    const isNotTypeForWeekend = this.data.type === 'norma de baza';
-    if (isWeekend && isNotTypeForWeekend) {
-      this.hours = [];
-      this.hour = undefined;
+  setHours(event: any): void {
+    if (this.data.type === 'concediu') {
+      this.setBadHolidayDateMessage(event.value);
     } else {
-      this.eventService
-        .getAll(this.date as Date, { for: 'day' })
-        .pipe(
-          map((result: []) => {
-            return this.calendarEventsHelper.addEvents(result);
-          })
-        )
-        .toPromise()
-        .then(
-          (events) => {
-            if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
-              this.hours = [];
-              this.hour = undefined;
-            } else {
-              this.hours = this.validStartHoursHelper.setStartHours(
-                events,
-                this.data.restrictedStartHour,
-                this.data.restrictedEndHour,
-                this.data.eventLength
-              );
-              this.restrictEndHour();
-              this.hour = this.hours[0].value;
-            }
-          },
-          () => this.cancel()
-        );
+      const isWeekend = this.date.getDay() === 6 || this.date.getDay() === 0;
+      const isNotTypeForWeekend = this.data.type === 'norma de baza';
+      if (isWeekend && isNotTypeForWeekend) {
+        this.hours = [];
+        this.hour = undefined;
+      } else {
+        this.eventService
+          .getAll(this.date as Date, { for: 'day' })
+          .pipe(
+            map((result: []) => {
+              return this.calendarEventsHelper.addEvents(result);
+            })
+          )
+          .toPromise()
+          .then(
+            (events) => {
+              if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
+                this.hours = [];
+                this.hour = undefined;
+              } else {
+                this.hours = this.validStartHoursHelper.setStartHours(
+                  events,
+                  this.data.restrictedStartHour,
+                  this.data.restrictedEndHour,
+                  this.data.eventLength
+                );
+                this.restrictEndHour();
+                this.hour = this.hours[0].value;
+              }
+            },
+            () => this.cancel()
+          );
+      }
     }
   }
 
@@ -99,5 +103,28 @@ export class CopyEventDialogComponent implements OnInit {
     while (this.hours[this.hours.length - 1].value > availableEndHour) {
       this.hours = this.hours.splice(0, this.hours.length - 1);
     }
+  }
+
+  setBadHolidayDateMessage(date: Date): void {
+    this.eventService
+      .getAll(date as Date, { for: 'day' })
+      .pipe(
+        map((result: []) => {
+          return this.calendarEventsHelper.addEvents(result);
+        })
+      )
+      .toPromise()
+      .then(
+        (events) => {
+          if (events.length === 0) {
+            this.badHolidayDateMessage = undefined;
+          } else {
+            this.badHolidayDateMessage = `Concediul se poate lua doar pe o zi intreaga. Exista deja ${
+              events.length
+            } evenimente in data de ${date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')}. Va rugam selectati alta data.`;
+          }
+        },
+        () => this.cancel()
+      );
   }
 }

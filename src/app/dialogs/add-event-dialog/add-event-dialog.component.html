@@ -129,7 +129,7 @@
   </div>
 </div>
 <div class="modal-footer">
-  <div class="type-message-container row" *ngIf="type !== 'concediu'">
+  <div class="type-message-container row" *ngIf="type && type !== 'concediu'">
     <div class="col-xs-1"><mat-icon>info</mat-icon></div>
     <div class="col-sm-10 type-message-grid">
       <span class="type-message">{{ typeMessage }}</span>

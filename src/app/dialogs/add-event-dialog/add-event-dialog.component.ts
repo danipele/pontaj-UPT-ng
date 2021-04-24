@@ -139,10 +139,8 @@ export class AddEventDialogComponent {
       .then(
         (events) => {
           this.events = events;
-          if (this.data.setStartHour) {
-            this.startHour = this.startHours()[0].value;
-            this.endHour = this.endHours()[0].value;
-          }
+          this.startHour = this.startHours()[0].value;
+          this.endHour = this.endHours()[0].value;
           if (this.activity) {
             this.setType();
           }
@@ -258,6 +256,7 @@ export class AddEventDialogComponent {
 
   dateChanged(): void {
     this.getDayEvents();
+    this.allDay = this.activity === 'concediu';
   }
 
   activitySelected(subactivity?: string, entity?: ICourse | IProject): void {
@@ -596,6 +595,7 @@ export class AddEventDialogComponent {
   }
 
   setActivities(): void {
+    this.activities = [];
     if (this.isEmployee()) {
       if (this.events.length === 1 && this.events[0].allDay) {
         this.activities = ['Proiect'];
