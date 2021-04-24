@@ -230,6 +230,10 @@ export class AddEventDialogComponent {
       }
     }
 
+    if (this.data.event) {
+      this.endHour = this.data.event.end.getHours();
+    }
+
     return endHours;
   }
 

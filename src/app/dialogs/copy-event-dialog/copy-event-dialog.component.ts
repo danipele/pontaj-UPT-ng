@@ -12,6 +12,7 @@ interface Data {
   restrictedStartHour: number;
   restrictedEndHour: number;
   type: string;
+  isAvailableForWeekend: boolean;
 }
 
 @Component({
@@ -30,7 +31,7 @@ export class CopyEventDialogComponent implements OnInit {
   badHolidayDateMessage: string | undefined;
 
   holidayFilter = (date: Date | null): boolean => {
-    return this.data.type !== 'concediu' || (date?.getDay() !== 6 && date?.getDay() !== 0);
+    return (this.data.type !== 'concediu' && this.data.isAvailableForWeekend) || (date?.getDay() !== 6 && date?.getDay() !== 0);
   }
 
   constructor(
@@ -62,40 +63,37 @@ export class CopyEventDialogComponent implements OnInit {
     if (this.data.type === 'concediu') {
       this.setBadHolidayDateMessage(event.value);
     } else {
-      const isWeekend = this.date.getDay() === 6 || this.date.getDay() === 0;
-      const isNotTypeForWeekend = this.data.type === 'norma de baza';
-      if (isWeekend && isNotTypeForWeekend) {
-        this.hours = [];
-        this.hour = undefined;
-      } else {
-        this.eventService
-          .getAll(this.date as Date, { for: 'day' })
-          .pipe(
-            map((result: []) => {
-              return this.calendarEventsHelper.addEvents(result);
-            })
-          )
-          .toPromise()
-          .then(
-            (events) => {
-              if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
-                this.hours = [];
-                this.hour = undefined;
-              } else {
-                this.hours = this.validStartHoursHelper.setStartHours(
-                  events,
-                  this.data.restrictedStartHour,
-                  this.data.restrictedEndHour,
-                  this.data.eventLength
-                );
-                this.restrictEndHour();
-                this.hour = this.hours[0].value;
-              }
-            },
-            () => this.cancel()
-          );
-      }
+      this.setStartHours();
     }
+  }
+
+  setStartHours(): void {
+    this.eventService
+      .getAll(this.date as Date, { for: 'day' })
+      .pipe(
+        map((result: []) => {
+          return this.calendarEventsHelper.addEvents(result);
+        })
+      )
+      .toPromise()
+      .then(
+        (events) => {
+          if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
+            this.hours = [];
+            this.hour = undefined;
+          } else {
+            this.hours = this.validStartHoursHelper.setStartHours(
+              events,
+              this.data.restrictedStartHour,
+              this.data.restrictedEndHour,
+              this.data.eventLength
+            );
+            this.restrictEndHour();
+            this.hour = this.hours[0].value;
+          }
+        },
+        () => this.cancel()
+      );
   }
 
   restrictEndHour(): void {

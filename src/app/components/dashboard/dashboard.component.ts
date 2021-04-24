@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CookieService } from 'ngx-cookie';
 import { EventDialogComponent } from '../../dialogs/event-dialog/event-dialog.component';
-import { IEvent } from '../../models/event.model';
+import { COLLABORATOR_SUBACTIVITIES, IEvent } from '../../models/event.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { CopyEventsDialogComponent } from '../../dialogs/copy-events-dialog/copy-events-dialog.component';
 import { EventService } from '../../services/event.service';
@@ -467,7 +467,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         eventLength: (endHour === 0 ? 24 : endHour) - event.start.getHours(),
         restrictedStartHour: (event.entity as IProject)?.restricted_start_hour,
         restrictedEndHour: (event.entity as IProject)?.restricted_end_hour,
-        type: event.type
+        type: event.type,
+        isAvailableForWeekend: COLLABORATOR_SUBACTIVITIES.includes(event.subactivity) || event.type === 'proiect'
       }
     });
 
