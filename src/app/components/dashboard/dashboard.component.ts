@@ -352,10 +352,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.editEventAction(event);
   }
 
-  deleteEvent(event: IEvent): void {
-    this.calendarEventsHelper.deleteEventAction(event);
-  }
-
   openCopyEventsDialog(): void {
     const dialogRef = this.dialog.open(CopyEventsDialogComponent, {
       width: '40%',

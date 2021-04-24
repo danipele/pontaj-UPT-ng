@@ -56,7 +56,6 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }>();
   @Output() goToDay = new EventEmitter<Date>();
   @Output() editEvent = new EventEmitter<IEvent>();
-  @Output() deleteEvent = new EventEmitter<IEvent>();
   @Input() startDate: Date;
   @Input() isWeekly: boolean;
   @Input() allEvents: boolean | undefined = false;
@@ -193,7 +192,37 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   executeDeleteEvent(event: IEvent): void {
-    this.deleteEvent.emit(event);
+    this.deleteEventAction(event);
+  }
+
+  deleteEventAction(event: IEvent): void {
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      width: '30%',
+      data: {
+        message: 'Esti sigur ca vrei sa stergi aceasta evenimente?',
+        confirmationMessage: 'Sterge'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((confirmation) => {
+      if (confirmation) {
+        this.eventService.delete(event.id).subscribe(
+          () => {
+            this.deleteEventFromList(event);
+            this.notificationHelper.openNotification('Evenimentul a fost sters cu succes!', 'success');
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
+      }
+    });
+  }
+
+  deleteEventFromList(event: any): void {
+    const index = indexOf(this.events.data, event);
+    if (index !== -1) {
+      this.events.data.splice(index, 1);
+    }
+    this.setDisplayEvents();
   }
 
   executeStartDateFilterEvents(event: any): void {
@@ -278,9 +307,6 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   setDisplayEvents(): void {
-    for (let i = 20 * (this.page - 1); i < 20 * this.page && i < this.events.data.length; i++) {
-      this.displayEvents.data.push(this.events.data[i]);
-    }
-    this.displayEvents.data = this.displayEvents.data;
+    this.displayEvents = new MatTableDataSource<IEvent>(this.events.data);
   }
 }

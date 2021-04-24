@@ -55,7 +55,7 @@ export class CoursesDialogComponent implements OnInit {
   }
 
   refresh(): void {
-    this.courses.data = this.courses.data;
+    this.courses = new MatTableDataSource<ICourse>(this.courses.data);
   }
 
   cancel(): void {

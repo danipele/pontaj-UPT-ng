@@ -79,13 +79,13 @@ export class ValidStartHoursHelper {
   removeOutOfRestrictedHours(hours: Hour[], startHour?: number, endHour?: number): Hour[] {
     if (startHour) {
       while (hours[0].value < startHour) {
-        hours = hours.splice(1);
+        hours.splice(0, 1);
       }
     }
 
     if (endHour) {
       while (hours[hours.length - 1].value > endHour - 1) {
-        hours = hours.splice(0, hours.length - 1);
+        hours.splice(hours.length - 1);
       }
     }
     return hours;
@@ -94,10 +94,10 @@ export class ValidStartHoursHelper {
   setAllHours(eventLength?: number, projectRestrictedStartHour?: number, projectRestrictedEndHour?: number): Hour[] {
     let hours: Hour[] = [];
     HOURS.slice(0, HOURS.length - 1).forEach((hour) => hours.push(hour));
+    hours = this.removeOutOfRestrictedHours(hours, projectRestrictedStartHour, projectRestrictedEndHour);
     if (eventLength) {
       hours = hours.slice(0, hours.length - eventLength + 1);
     }
-    hours = this.removeOutOfRestrictedHours(hours, projectRestrictedStartHour, projectRestrictedEndHour);
 
     return hours;
   }

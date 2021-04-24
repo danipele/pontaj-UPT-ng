@@ -55,7 +55,7 @@ export class ProjectsDialogComponent implements OnInit {
   }
 
   refresh(): void {
-    this.projects.data = this.projects.data;
+    this.projects = new MatTableDataSource<IProject>(this.projects.data);
   }
 
   cancel(): void {

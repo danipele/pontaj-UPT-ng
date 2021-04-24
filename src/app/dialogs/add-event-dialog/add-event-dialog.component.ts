@@ -139,8 +139,10 @@ export class AddEventDialogComponent {
       .then(
         (events) => {
           this.events = events;
-          this.startHour = this.startHours()[0].value;
-          this.endHour = this.endHours()[0].value;
+          if (!this.data.event) {
+            this.startHour = this.startHours()[0].value;
+            this.endHour = this.endHours()[0].value;
+          }
           if (this.activity) {
             this.setType();
           }
@@ -201,7 +203,7 @@ export class AddEventDialogComponent {
 
     const availableHours: Hour[] = [];
     HOURS.slice((this.startHour as number) + 1, HOURS.length).forEach((hour) => availableHours.push(hour));
-    let endHours: Hour[] = [];
+    const endHours: Hour[] = [];
     for (const hour of availableHours) {
       endHours.push(hour);
       let startsAnEvent = false;
@@ -226,12 +228,8 @@ export class AddEventDialogComponent {
     const projectRestrictedHour = (this.entity as IProject)?.restricted_end_hour;
     if (projectRestrictedHour) {
       while (endHours[endHours.length - 1].value > projectRestrictedHour) {
-        endHours = endHours.splice(0, endHours.length - 1);
+        endHours.splice(endHours.length - 1);
       }
-    }
-
-    if (this.data.event) {
-      this.endHour = this.data.event.end.getHours();
     }
 
     return endHours;
