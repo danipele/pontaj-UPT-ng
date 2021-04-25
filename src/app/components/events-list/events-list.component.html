@@ -51,9 +51,21 @@
           <input matEndDate [value]="endDateFilter" (dateChange)="executeEndDateFilterEvents($event)" />
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-date-range-picker #picker></mat-date-range-picker>
+        <mat-date-range-picker #picker>
+          <mat-date-range-picker-actions>
+            <button mat-flat-button matDateRangePickerApply class="date-picker-btn">Aplica filtru</button>
+            <button
+              mat-flat-button
+              matDateRangePickerCancel
+              class="date-picker-btn"
+              (click)="removeDateFilter()"
+              [hidden]="!startDateFilter"
+            >
+              Sterge filtru
+            </button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
       </mat-form-field>
-      <button mat-flat-button class="remove-date-filter-btn" (click)="removeDateFilter()">&times;</button>
     </mat-grid-tile>
     <mat-grid-tile [colspan]="14" [rowspan]="1">
       <mat-form-field appearance="fill" class="filter-container entity-filter">

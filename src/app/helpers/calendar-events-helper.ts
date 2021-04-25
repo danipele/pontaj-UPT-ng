@@ -80,10 +80,10 @@ export class CalendarEventsHelper {
       title: event.subactivity,
       color: {
         primary: '#fff',
-        secondary: this.getEventColor(event.activity)
+        secondary: this.getEventColor(event.activity || 'Proiect')
       },
       description: event.description,
-      activity: event.activity,
+      activity: event.activity || 'Proiect',
       subactivity: event.subactivity,
       entity: event.entity,
       type: event.type,

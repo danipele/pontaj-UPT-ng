@@ -213,6 +213,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       position: this.getEventDialogPosition(event, event.event),
       backdropClass: 'event-background'
     });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.events = this.calendarEventsHelper.getEvents();
+    });
   }
 
   getEventDialogPosition(event: any, eventObj: IEvent): {} {

@@ -226,16 +226,20 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   executeStartDateFilterEvents(event: any): void {
-    this.startDateFilter = event.value;
-    this.endDateFilter = undefined;
-    this.allEvents = true;
-    this.executeFilterEvents();
+    if (event) {
+      this.startDateFilter = event.value;
+      this.endDateFilter = undefined;
+      this.allEvents = true;
+      this.executeFilterEvents();
+    }
   }
 
   executeEndDateFilterEvents(event: any): void {
-    this.endDateFilter = event.value;
-    this.allEvents = true;
-    this.executeFilterEvents();
+    if (event) {
+      this.endDateFilter = event.value;
+      this.allEvents = true;
+      this.executeFilterEvents();
+    }
   }
 
   removeDateFilter(): void {
