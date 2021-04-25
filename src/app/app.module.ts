@@ -58,6 +58,8 @@ import { ValidStartHoursHelper } from './helpers/valid-start-hours-helper';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NotificationHelper } from './helpers/notification-helper';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AdminComponent } from './components/admin/admin.component';
+import { CreateAdminUserDialogComponent } from './dialogs/create-admin-user-dialog/create-admin-user-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -84,7 +86,9 @@ export function momentAdapterFactory(): DateAdapter {
     EventsListComponent,
     DateFormatDirective,
     CopyEventsDialogComponent,
-    CopyEventDialogComponent
+    CopyEventDialogComponent,
+    AdminComponent,
+    CreateAdminUserDialogComponent
   ],
   imports: [
     BrowserModule,

@@ -98,4 +98,8 @@ export class TopBarComponent implements OnInit {
   isEmployee(): boolean {
     return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
   }
+
+  isNotAdmin(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type !== 'Admin';
+  }
 }

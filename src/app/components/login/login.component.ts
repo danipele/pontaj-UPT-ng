@@ -50,7 +50,11 @@ export class LoginComponent implements OnInit {
         if (result.success === true) {
           this.cookieService.put('auth_token', result.auth_token);
           localStorage.setItem('user', JSON.stringify(result.user));
-          this.router.navigate(['/dashboard']);
+          if (result.user.type === 'Admin') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/dashboard']);
+          }
           this.notificationHelper.openNotification('Esti autentificat cu success!', 'success');
         } else {
           this.notificationHelper.openNotification(result.message, 'error');

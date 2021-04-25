@@ -28,7 +28,7 @@ export class PersonalInformationDialogComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  sendData(): any {
+  sendData(): {} {
     return {
       first_name: this.formGroup.controls.firstName.value,
       last_name: this.formGroup.controls.lastName.value

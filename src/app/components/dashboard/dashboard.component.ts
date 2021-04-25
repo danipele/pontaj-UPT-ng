@@ -57,8 +57,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
-      () => {
-        this.setEvents();
+      (user) => {
+        if (user.type === 'Admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.setEvents();
+        }
       },
       (error) => {
         if (error.status === 401) {
@@ -187,7 +191,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.cookieService.remove('auth_token');
+    if (JSON.parse(localStorage.getItem('user') as string).type !== 'Admin') {
+      this.cookieService.remove('auth_token');
+    }
   }
 
   isToday(date: Date): boolean {

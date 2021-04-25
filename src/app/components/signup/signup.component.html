@@ -29,7 +29,7 @@
             </mat-select>
           </mat-form-field>
           <div class="form-group-button">
-            <button mat-raised-button (click)="createAccount()" class="upt-btn">Creeaza</button>
+            <button mat-raised-button (click)="createAccount()" class="upt-btn" [disabled]="notAllFieldsAreFilled()">Creeaza</button>
           </div>
         </form>
       </div>

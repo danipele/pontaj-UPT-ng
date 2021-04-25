@@ -49,16 +49,16 @@ export class SignupComponent implements OnInit {
       type: this.formGroup.controls.type.value
     };
 
-    this.loginService.signup(params).subscribe(
-      (result) => {
-        if (result.success === true) {
-          this.router.navigate(['/login']);
-          this.notificationHelper.openNotification('Cont creat cu succes! Acum te poti autentifica cu emailul si parola!', 'success');
-        } else {
-          this.notificationHelper.openNotification(result.error, 'error');
-        }
-      },
-      (error) => this.notificationHelper.notifyWithError(error)
+    this.userService.createUser(params);
+  }
+
+  notAllFieldsAreFilled(): boolean {
+    return (
+      !this.formGroup.controls.userEmail.value ||
+      !this.formGroup.controls.userPassword.value ||
+      !this.formGroup.controls.firstName.value ||
+      !this.formGroup.controls.lastName.value ||
+      !this.formGroup.controls.type.value
     );
   }
 }
