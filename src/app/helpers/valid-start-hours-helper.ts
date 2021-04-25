@@ -45,19 +45,21 @@ export class ValidStartHoursHelper {
   ): Hour[] {
     const hours = this.setAllHours(eventLength, projectRestrictedStartHour, projectRestrictedEndHour);
 
-    events.forEach((event) => {
-      if (!editEvent || event.start.getHours() !== editEvent.start.getHours()) {
-        const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
-        let startHour = event.start.getHours();
-        this.removeHours(startHour, nrOfHours, hours);
-        if (eventLength) {
-          for (let i = 0; i < eventLength - 1; i++) {
-            startHour -= 1;
-            this.removeHours(startHour, 1, hours);
+    events
+      .filter((event) => event.type !== 'concediu')
+      .forEach((event) => {
+        if (!editEvent || event.start.getHours() !== editEvent.start.getHours()) {
+          const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();
+          let startHour = event.start.getHours();
+          this.removeHours(startHour, nrOfHours, hours);
+          if (eventLength) {
+            for (let i = 0; i < eventLength - 1; i++) {
+              startHour -= 1;
+              this.removeHours(startHour, 1, hours);
+            }
           }
         }
-      }
-    });
+      });
     return hours;
   }
 

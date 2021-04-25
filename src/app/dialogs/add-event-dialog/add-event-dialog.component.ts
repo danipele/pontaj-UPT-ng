@@ -487,7 +487,7 @@ export class AddEventDialogComponent {
     } else {
       const hours = this.getBasicHours();
       if (this.activity === 'Proiect') {
-        this.setProjectType(hours);
+        this.setProjectType();
       } else if (this.activity === 'Concediu') {
         this.typeMessage = undefined;
         this.type = 'concediu';
@@ -499,26 +499,28 @@ export class AddEventDialogComponent {
     }
   }
 
-  setProjectType(hours: number): void {
+  setProjectType(): void {
     if (!this.entity) {
       this.typeMessage = this.type = '';
       return;
     }
 
-    const entity = this.entity as IProject;
-    this.type = 'proiect';
-    this.typeMessage = `Aveti pontate ${hours} ore pe proiectul ${entity.name} pentru luna ${this.data.date?.toLocaleString('ro-RO', {
-      month: 'long'
-    })} ${this.data.date?.getFullYear()}.`;
-    if (entity.hours_per_month) {
-      if (entity.hours_per_month - hours >= 0) {
-        this.typeMessage += ` Mai aveti ${entity.hours_per_month - hours} ore ramase.`;
+    this.eventService.projectHoursPerMonth({ date: this.data.date, project: this.entity.id }).subscribe((hours) => {
+      const entity = this.entity as IProject;
+      this.type = 'proiect';
+      this.typeMessage = `Aveti pontate ${hours} ore pe proiectul ${entity.name} pentru luna ${this.data.date?.toLocaleString('ro-RO', {
+        month: 'long'
+      })} ${this.data.date?.getFullYear()}.`;
+      if (entity.hours_per_month) {
+        if (entity.hours_per_month - hours >= 0) {
+          this.typeMessage += ` Mai aveti ${entity.hours_per_month - hours} ore ramase.`;
+        } else {
+          this.typeMessage += ` Ati depasit deja norma lunara de ${entity.hours_per_month}.`;
+        }
       } else {
-        this.typeMessage += ` Ati depasit deja norma lunara de ${entity.hours_per_month}.`;
+        this.typeMessage += ` Nu aveti norma lunara de ore pe acest proiect.`;
       }
-    } else {
-      this.typeMessage += ` Nu aveti norma lunara de ore pe acest proiect.`;
-    }
+    });
   }
 
   setBasicType(hours: number): void {
@@ -545,21 +547,20 @@ export class AddEventDialogComponent {
 
   getBasicHours(): number {
     let events: IEvent[];
-    if (this.activity === 'Proiect' && this.entity) {
-      events = this.events.filter((event) => event.type === 'proiect' && event.entity?.id === this.entity?.id);
-    } else if (this.activity === 'Concediu') {
-      events = [];
-    } else {
+    if (this.activity === 'Alta activitate' || this.activity === 'Activitate didactica') {
       events = this.events.filter((event) => event.type === 'norma de baza');
-    }
-    let sum = 0;
-    events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
 
-    if (this.data.event && this.data.event.type === 'norma de baza') {
-      sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
+      let sum = 0;
+      events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
+
+      if (this.data.event && this.data.event.type === 'norma de baza') {
+        sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
+      }
+
+      return sum;
     }
 
-    return sum;
+    return 0;
   }
 
   getHourPayHours(): number {

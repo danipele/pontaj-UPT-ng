@@ -37,4 +37,8 @@ export class EventService {
   copyEvent(params: {}): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/copy_event`, params, this.httpWrapper.getAuthOptions());
   }
+
+  projectHoursPerMonth(params: {}): Observable<any> {
+    return this.httpWrapper.post(`http://localhost:8000/api/v1/events/project_hours`, params, this.httpWrapper.getAuthOptions());
+  }
 }
