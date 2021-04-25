@@ -277,13 +277,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   getNrOfHoursOnDay(date: Date): number {
     let hours = 0;
-    this.events.forEach((event) => {
-      const start = event.start;
-      const end = event.end;
-      if (start.getDay() === date.getDay() && start.getMonth() === date.getMonth() && start.getFullYear() === date.getFullYear()) {
-        hours += (end.getHours() === 0 ? 24 : end.getHours()) - start.getHours();
-      }
-    });
+    this.events
+      .filter((event) => event.type !== 'concediu')
+      .forEach((event) => {
+        const start = event.start;
+        const end = event.end;
+        if (start.getDay() === date.getDay() && start.getMonth() === date.getMonth() && start.getFullYear() === date.getFullYear()) {
+          hours += (end.getHours() === 0 ? 24 : end.getHours()) - start.getHours();
+        }
+      });
     return hours;
   }
 
@@ -408,15 +410,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const endDate = new Date(this.date);
     endDate.setDate(this.date.getDate() + 6);
     return endDate;
-  }
-
-  getTooltipText(): string {
-    let result = 'Informatii despre ' + (this.isDaily() ? 'ziua' : 'saptamana') + ' actuala:&#13;' + this.date.toLocaleDateString();
-    if (this.isWeekly()) {
-      result += ' - ' + this.getEndDateForWeekly().toLocaleDateString();
-    }
-    result += '&#13;&#13;Evenimente: ' + this.events.length + '&#13;Ore inregistrate: ' + this.getNrOfHours();
-    return result;
   }
 
   getNrOfHours(): number {

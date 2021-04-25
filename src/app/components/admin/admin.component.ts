@@ -4,6 +4,7 @@ import { UserService } from '../../services/user.service';
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateAdminUserDialogComponent } from '../../dialogs/create-admin-user-dialog/create-admin-user-dialog.component';
+import { AddHolidayForEmployeesDialogComponent } from '../../dialogs/add-holiday-for-employees-dialog/add-holiday-for-employees-dialog.component';
 
 @Component({
   selector: 'app-admin',
@@ -47,5 +48,24 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  addHolidays(): void {}
+  addHolidays(): void {
+    const dialogRef = this.dialog.open(AddHolidayForEmployeesDialogComponent, {
+      width: '60%'
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.userService.addHolidays(result).subscribe(
+          (res) => {
+            if (res === 0) {
+              this.notificationHelper.openNotification('Nu au putut fi adaugate nicio zi de concediu.', 'error');
+            } else {
+              this.notificationHelper.openNotification(`S-au adaugat ${res} zile de concediu pentru toti angajatii.`, 'success');
+            }
+          },
+          (error) => this.notificationHelper.notifyWithError(error)
+        );
+      }
+    });
+  }
 }

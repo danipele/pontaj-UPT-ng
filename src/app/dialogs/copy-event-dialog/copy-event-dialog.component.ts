@@ -114,7 +114,7 @@ export class CopyEventDialogComponent implements OnInit {
       .toPromise()
       .then(
         (events) => {
-          if (events.length === 0) {
+          if (events.filter((event) => event.type !== 'proiect').length === 0) {
             this.badHolidayDateMessage = undefined;
           } else {
             this.badHolidayDateMessage = `Concediul se poate lua doar pe o zi intreaga. Exista deja ${

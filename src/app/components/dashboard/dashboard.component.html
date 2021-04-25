@@ -176,7 +176,7 @@
       <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b> -
       <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
       <br />
-      <span>{{ getNrOfHoursOnDay(day.date) === 24 ? 'Toata ziua' : getNrOfHoursOnDay(day.date) + ' ore' }}</span>
+      <span>{{ getNrOfHoursOnDay(day.date) }} ore</span>
     </div>
   </div>
 </ng-template>

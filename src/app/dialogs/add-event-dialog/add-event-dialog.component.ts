@@ -69,7 +69,7 @@ export class AddEventDialogComponent {
   subactivities: string[] = [];
   dialogTitle = 'Adauga un eveniment';
   id?: string | number | undefined;
-  events: IEvent[];
+  events: IEvent[] = [];
   recurrent?: RECURRENT;
   recurrentEndingDate = new Date();
   recurrentEnding = '';
@@ -132,17 +132,13 @@ export class AddEventDialogComponent {
       .getAll(this.data.date as Date, { for: 'day' })
       .pipe(
         map((result: []) => {
-          return this.calendarEventsHelper.addEvents(result);
+          return result;
         })
       )
       .toPromise()
       .then(
         (events) => {
-          this.events = events;
-          if (!this.data.event) {
-            this.startHour = this.startHours()[0].value;
-            this.endHour = this.endHours()[0].value;
-          }
+          events.forEach((event) => this.events.push(this.calendarEventsHelper.createEvent(event)));
           if (this.activity) {
             this.setType();
           }
@@ -415,7 +411,15 @@ export class AddEventDialogComponent {
   }
 
   getMinDate(): Date {
-    return this.data.date as Date;
+    const minDate = new Date(this.data.date as Date);
+    if (this.recurrent === 'Anual') {
+      minDate.setFullYear(minDate.getFullYear() + 1);
+    } else if (this.recurrent === 'Lunar') {
+      minDate.setMonth(minDate.getMonth() + 1);
+    } else {
+      minDate.setDate(minDate.getDate() + 1);
+    }
+    return minDate;
   }
 
   yearSelected(event: any, picker: MatDatepicker<Date>): void {
@@ -599,14 +603,14 @@ export class AddEventDialogComponent {
   setActivities(): void {
     this.activities = [];
     if (this.isEmployee()) {
-      if (this.events.length === 1 && this.events[0].allDay) {
+      if (this.events.filter((event) => event.allDay).length === 1) {
         this.activities = ['Proiect'];
         this.activity = 'Proiect';
         this.getProjects();
       } else if (this.isWeekend()) {
         WEEKEND_ACTIVITIES.forEach((activity) => this.activities.push(activity));
         this.type = 'plata cu ora';
-      } else if (this.events.length > 0) {
+      } else if (this.events.filter((event) => event.type !== 'proiect').length > 0) {
         NO_HOLIDAY_ACTIVITIES.forEach((activity) => this.activities.push(activity));
       } else {
         ACTIVITIES.forEach((activity) => this.activities.push(activity));

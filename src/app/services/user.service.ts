@@ -45,4 +45,8 @@ export class UserService {
       (error) => this.notificationHelper.notifyWithError(error)
     );
   }
+
+  addHolidays(params: {}): Observable<any> {
+    return this.httpWrapper.post(`http://localhost:8000/api/v1/users/add_holidays`, params, this.httpWrapper.getAuthOptions());
+  }
 }
