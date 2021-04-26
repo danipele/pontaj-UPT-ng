@@ -24,6 +24,7 @@ import { EventService } from '../../services/event.service';
 import { map } from 'rxjs/operators';
 import { Hour, HOURS, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import * as moment from 'moment';
 
 interface Data {
   date?: Date;
@@ -42,6 +43,7 @@ interface Data {
 export enum RECURRENT {
   DAILY = 'Zilnic',
   WEEKLY = 'Saptamanal',
+  EVERY_OTHER_WEEK = 'La doua saptamani',
   MONTHLY = 'Lunar',
   YEARLY = 'Anual'
 }
@@ -78,7 +80,7 @@ export class AddEventDialogComponent {
   type: string | undefined = '';
 
   weeklyRecurrentDateFilter = (date: Date | null): boolean => {
-    return this.recurrent !== RECURRENT.WEEKLY || date?.getDay() === this.data.date?.getDay();
+    return this.setWeekFilter(date);
   }
 
   constructor(
@@ -412,10 +414,14 @@ export class AddEventDialogComponent {
 
   getMinDate(): Date {
     const minDate = new Date(this.data.date as Date);
-    if (this.recurrent === 'Anual') {
+    if (this.recurrent === RECURRENT.YEARLY) {
       minDate.setFullYear(minDate.getFullYear() + 1);
-    } else if (this.recurrent === 'Lunar') {
+    } else if (this.recurrent === RECURRENT.MONTHLY) {
       minDate.setMonth(minDate.getMonth() + 1);
+    } else if (this.recurrent === RECURRENT.EVERY_OTHER_WEEK) {
+      minDate.setDate(minDate.getDate() + 14);
+    } else if (this.recurrent === RECURRENT.WEEKLY) {
+      minDate.setDate(minDate.getDate() + 7);
     } else {
       minDate.setDate(minDate.getDate() + 1);
     }
@@ -457,6 +463,8 @@ export class AddEventDialogComponent {
       case RECURRENT.DAILY:
         date.setDate(date.getDate() + 1);
         break;
+      case RECURRENT.EVERY_OTHER_WEEK:
+        date.setDate(date.getDate() + 14);
     }
     this.recurrentEndingDate = date;
   }
@@ -470,7 +478,16 @@ export class AddEventDialogComponent {
   }
 
   isWeeklyRecurrent(): boolean {
-    return this.recurrent === RECURRENT.WEEKLY;
+    return this.recurrent === RECURRENT.WEEKLY || this.recurrent === RECURRENT.EVERY_OTHER_WEEK;
+  }
+
+  setWeekFilter(date: Date | null): boolean {
+    if (this.recurrent === RECURRENT.WEEKLY) {
+      return date?.getDay() === this.data.date?.getDay();
+    } else if (this.recurrent === RECURRENT.EVERY_OTHER_WEEK) {
+      return date?.getDay() === this.data.date?.getDay() && moment(date).week() % 2 === moment(this.data.date).week() % 2;
+    }
+    return true;
   }
 
   isEditMode(): boolean {
