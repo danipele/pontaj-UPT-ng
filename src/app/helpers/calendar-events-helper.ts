@@ -184,13 +184,13 @@ export class CalendarEventsHelper {
   getEventColor(activity: string): string {
     switch (activity) {
       case 'courseHour':
-        return 'rgb(183, 4, 4)';
+        return 'rgb(183, 4, 4, 0.95)';
       case 'project':
-        return 'rgb(29, 119, 29)';
+        return 'rgb(29, 119, 29, 0.95)';
       case 'otherActivity':
-        return 'rgb(51, 195, 178)';
+        return 'rgb(51, 195, 178, 0.95)';
       case 'holidays':
-        return 'rgb(90, 37, 236)';
+        return 'rgb(90, 37, 236, 0.95)';
     }
     return '';
   }

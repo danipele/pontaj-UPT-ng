@@ -140,10 +140,10 @@
       <td
         mat-cell
         *matCellDef="let event"
-        [class.color-activity-course]="event.activity === 'courseHour'"
-        [class.color-activity-project]="event.activity === 'project'"
-        [class.color-activity-other-activity]="event.activity === 'otherActivity'"
-        [class.color-activity-holiday]="event.activity === 'holidays'"
+        [class.color-activity-course-fade]="event.activity === 'courseHour'"
+        [class.color-activity-project-fade]="event.activity === 'project'"
+        [class.color-activity-other-activity-fade]="event.activity === 'otherActivity'"
+        [class.color-activity-holiday-fade]="event.activity === 'holidays'"
       >
         <b>{{ 'event.activity.' + event.activity | translate }}</b>
       </td>
