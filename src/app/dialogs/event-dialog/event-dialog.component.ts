@@ -7,7 +7,7 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
-import { EventService } from '../../services/event.service';
+import { LanguageHelper } from '../../helpers/language-helper';
 
 interface Data {
   event: IEvent;
@@ -27,7 +27,8 @@ export class EventDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private calendarEventsHelper: CalendarEventsHelper,
     private courseService: CourseService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private languageHelper: LanguageHelper
   ) {}
 
   ngOnInit(): void {}
@@ -90,5 +91,9 @@ export class EventDialogComponent implements OnInit {
   copyEvent(): void {
     this.cancel();
     this.data.copyEvent(this.data.event);
+  }
+
+  getLocaleFromLanguage(): string {
+    return this.languageHelper.getLocaleFromLanguage();
   }
 }

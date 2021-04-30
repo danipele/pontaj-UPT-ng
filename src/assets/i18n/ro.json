@@ -195,7 +195,8 @@
       "onlyHourlyPaidHours": "Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra in plata cu ora."
     },
     "holidaysBadDay": "Concediul se poate lua doar pe o zi intreaga. Exista deja {{events}} evenimente in data de {{date}}. Va rugam selectati alta data.",
-    "error": "Actiune nereusita. Mai incearca o data!"
+    "error": "Actiune nereusita. Mai incearca o data!",
+    "language": "Limba a fost schimbata cu succes."
   },
   "action": {
     "delete": "Sterge",

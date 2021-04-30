@@ -7,6 +7,7 @@ import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { Hour, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
 
 interface Data {
   eventLength: number;
@@ -21,7 +22,7 @@ interface Data {
   templateUrl: './copy-event-dialog.component.html',
   styleUrls: ['./copy-event-dialog.component.sass'],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
+    { provide: MAT_DATE_LOCALE, useFactory: LocaleIdFactory, deps: [LanguageHelper] },
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })

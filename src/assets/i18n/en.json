@@ -195,7 +195,8 @@
       "onlyHourlyPaidHours": "From now on, all the hours you will add for this day will be in hourly payment regime."
     },
     "holidaysBadDay": "You can take holidays only for a whole day. There already are {{events}} events for date {{date}}. Please select another date.",
-    "error": "Something went wrong. Try again!"
+    "error": "Something went wrong. Try again!",
+    "language": "Language was successfully changed."
   },
   "action": {
     "delete": "Delete",

@@ -15,6 +15,7 @@ import { CopyEventDialogComponent } from '../../dialogs/copy-event-dialog/copy-e
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { IProject } from '../../models/project.model';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageHelper } from '../../helpers/language-helper';
 
 @Component({
   selector: 'app-dashboard',
@@ -47,7 +48,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private cookieService: CookieService,
     private eventService: EventService,
     private notificationHelper: NotificationHelper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private languageHelper: LanguageHelper
   ) {
     this.viewType = 'weekly';
     this.date = moment().startOf('week').toDate();
@@ -525,5 +527,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
           );
       }
     });
+  }
+
+  getLocaleFromLanguage(): string {
+    return this.languageHelper.getLocaleFromLanguage();
   }
 }

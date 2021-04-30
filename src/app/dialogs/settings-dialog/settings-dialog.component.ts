@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { CookieService } from 'ngx-cookie';
+import { LanguageHelper } from '../../helpers/language-helper';
 
 @Component({
   selector: 'app-settings-dialog',
@@ -15,7 +16,8 @@ export class SettingsDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<SettingsDialogComponent>,
     private translateService: TranslateService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private languageHelper: LanguageHelper
   ) {
     this.language = this.languages.find((language) => language === this.cookieService.get('lang')) as string;
   }
@@ -27,8 +29,7 @@ export class SettingsDialogComponent implements OnInit {
   }
 
   save(): void {
-    this.translateService.use(this.language);
-    this.cookieService.put('lang', this.language);
+    this.languageHelper.changeLanguage(this.language);
     this.cancel();
   }
 }

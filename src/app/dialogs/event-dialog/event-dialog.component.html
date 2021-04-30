@@ -16,7 +16,7 @@
     </div>
     <div class="col-md-10 text-container">
       <div>
-        <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy' | titlecase }}</span>
+        <span>{{ data.event.start | date: 'EEEE, dd MMMM yyyy':undefined:getLocaleFromLanguage() | titlecase }}</span>
       </div>
       <div class="hour-date">
         <span

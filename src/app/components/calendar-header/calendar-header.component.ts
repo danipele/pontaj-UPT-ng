@@ -4,6 +4,7 @@ import { MAT_DATE_RANGE_SELECTION_STRATEGY } from '@angular/material/datepicker'
 import { WeekPickerStrategy } from '../../helpers/week-picker-strategy';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
+import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
 
 @Component({
   selector: 'app-calendar-header',
@@ -11,7 +12,7 @@ import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
   styleUrls: ['./calendar-header.component.sass'],
   providers: [
     { provide: MAT_DATE_RANGE_SELECTION_STRATEGY, useClass: WeekPickerStrategy },
-    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
+    { provide: MAT_DATE_LOCALE, useFactory: LocaleIdFactory, deps: [LanguageHelper] },
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })

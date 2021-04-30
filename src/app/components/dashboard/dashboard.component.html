@@ -2,8 +2,8 @@
 
 <div class="calendar-container">
   <div class="date-label">
-    <span>{{ date | date: 'EEEE, dd MMM yyyy' }}</span>
-    <span *ngIf="isWeekly()"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy' }}</span>
+    <span>{{ date | date: 'EEEE, dd MMM yyyy':undefined:getLocaleFromLanguage() }}</span>
+    <span *ngIf="isWeekly()"> - {{ getEndDateForWeekly() | date: 'EEEE, dd MMM yyyy':undefined:getLocaleFromLanguage() }}</span>
     <button
       mat-icon-button
       class="info-btn"
@@ -183,10 +183,10 @@
       role="columnheader"
       (mwlClick)="dayHeaderClicked.emit({ day: day, sourceEvent: $event })"
     >
-      <b>{{ day.date | calendarDate: 'weekViewColumnHeader' }}</b> -
-      <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader' }}</span>
+      <b>{{ day.date | calendarDate: 'weekViewColumnHeader':getLocaleFromLanguage() }}</b> -
+      <span>{{ day.date | calendarDate: 'weekViewColumnSubHeader':getLocaleFromLanguage() }}</span>
       <br />
-      <span>{{ getNrOfHoursOnDay(day.date) }} ore</span>
+      <span>{{ getNrOfHoursOnDay(day.date) }} {{ 'hours' | translate }}</span>
     </div>
   </div>
 </ng-template>

@@ -23,13 +23,14 @@ import { ProjectService } from '../../services/project.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
 
 @Component({
   selector: 'app-events-list',
   templateUrl: './events-list.component.html',
   styleUrls: ['./events-list.component.sass'],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
+    { provide: MAT_DATE_LOCALE, useFactory: LocaleIdFactory, deps: [LanguageHelper] },
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ],
   animations: [

@@ -26,6 +26,7 @@ import { Hour, HOURS, ValidStartHoursHelper } from '../../helpers/valid-start-ho
 import { NotificationHelper } from '../../helpers/notification-helper';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
+import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
 
 interface Data {
   date?: Date;
@@ -54,7 +55,7 @@ export enum RECURRENT {
   templateUrl: './add-event-dialog.component.html',
   styleUrls: ['./add-event-dialog.component.sass'],
   providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'ro-RO' },
+    { provide: MAT_DATE_LOCALE, useFactory: LocaleIdFactory, deps: [LanguageHelper] },
     { provide: DateAdapter, useClass: CustomDateAdapter }
   ]
 })
@@ -82,7 +83,7 @@ export class AddEventDialogComponent {
 
   weeklyRecurrentDateFilter = (date: Date | null): boolean => {
     return this.setWeekFilter(date);
-  };
+  }
 
   constructor(
     public dialogRef: MatDialogRef<AddEventDialogComponent>,

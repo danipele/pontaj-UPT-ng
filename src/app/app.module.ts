@@ -63,6 +63,7 @@ import { CreateAdminUserDialogComponent } from './dialogs/create-admin-user-dial
 import { AddHolidayForEmployeesDialogComponent } from './dialogs/add-holiday-for-employees-dialog/add-holiday-for-employees-dialog.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { LanguageHelper } from './helpers/language-helper';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -145,6 +146,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     { provide: ValidStartHoursHelper, useClass: ValidStartHoursHelper },
     { provide: NotificationHelper, useClass: NotificationHelper },
     { provide: MatSnackBar, useClass: MatSnackBar },
+    { provide: LanguageHelper, useClass: LanguageHelper },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent],
