@@ -6,12 +6,18 @@ import { indexOf } from 'lodash';
 import { ConfirmationDialogComponent } from '../dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotificationHelper } from './notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class CalendarEventsHelper {
   events: IEvent[] = [];
 
-  constructor(public dialog: MatDialog, private eventService: EventService, private notificationHelper: NotificationHelper) {}
+  constructor(
+    public dialog: MatDialog,
+    private eventService: EventService,
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
+  ) {}
 
   resolveEvent(result: any, date: Date, filterParams: any): Promise<{ events: IEvent[]; mode: string; successfully?: number }> {
     const startDate = new Date(result.date);
@@ -76,18 +82,18 @@ export class CalendarEventsHelper {
     return {
       id: event.id,
       start: new Date(event.start_date),
-      end: event.activity === 'Concediu' ? new Date(event.start_date) : new Date(event.end_date),
+      end: event.activity === 'holidays' ? new Date(event.start_date) : new Date(event.end_date),
       title: event.subactivity,
       color: {
         primary: '#fff',
-        secondary: this.getEventColor(event.activity || 'Proiect')
+        secondary: this.getEventColor(event.activity || 'project')
       },
       description: event.description,
-      activity: event.activity || 'Proiect',
+      activity: event.activity || 'project',
       subactivity: event.subactivity,
       entity: event.entity,
       type: event.type,
-      allDay: event.activity === 'Concediu'
+      allDay: event.activity === 'holidays'
     };
   }
 
@@ -177,13 +183,13 @@ export class CalendarEventsHelper {
 
   getEventColor(activity: string): string {
     switch (activity) {
-      case 'Activitate didactica':
+      case 'courseHour':
         return 'rgb(183, 4, 4)';
-      case 'Proiect':
+      case 'project':
         return 'rgb(29, 119, 29)';
-      case 'Alta activitate':
+      case 'otherActivity':
         return 'rgb(51, 195, 178)';
-      case 'Concediu':
+      case 'holidays':
         return 'rgb(90, 37, 236)';
     }
     return '';
@@ -200,8 +206,10 @@ export class CalendarEventsHelper {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi aceasta evenimente?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.deleteConfirmation', {
+          objectType: this.translateService.instant('message.event')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -210,7 +218,13 @@ export class CalendarEventsHelper {
         this.eventService.delete(event.id).subscribe(
           () => {
             this.deleteEvent(event);
-            this.notificationHelper.openNotification('Evenimentul a fost sters cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.event'),
+                action: this.translateService.instant('message.sg.deleted')
+              }),
+              'success'
+            );
           },
           (error) => this.notificationHelper.notifyWithError(error)
         );

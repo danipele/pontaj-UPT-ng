@@ -10,7 +10,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 })
 export class AddEditCourseDialogComponent implements OnInit {
   formGroup: FormGroup;
-  CYCLES: string[] = ['Licenta', 'Master', 'Doctorat'];
+  CYCLES: string[] = ['bachelor', 'master', 'phd'];
 
   constructor(public dialogRef: MatDialogRef<AddEditCourseDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: ICourse) {
     this.formGroup = new FormGroup({

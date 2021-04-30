@@ -15,7 +15,7 @@ import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 export class AddHolidayForEmployeesDialogComponent implements OnInit {
   startDate: Date;
   endDate: Date;
-  description: string;
+  description = '';
 
   constructor(public dialogRef: MatDialogRef<AddHolidayForEmployeesDialogComponent>) {}
 

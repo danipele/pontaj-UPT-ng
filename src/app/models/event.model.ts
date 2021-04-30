@@ -16,38 +16,31 @@ export interface IEvent {
   allDay: boolean;
 }
 
-export const ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Concediu', 'Proiect'];
-export const NO_HOLIDAY_ACTIVITIES: string[] = ['Activitate didactica', 'Alta activitate', 'Proiect'];
-export const WEEKEND_ACTIVITIES: string[] = ['Activitate didactica', 'Proiect'];
+export const ACTIVITIES: string[] = ['courseHour', 'otherActivity', 'holidays', 'project'];
+export const NO_HOLIDAY_ACTIVITIES: string[] = ['courseHour', 'otherActivity', 'project'];
+export const WEEKEND_ACTIVITIES: string[] = ['courseHour', 'project'];
 
 export const COURSE_SUBACTIVITIES: string[] = [
-  'Curs',
-  'Seminar',
-  'Laborator',
-  'Ora de proiect',
-  'Evaluare',
-  'Consultatii',
-  'Pregatire pentru activitatea didactica'
+  'course',
+  'seminar',
+  'laboratory',
+  'projectHour',
+  'evaluation',
+  'consultations',
+  'teachingActivityPreparation'
 ];
 export const OTHER_SUBACTIVITIES: string[] = [
-  'Indrumare doctoranzi',
-  'Implicare neremunerată în problematica societății',
-  'Gestiune cooperari',
-  'Zile delegatie (Deplasare interna)',
-  'Zile delegatie (Deplasare externa)',
-  'Plecati cu bursa',
-  'Documentare pentru cercetare',
-  'Documentare oportunitati de finantare proiecte',
-  'Elaborare proiecte de cercetare',
-  'Executie proiecte de cercetare',
-  'Alte activitati'
+  'doctoralStudentsGuidance',
+  'unpaidInvolvementInSociety',
+  'cooperationManagement',
+  'internalDelegationDays',
+  'externalDelegationDays',
+  'departureWithScholarship',
+  'researchDocumentation',
+  'projectFinancingOpportunitiesDocumentation',
+  'researchProjectsElaboration',
+  'researchProjectsExecution',
+  'otherActivities'
 ];
-export const HOLIDAYS: string[] = [
-  'Concediu de odihna',
-  'Concediu medical',
-  'Concediu crestere copil',
-  'Concediu de maternitate',
-  'Concediu fara salariu',
-  'Absente nemotivate'
-];
-export const COLLABORATOR_SUBACTIVITIES: string[] = ['Curs', 'Seminar', 'Laborator', 'Ora de proiect'];
+export const HOLIDAYS: string[] = ['vacation', 'sickLeave', 'childGrowthLeave', 'maternityLeave', 'unpaidLeave', 'unmotivatedAbsences'];
+export const COLLABORATOR_SUBACTIVITIES: string[] = ['course', 'seminar', 'laboratory', 'projectHour'];

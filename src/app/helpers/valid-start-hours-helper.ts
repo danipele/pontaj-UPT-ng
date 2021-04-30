@@ -46,7 +46,7 @@ export class ValidStartHoursHelper {
     const hours = this.setAllHours(eventLength, projectRestrictedStartHour, projectRestrictedEndHour);
 
     events
-      .filter((event) => event.type !== 'concediu')
+      .filter((event) => event.type !== 'holidays')
       .forEach((event) => {
         if (!editEvent || event.start.getHours() !== editEvent.start.getHours()) {
           const nrOfHours = (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours();

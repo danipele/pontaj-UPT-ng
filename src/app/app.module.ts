@@ -14,7 +14,7 @@ import { CalendarHeaderComponent } from './components/calendar-header/calendar-h
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LaddaModule } from 'angular2-ladda';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { LoginService } from './services/login.service';
 import { LOCALE_ID } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -61,10 +61,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminComponent } from './components/admin/admin.component';
 import { CreateAdminUserDialogComponent } from './dialogs/create-admin-user-dialog/create-admin-user-dialog.component';
 import { AddHolidayForEmployeesDialogComponent } from './dialogs/add-holiday-for-employees-dialog/add-holiday-for-employees-dialog.component';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
   return adapterFactory(moment);
+}
+
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
 }
 
 @NgModule({
@@ -118,7 +124,14 @@ export function momentAdapterFactory(): DateAdapter {
     MatPaginatorModule,
     MatGridListModule,
     MatTooltipModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     { provide: LoginService, useClass: LoginService },

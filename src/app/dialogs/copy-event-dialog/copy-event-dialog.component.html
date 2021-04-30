@@ -1,21 +1,21 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Copiaza evenimentul</span>
+    <span>{{ 'event.copy.event' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
   <div>
     <mat-form-field appearance="fill">
-      <mat-label>Alege ziua</mat-label>
+      <mat-label>{{ 'calendar.chooseDay' | translate }}</mat-label>
       <input matInput [matDatepicker]="picker" [(ngModel)]="date" (dateChange)="setHours($event)" [matDatepickerFilter]="holidayFilter" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
   </div>
-  <div *ngIf="data.type !== 'concediu'">
+  <div *ngIf="data.type !== 'holidays'">
     <mat-form-field appearance="fill">
-      <mat-label>Ora de inceput</mat-label>
+      <mat-label>{{ 'startHour' | translate }}</mat-label>
       <mat-select [(ngModel)]="hour" name="hour">
         <mat-option *ngFor="let hour of hours" [value]="hour.value">
           {{ hour.displayValue }}
@@ -38,6 +38,6 @@
     [mat-dialog-close]="sendData()"
     cdkFocusInitial
   >
-    Confirm
+    {{ 'action.confirm' | translate }}
   </button>
 </div>

@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class NotificationHelper {
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar, private translateService: TranslateService) {}
 
   openNotification(message: string, type: string): void {
     this.snackBar.open(message, 'x', {
@@ -17,7 +18,7 @@ export class NotificationHelper {
 
   notifyWithError(error: HttpErrorResponse): void {
     if (error.status === 500) {
-      this.openNotification('Actiune nereusita. Mai incearca o data!', 'error');
+      this.openNotification(this.translateService.instant('message.error'), 'error');
     } else if (error.status === 401) {
       // do nothing
     } else {

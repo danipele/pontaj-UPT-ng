@@ -4,10 +4,16 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class HttpWrapper {
-  constructor(private cookieService: CookieService, private router: Router, private http: HttpClient) {}
+  constructor(
+    private cookieService: CookieService,
+    private router: Router,
+    private http: HttpClient,
+    private translateService: TranslateService
+  ) {}
 
   getAuthOptions(): { headers: {} } {
     const headers = new HttpHeaders({
@@ -42,13 +48,14 @@ export class HttpWrapper {
   }
 
   post(url: string, params: {}, options: {}): Observable<any> {
-    return this.http.post(url, params, options).pipe(
+    return this.http.post(url, { ...params, locale: this.translateService.currentLang }, options).pipe(
       map((result: any) => result),
       catchError((error) => this.handleHttpErrors(error))
     );
   }
 
-  get(url: string, options: {}): Observable<any> {
+  get(url: string, options: any): Observable<any> {
+    options.params = { ...options.params, locale: this.translateService.currentLang };
     return this.http.get(url, options).pipe(
       map((result: any) => result),
       catchError((error) => this.handleHttpErrors(error))
@@ -56,13 +63,14 @@ export class HttpWrapper {
   }
 
   put(url: string, params: {}, options: {}): Observable<any> {
-    return this.http.put(url, params, options).pipe(
+    return this.http.put(url, { ...params, locale: this.translateService.currentLang }, options).pipe(
       map((result: any) => result),
       catchError((error) => this.handleHttpErrors(error))
     );
   }
 
-  delete(url: string, options: {}): Observable<any> {
+  delete(url: string, options: any): Observable<any> {
+    options.params = { ...options.params, locale: this.translateService.currentLang };
     return this.http.delete(url, options).pipe(
       map((result: any) => result),
       catchError((error) => this.handleHttpErrors(error))

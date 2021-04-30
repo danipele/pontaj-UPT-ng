@@ -5,6 +5,7 @@ import { NotificationHelper } from '../../helpers/notification-helper';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateAdminUserDialogComponent } from '../../dialogs/create-admin-user-dialog/create-admin-user-dialog.component';
 import { AddHolidayForEmployeesDialogComponent } from '../../dialogs/add-holiday-for-employees-dialog/add-holiday-for-employees-dialog.component';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-admin',
@@ -16,20 +17,21 @@ export class AdminComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     public dialog: MatDialog,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       (user) => {
-        if (user.type !== 'Admin') {
+        if (user.type !== 'admin') {
           this.router.navigate(['/dashboard']);
         }
       },
       (error) => {
         if (error.status === 401) {
           this.router.navigate(['/login']);
-          this.notificationHelper.openNotification('Trebuie sa te loghezi pentru a intra in cont.', 'error');
+          this.notificationHelper.openNotification(this.translateService.instant('login.needToLoginMessage'), 'error');
         }
         this.notificationHelper.notifyWithError(error);
       }
@@ -58,9 +60,12 @@ export class AdminComponent implements OnInit {
         this.userService.addHolidays(result).subscribe(
           (res) => {
             if (res === 0) {
-              this.notificationHelper.openNotification('Nu au putut fi adaugate nicio zi de concediu.', 'error');
+              this.notificationHelper.openNotification(this.translateService.instant('admin.couldNotAddVacationMessage'), 'error');
             } else {
-              this.notificationHelper.openNotification(`S-au adaugat ${res} zile de concediu pentru toti angajatii.`, 'success');
+              this.notificationHelper.openNotification(
+                this.translateService.instant('admin.addedVacationMessage', { days: res }),
+                'success'
+              );
             }
           },
           (error) => this.notificationHelper.notifyWithError(error)

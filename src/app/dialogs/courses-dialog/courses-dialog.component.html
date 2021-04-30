@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title">
     <div class="row">
-      <span>Cursurile mele</span>
+      <span>{{ 'course.my' | translate }}</span>
       <div class="count">{{ courses.data.length }}</div>
     </div>
   </h5>
@@ -29,37 +29,37 @@
         </td>
       </ng-container>
       <ng-container matColumnDef="nr_crt">
-        <th mat-header-cell *matHeaderCellDef>Nr. crt.</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'nr' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ courses.data.indexOf(course) + 1 }}</td>
       </ng-container>
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Nume</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'name' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ course.name }}</td>
       </ng-container>
       <ng-container matColumnDef="student_year">
-        <th mat-header-cell *matHeaderCellDef>Anul de studiu</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'course.yearOfStudy' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ course.student_year }}</td>
       </ng-container>
       <ng-container matColumnDef="semester">
-        <th mat-header-cell *matHeaderCellDef>Semestru</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'course.semester' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ course.semester }}</td>
       </ng-container>
       <ng-container matColumnDef="cycle">
-        <th mat-header-cell *matHeaderCellDef>Ciclul</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'course.cycle' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ course.cycle }}</td>
       </ng-container>
       <ng-container matColumnDef="faculty">
-        <th mat-header-cell *matHeaderCellDef>Facultatea</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'course.faculty' | translate }}</th>
         <td mat-cell *matCellDef="let course">{{ course.faculty }}</td>
       </ng-container>
       <ng-container matColumnDef="description">
-        <th mat-header-cell *matHeaderCellDef>Descrierea</th>
+        <th mat-header-cell *matHeaderCellDef>{{ 'description' | translate }}</th>
         <td mat-cell *matCellDef="let course" class="description">{{ course.description }}</td>
       </ng-container>
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let course">
-          <button mat-mini-fab title="Editeaza" class="action-button" aria-label="Edit" (click)="editCourse(course)">
+          <button mat-mini-fab title="{{ 'action.edit' | translate }}" class="action-button" aria-label="Edit" (click)="editCourse(course)">
             <mat-icon>edit</mat-icon>
           </button>
         </td>
@@ -67,7 +67,13 @@
       <ng-container matColumnDef="delete">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let course">
-          <button mat-mini-fab title="Sterge" class="action-button" aria-label="Delete" (click)="deleteCourse(course)">
+          <button
+            mat-mini-fab
+            title="{{ 'action.delete' | translate }}"
+            class="action-button"
+            aria-label="Delete"
+            (click)="deleteCourse(course)"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </td>
@@ -75,7 +81,7 @@
       <ng-container matColumnDef="add_event">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let course">
-          <button mat-mini-fab title="Adauga eveniment" class="action-button" aria-label="AddEvent" (click)="addEvent(course)">
+          <button mat-mini-fab title="{{ 'event.add' | translate }}" class="action-button" aria-label="AddEvent" (click)="addEvent(course)">
             <mat-icon>access_time</mat-icon>
           </button>
         </td>
@@ -88,16 +94,16 @@
 </div>
 <div class="modal-footer">
   <button mat-raised-button class="upt-primary-btn" (click)="deleteSelected()" [hidden]="selectedCourses.length === 0">
-    Sterge cursuri
+    {{ 'course.delete' | translate }}
   </button>
   <button mat-raised-button class="upt-primary-btn" (click)="exportCourses()" [hidden]="selectedCourses.length === 0">
-    Exporta cursuri
+    {{ 'course.export' | translate }}
   </button>
-  <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">Importa cursuri</button>
+  <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">{{ 'course.import' | translate }}</button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">Descarca template</button>
-    <button mat-menu-item (click)="file.click()" class="upt-secondary-btn">Importa fisier</button>
+    <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">{{ 'action.downloadTemplate' | translate }}</button>
+    <button mat-menu-item (click)="file.click()" class="upt-secondary-btn">{{ 'action.importFile' | translate }}</button>
     <input (change)="importFile($event)" type="file" #file hidden />
   </mat-menu>
-  <button mat-raised-button class="upt-btn" (click)="addCourse()" cdkFocusInitial>Adauga curs</button>
+  <button mat-raised-button class="upt-btn" (click)="addCourse()" cdkFocusInitial>{{ 'course.add' | translate }}</button>
 </div>

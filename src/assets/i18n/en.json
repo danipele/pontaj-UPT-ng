@@ -1,0 +1,256 @@
+{
+  "name": "Name",
+  "description": "Description",
+  "startHour": "Start hour",
+  "endHour": "End hour",
+  "nr": "No.",
+  "userType": "User type",
+  "hours": " hours",
+  "login": {
+    "loginLabel": "Login with UPT email",
+    "emailAddress": "Email address",
+    "password": "Password",
+    "login": "Login",
+    "resetPassword": "Reset password",
+    "signUp": "Create account",
+    "sendEmailLabel": "Send reset password email",
+    "back": "Go back",
+    "signUpLabel": "Create account",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "type": "Type",
+    "create": "Create",
+    "needToLoginMessage": "You must login with your account to continue.",
+    "successMessage": "Successfully logged in.",
+    "resetEmailSentMessage": "A reset password email was successfully sent to email address: {{email}}."
+  },
+  "user": {
+    "collaborator": "Collaborator",
+    "employee": "Employee",
+    "admin": "Admin",
+    "personalInfo": "Personal information",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "Language",
+    "languages": {
+      "en": "English",
+      "ro": "Romanian"
+    }
+  },
+  "admin": {
+    "createAdminAccount": "Create admin account",
+    "addVacations": "Add vacation for employees",
+    "couldNotAddVacationMessage": "No vacation could be added.",
+    "addedVacationMessage": "{{days}} vacation days were added to all employees.",
+    "chooseVacation": "Choose vacation",
+    "choosePeriod": "Choose period",
+    "add": "Add new admin"
+  },
+  "calendar": {
+    "list": "List",
+    "calendar": "Calendar",
+    "daily": "Daily",
+    "weekly": "Weekly",
+    "chooseWeek": "Choose week",
+    "chooseDay": "Choose day",
+    "back": "Back",
+    "forward": "Forward",
+    "goToToday": "Go to Today"
+  },
+  "dashboard": {
+    "info": {
+      "infoAbout": "Information about current {{dateType}}:",
+      "day": "day",
+      "week": "week",
+      "events": "Events: ",
+      "recordedHours": "Recorded hours: ",
+      "days": " days"
+    }
+  },
+  "event": {
+    "activity": {
+      "choose": "Choose activity",
+      "courseHour": "Teaching activity",
+      "project": "Project",
+      "otherActivity": "Other activity",
+      "holidays": "Holidays",
+      "subtype": "Activity subtype",
+      "type": "Activity type"
+    },
+    "type": {
+      "basicNorm": "Basic norm",
+      "hourlyPayment": "Hourly payment"
+    },
+    "filter": {
+      "subactivity": "Activity type filter",
+      "activity": "Activity subtype filter",
+      "date": "Date filter",
+      "course": "Course filter",
+      "project": "Project filter",
+      "apply": "Apply filter",
+      "delete": "Delete filter"
+    },
+    "table": {
+      "date": "Date",
+      "hours": "Hours"
+    },
+    "allEvents": "All events",
+    "eventsFromLabel": "Events from this {{dateType}}",
+    "day": "day",
+    "week": "week",
+    "add": "Add event",
+    "edit": "Edit event",
+    "performedActivityDescription": "Performed activity description",
+    "recurrence": {
+      "recurrent": "Recurrent",
+      "resetRecurrence": "Reset recurrence",
+      "until": "Until",
+      "includeWeekends": "Include weekend days too",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "everyOtherWeek": "Every other week",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "copy": {
+      "event": "Copy event",
+      "events": "Copy events",
+      "wantToCopy": "What do you wanna copy?",
+      "allEvents": "Copy all events from {{dateType}}",
+      "in": "In {{dateType}}",
+      "move": "Move events",
+      "day": "Day",
+      "week": "Week"
+    },
+    "subactivity": {
+      "course": "Course",
+      "seminar": "Seminar",
+      "laboratory": "Laboratory",
+      "projectHour": "Project Hour",
+      "evaluation": "Evaluation",
+      "consultations": "Consultations",
+      "teachingActivityPreparation": "Teaching activity preparation",
+      "doctoralStudentsGuidance": "Doctoral students guidance",
+      "unpaidInvolvementInSociety": "Unpaid involvement in society",
+      "cooperationManagement": "Cooperation management",
+      "internalDelegationDays": "Internal delegation days",
+      "externalDelegationDays": "External delegation days",
+      "departureWithScholarship": "Departure with scholarship",
+      "otherActivities": "Other activities",
+      "researchDocumentation": "Research documentation",
+      "projectFinancingOpportunitiesDocumentation": "Project financing opportunities documentation",
+      "researchProjectsElaboration": "Research projects elaboration",
+      "researchProjectsExecution": "Research projects execution",
+      "vacation": "Vacation",
+      "sickLeave": "Sick leave",
+      "unpaidLeave": "Unpaid leave",
+      "childGrowthLeave": "Child growth leave",
+      "maternityLeave": "Maternity leave",
+      "unmotivatedAbsences": "Unmotivated absences"
+    },
+    "allDay": "All day"
+  },
+  "message": {
+    "events": "events",
+    "courses": "courses",
+    "projects": "projects",
+    "pl": {
+      "successfully": "{{nr}} {{objectsType}} were successfully {{action}}.",
+      "created": "created",
+      "deleted": "deleted",
+      "copied": "copied",
+      "moved": "moved",
+      "exported": "exported"
+    },
+    "art": {
+      "event": "event",
+      "course": "course",
+      "project": "project"
+    },
+    "event": "event",
+    "course": "course",
+    "project": "project",
+    "sg": {
+      "successfully": "The {{objectType}} was successfully {{action}}.",
+      "added": "added",
+      "created": "created",
+      "deleted": "deleted",
+      "edited": "edited",
+      "copied": "copied",
+      "moved": "moved"
+    },
+    "couldNotCopyEvent": "No event could be {{action}}",
+    "copyEventFailed": "The event could not be copied.",
+    "deleteConfirmation": "Are you sure you want to delete this {{objectType}}?",
+    "multipleDeleteConfirmation": "Are you sure you want to delete {{nr}} {{objectsType}}?",
+    "personalInfoSuccess": "Your personal information was successfully updated",
+    "eventType": {
+      "recordedProjectHours": "You have registered {{hours}} hours for project {{projectName}} for month {{month}}.",
+      "hoursLeft": " You have {{hours}} hours left.",
+      "monthlyNormProject": "You already exceeded the monthly norm of {{hours}} hours.",
+      "noNormProject": " You do not have a monthly hours norm for this project.",
+      "recordedBasicNorm": "You have registered {{hours}} hours from basic norm for date {{date}}.",
+      "recordedHourlyPayment": "You have registered {{hours}} hours in hourly payment regime for date {{date}}.",
+      "recordedBasicAndHourly": "You have registered 8 hours from basic norm and {{hours}} hours in hourly payment regime for date {{date}}.",
+      "onlyHourlyPaidHours": "From now on, all the hours you will add for this day will be in hourly payment regime."
+    },
+    "holidaysBadDay": "You can take holidays only for a whole day. There already are {{events}} events for date {{date}}. Please select another date.",
+    "error": "Something went wrong. Try again!"
+  },
+  "action": {
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "save": "Save",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "downloadTemplate": "Download template",
+    "importFile": "Import file"
+  },
+  "course": {
+    "my": "My courses",
+    "add": "Add course",
+    "name": "Course name",
+    "forStudents": "For students",
+    "fromYear": "From year",
+    "yearOfStudy": "Year of study",
+    "semester": "Semester",
+    "cycle": "Cycle",
+    "fromFaculty": "From faculty",
+    "faculty": "Faculty",
+    "description": "Course description",
+    "cycles": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD"
+    },
+    "addNew": "Add a new course",
+    "delete": "Delete courses",
+    "export": "Export courses",
+    "import": "Import courses",
+    "fileName": "Courses.xls",
+    "details": "{{faculty}} ∙ {{cycle}} ∙ Year {{studentYear}} ∙ Semester {{semester}} ∙ {{description}}"
+  },
+  "project": {
+    "my": "My projects",
+    "add": "Add project",
+    "name": "Project name",
+    "nrOfHoursPerMonth": "Nr. of hours per month",
+    "hoursPerMonth": "Hours per month",
+    "startHourRestriction": "Start hour restriction",
+    "endHourRestriction": "End hour restriction",
+    "description": "Project description",
+    "addNew": "Add a new project",
+    "delete": "Delete projects",
+    "export": "Export projects",
+    "import": "Import projects",
+    "fileName": "Projects.xls",
+    "details": {
+      "hoursPerMonth": "{{hoursPerMonth}} hours per month ∙ ",
+      "hourRestrictions": "Working hour restrictions for project: {{startHour}}:00 - {{endHour}}:00 ∙ "
+    }
+  },
+  "report": {
+    "exportReports": "Export reports"
+  }
+}

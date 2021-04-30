@@ -3,33 +3,35 @@
     <div class="container__full-width">
       <div class="formContainer">
         <form [formGroup]="formGroup" role="form" name="loginForm">
-          <h2>Creeaza un cont</h2>
+          <h2>{{ 'login.signUpLabel' | translate }}</h2>
           <mat-form-field class="form-field">
-            <mat-label for="userEmail">Adresa de email</mat-label>
+            <mat-label for="userEmail">{{ 'login.emailAddress' | translate }}</mat-label>
             <input matInput id="userEmail" name="email" type="email" formControlName="userEmail" required="required" />
           </mat-form-field>
           <mat-form-field class="form-field">
-            <mat-label for="userPassword">Parola</mat-label>
+            <mat-label for="userPassword">{{ 'login.password' | translate }}</mat-label>
             <input matInput id="userPassword" name="password" type="password" formControlName="userPassword" required="required" />
           </mat-form-field>
           <mat-form-field class="form-field">
-            <mat-label for="firstName">Prenume</mat-label>
+            <mat-label for="firstName">{{ 'login.firstName' | translate }}</mat-label>
             <input matInput id="firstName" name="firstName" formControlName="firstName" required="required" />
           </mat-form-field>
           <mat-form-field class="form-field">
-            <mat-label for="lastName">Nume</mat-label>
+            <mat-label for="lastName">{{ 'login.lastName' | translate }}</mat-label>
             <input matInput id="lastName" name="lastName" formControlName="lastName" required="required" />
           </mat-form-field>
           <mat-form-field class="form-field">
-            <mat-label>Tipul</mat-label>
+            <mat-label>{{ 'login.type' | translate }}</mat-label>
             <mat-select formControlName="type">
               <mat-option *ngFor="let type of TYPES" [value]="type">
-                {{ type }}
+                {{ 'user.' + type | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
           <div class="form-group-button">
-            <button mat-raised-button (click)="createAccount()" class="upt-btn" [disabled]="notAllFieldsAreFilled()">Creeaza</button>
+            <button mat-raised-button (click)="createAccount()" class="upt-btn" [disabled]="notAllFieldsAreFilled()">
+              {{ 'login.create' | translate }}
+            </button>
           </div>
         </form>
       </div>

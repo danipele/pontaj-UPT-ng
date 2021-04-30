@@ -4,6 +4,6 @@
   </h6>
 </div>
 <div class="modal-footer">
-  <button mat-raised-button class="upt-secondary-btn" (click)="cancel()">Renunta</button>
+  <button mat-raised-button class="upt-secondary-btn" (click)="cancel()">{{ 'action.cancel' | translate }}</button>
   <button mat-raised-button class="upt-btn" [mat-dialog-close]="confirm()" cdkFocusInitial>{{ data.confirmationMessage }}</button>
 </div>

@@ -4,15 +4,27 @@
       <img class="upt-logo" src="../../../assets/images/upt_logo_top_bar.jpg" alt="UPT" />
     </div>
   </a>
-  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openCoursesDialog()" *ngIf="isNotAdmin()">Cursurile mele</button>
-  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openProjectsDialog()" *ngIf="isEmployee()">Proiectele mele</button>
-  <button mat-flat-button class="upt-btn top-bar-btn" *ngIf="isNotAdmin()">Exporta rapoarte</button>
+  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openCoursesDialog()" *ngIf="isNotAdmin()">
+    {{ 'course.my' | translate }}
+  </button>
+  <button mat-flat-button class="upt-btn top-bar-btn" (click)="openProjectsDialog()" *ngIf="isEmployee()">
+    {{ 'project.my' | translate }}
+  </button>
+  <button mat-flat-button class="upt-btn top-bar-btn" *ngIf="isNotAdmin()">
+    {{ 'report.exportReports' | translate }}
+  </button>
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="account" class="account">
     <mat-icon class="user_icon">person_pin</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item class="upt-secondary-btn" (click)="openPersonalInfoDialog()">Informatii personale</button>
-    <button mat-menu-item class="upt-secondary-btn" (click)="openSettingsDialog()">Setari</button>
-    <button mat-menu-item class="upt-secondary-btn" (click)="logout()">Iesi din cont</button>
+    <button mat-menu-item class="upt-secondary-btn" (click)="openPersonalInfoDialog()">
+      {{ 'user.personalInfo' | translate }}
+    </button>
+    <button mat-menu-item class="upt-secondary-btn" (click)="openSettingsDialog()">
+      {{ 'user.settings' | translate }}
+    </button>
+    <button mat-menu-item class="upt-secondary-btn" (click)="logout()">
+      {{ 'user.logout' | translate }}
+    </button>
   </mat-menu>
 </div>

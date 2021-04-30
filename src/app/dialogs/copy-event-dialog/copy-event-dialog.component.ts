@@ -6,6 +6,7 @@ import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 import { Hour, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Data {
   eventLength: number;
@@ -31,7 +32,7 @@ export class CopyEventDialogComponent implements OnInit {
   badHolidayDateMessage: string | undefined;
 
   holidayFilter = (date: Date | null): boolean => {
-    return (this.data.type !== 'concediu' && this.data.isAvailableForWeekend) || (date?.getDay() !== 6 && date?.getDay() !== 0);
+    return (this.data.type !== 'holidays' && this.data.isAvailableForWeekend) || (date?.getDay() !== 6 && date?.getDay() !== 0);
   }
 
   constructor(
@@ -39,13 +40,14 @@ export class CopyEventDialogComponent implements OnInit {
     private eventService: EventService,
     private calendarEventsHelper: CalendarEventsHelper,
     private validStartHoursHelper: ValidStartHoursHelper,
+    private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: Data
   ) {}
 
   ngOnInit(): void {}
 
   notAllFieldsAreFilled(): boolean {
-    return !this.hours && !this.hour && this.badHolidayDateMessage;
+    return !this.date || this.hour === undefined || this.badHolidayDateMessage !== undefined;
   }
 
   cancel(): void {
@@ -60,7 +62,7 @@ export class CopyEventDialogComponent implements OnInit {
   }
 
   setHours(event: any): void {
-    if (this.data.type === 'concediu') {
+    if (this.data.type === 'holidays') {
       this.setBadHolidayDateMessage(event.value);
     } else {
       this.setStartHours();
@@ -72,13 +74,13 @@ export class CopyEventDialogComponent implements OnInit {
       .getAll(this.date as Date, { for: 'day' })
       .pipe(
         map((result: []) => {
-          return this.calendarEventsHelper.addEvents(result);
+          return result.map((event) => this.calendarEventsHelper.createEvent(event));
         })
       )
       .toPromise()
       .then(
         (events) => {
-          if (events.length === 1 && events[0].allDay && this.data.type !== 'proiect') {
+          if (events.filter((event) => event.allDay).length === 1 && this.data.type !== 'project') {
             this.hours = [];
             this.hour = undefined;
           } else {
@@ -108,18 +110,20 @@ export class CopyEventDialogComponent implements OnInit {
       .getAll(date as Date, { for: 'day' })
       .pipe(
         map((result: []) => {
-          return this.calendarEventsHelper.addEvents(result);
+          return result.map((event) => this.calendarEventsHelper.createEvent(event));
         })
       )
       .toPromise()
       .then(
         (events) => {
-          if (events.filter((event) => event.type !== 'proiect').length === 0) {
+          if (events.filter((event) => event.type !== 'project').length === 0) {
             this.badHolidayDateMessage = undefined;
+            this.hour = 0;
           } else {
-            this.badHolidayDateMessage = `Concediul se poate lua doar pe o zi intreaga. Exista deja ${
-              events.length
-            } evenimente in data de ${date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')}. Va rugam selectati alta data.`;
+            this.badHolidayDateMessage = this.translateService.instant('message.holidaysBadDay', {
+              events: events.length,
+              date: date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')
+            });
           }
         },
         () => this.cancel()

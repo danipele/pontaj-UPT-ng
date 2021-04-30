@@ -31,7 +31,7 @@ export class CreateAdminUserDialogComponent implements OnInit {
       password: this.formGroup.controls.userPassword.value,
       first_name: this.formGroup.controls.firstName.value,
       last_name: this.formGroup.controls.lastName.value,
-      type: 'Admin'
+      type: 'admin'
     };
   }
 

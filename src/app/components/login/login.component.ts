@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CookieService } from 'ngx-cookie';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private cookieService: CookieService,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
@@ -50,12 +52,12 @@ export class LoginComponent implements OnInit {
         if (result.success === true) {
           this.cookieService.put('auth_token', result.auth_token);
           localStorage.setItem('user', JSON.stringify(result.user));
-          if (result.user.type === 'Admin') {
+          if (result.user.type === 'admin') {
             this.router.navigate(['/admin']);
           } else {
             this.router.navigate(['/dashboard']);
           }
-          this.notificationHelper.openNotification('Esti autentificat cu success!', 'success');
+          this.notificationHelper.openNotification(this.translateService.instant('login.successMessage'), 'success');
         } else {
           this.notificationHelper.openNotification(result.message, 'error');
         }
@@ -73,10 +75,7 @@ export class LoginComponent implements OnInit {
     const email = this.formGroup.controls.userEmail.value;
     this.userService.resetPassword(email).subscribe(
       (result) => {
-        this.notificationHelper.openNotification(
-          `Un email de resetare a parolei a fost trimis cu succes pe adresa de email: ${email}.`,
-          'success'
-        );
+        this.notificationHelper.openNotification(this.translateService.instant('login.resetEmailSentMessage', { email }), 'success');
       },
       (error) => this.notificationHelper.notifyWithError(error)
     );
@@ -84,5 +83,19 @@ export class LoginComponent implements OnInit {
 
   signup(): void {
     this.router.navigate(['/signup']);
+  }
+
+  setEnglish(): void {
+    this.translateService.use('en');
+    this.cookieService.put('lang', 'en');
+  }
+
+  setRomanian(): void {
+    this.translateService.use('ro');
+    this.cookieService.put('lang', 'ro');
+  }
+
+  goBackFromReset(): void {
+    this.resetPassOn = false;
   }
 }

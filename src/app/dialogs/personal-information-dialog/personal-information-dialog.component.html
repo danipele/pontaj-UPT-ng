@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span> Informatii personale </span>
+    <span>{{ 'user.personalInfo' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
@@ -9,33 +9,33 @@
     <div class="row">
       <div class="col-md-6">
         <mat-form-field class="name-field-width">
-          <mat-label>Prenume</mat-label>
-          <input matInput placeholder="Prenume" formControlName="firstName" />
+          <mat-label>{{ 'login.firstName' | translate }}</mat-label>
+          <input matInput placeholder="{{ 'login.firstName' | translate }}" formControlName="firstName" />
         </mat-form-field>
       </div>
       <div class="col-md-6">
         <mat-form-field class="name-field-width">
-          <mat-label>Nume</mat-label>
-          <input matInput placeholder="Nume" formControlName="lastName" />
+          <mat-label>{{ 'login.lastName' | translate }}</mat-label>
+          <input matInput placeholder="{{ 'login.lastName' | translate }}" formControlName="lastName" />
         </mat-form-field>
       </div>
     </div>
     <div class="margin-top">
       <mat-form-field class="field-width">
-        <mat-label>Email</mat-label>
+        <mat-label>{{ 'login.emailAddress' | translate }}</mat-label>
         <input matInput [value]="data.user.email" disabled />
       </mat-form-field>
     </div>
     <div class="margin-top">
       <mat-form-field class="field-width">
-        <mat-label>Tipul utilizatorului</mat-label>
-        <input matInput [value]="data.user.type" disabled />
+        <mat-label>{{ 'userType' | translate }}</mat-label>
+        <input matInput [value]="displayUserType()" disabled />
       </mat-form-field>
     </div>
   </form>
 </div>
 <div class="modal-footer">
   <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" [mat-dialog-close]="sendData()" cdkFocusInitial>
-    Confirm
+    {{ 'action.confirm' | translate }}
   </button>
 </div>

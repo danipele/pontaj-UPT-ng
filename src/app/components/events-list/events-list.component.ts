@@ -22,6 +22,7 @@ import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-events-list',
@@ -86,13 +87,14 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
     private eventService: EventService,
     public courseService: CourseService,
     public projectService: ProjectService,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {
     if (this.isEmployee()) {
       this.activities = ACTIVITIES;
       this.subactivities = [...COURSE_SUBACTIVITIES, ...OTHER_SUBACTIVITIES, ...HOLIDAYS].sort((a, b) => a.localeCompare(b));
     } else {
-      this.activities = ['Activitate didactica'];
+      this.activities = [this.translateService.instant('event.activity.CourseHour')];
       this.subactivities = COLLABORATOR_SUBACTIVITIES;
     }
   }
@@ -199,8 +201,10 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi aceasta evenimente?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.deleteConfirmation', {
+          objectType: this.translateService.instant('message.event')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -209,7 +213,13 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
         this.eventService.delete(event.id).subscribe(
           () => {
             this.deleteEventFromList(event);
-            this.notificationHelper.openNotification('Evenimentul a fost sters cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectsType: this.translateService.instant('message.art.event'),
+                action: this.translateService.instant('message.sg.deleted')
+              }),
+              'success'
+            );
           },
           (error) => this.notificationHelper.notifyWithError(error)
         );
@@ -263,8 +273,11 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi ' + this.selectedEvents.length + ' evenimente?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.multipleDeleteConfirmation', {
+          nr: this.selectedEvents.length,
+          objectsType: this.translateService.instant('message.events')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -273,7 +286,14 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
         this.eventService.deleteSelected(this.selectedEvents).subscribe(
           () => {
             this.executeFilterEvents();
-            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedEvents.length} evenimente!`, 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.pl.successfully', {
+                nr: this.selectedEvents.length,
+                objectsType: this.translateService.instant('message.events'),
+                action: this.translateService.instant('message.pl.deleted')
+              }),
+              'success'
+            );
           },
           (error) => this.notificationHelper.notifyWithError(error)
         );
@@ -296,7 +316,7 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   isEmployee(): boolean {
-    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+    return JSON.parse(localStorage.getItem('user') as string).type === 'employee';
   }
 
   executeCopyEvent(event: IEvent): void {

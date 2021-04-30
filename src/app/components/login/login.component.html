@@ -6,30 +6,39 @@
       </div>
       <div class="formContainer">
         <form [formGroup]="formGroup" role="form" name="loginForm">
-          <h2>Autentificare cu email UPT</h2>
+          <h2>{{ 'login.loginLabel' | translate }}</h2>
           <mat-form-field class="form-field">
-            <mat-label for="userEmail">Adresa de email</mat-label>
+            <mat-label for="userEmail">{{ 'login.emailAddress' | translate }}</mat-label>
             <input matInput id="userEmail" name="email" type="email" formControlName="userEmail" required="required" />
-            <mat-icon class="icon" aria-hidden="false" aria-label="email">email</mat-icon>
           </mat-form-field>
           <mat-form-field class="form-field" [hidden]="resetPassOn">
-            <mat-label for="userPassword">Parola</mat-label>
+            <mat-label for="userPassword">{{ 'login.password' | translate }}</mat-label>
             <input matInput id="userPassword" name="password" type="password" formControlName="userPassword" required="required" />
-            <mat-icon class="icon" aria-hidden="false" aria-label="password">password</mat-icon>
           </mat-form-field>
           <div class="form-group-button" [hidden]="resetPassOn">
-            <button mat-raised-button (click)="login()" class="upt-btn">Autentificare</button>
+            <button mat-raised-button (click)="login()" class="upt-btn">{{ 'login.login' | translate }}</button>
           </div>
           <div>
-            <button (click)="resetPassword()" class="upt-btn reset-password-btn" [hidden]="resetPassOn">Resetare parola</button>
+            <button (click)="resetPassword()" class="upt-btn reset-password-btn" [hidden]="resetPassOn">
+              {{ 'login.resetPassword' | translate }}
+            </button>
           </div>
           <div class="form-group-button" [hidden]="resetPassOn">
-            <button mat-raised-button (click)="signup()" class="upt-secondary-btn">Creeaza cont</button>
+            <button mat-raised-button (click)="signup()" class="upt-secondary-btn">{{ 'login.signUp' | translate }}</button>
           </div>
           <div>
             <button mat-raised-button (click)="sendEmail()" class="upt-btn" [hidden]="!resetPassOn">
-              Trimite email de resetare a parolei
+              {{ 'login.sendEmailLabel' | translate }}
             </button>
+          </div>
+          <div>
+            <button mat-raised-button (click)="goBackFromReset()" class="upt-secondary-btn back-btn" [hidden]="!resetPassOn">
+              {{ 'login.back' | translate }}
+            </button>
+          </div>
+          <div class="flags">
+            <img (click)="setRomanian()" src="../../../assets/images/ro_flag.png" />
+            <img (click)="setEnglish()" class="flag-elem" src="../../../assets/images/en_flag.jpg" />
           </div>
         </form>
       </div>

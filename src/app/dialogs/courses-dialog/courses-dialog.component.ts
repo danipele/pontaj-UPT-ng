@@ -9,6 +9,7 @@ import { indexOf } from 'lodash';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { saveAs } from 'file-saver';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-courses-dialog',
@@ -38,6 +39,7 @@ export class CoursesDialogComponent implements OnInit {
     public dialog: MatDialog,
     public courseService: CourseService,
     private notificationHelper: NotificationHelper,
+    private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: { emitter: EventEmitter<any> }
   ) {}
 
@@ -74,7 +76,13 @@ export class CoursesDialogComponent implements OnInit {
           (coursesResult) => {
             this.courses.data = coursesResult;
             this.refresh();
-            this.notificationHelper.openNotification('Cursul a fost adaugat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.course'),
+                action: this.translateService.instant('message.sg.added')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -96,7 +104,13 @@ export class CoursesDialogComponent implements OnInit {
           (coursesResult) => {
             this.courses.data = coursesResult;
             this.refresh();
-            this.notificationHelper.openNotification('Cursul a fost editat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.course'),
+                action: this.translateService.instant('message.sg.edited')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -111,8 +125,10 @@ export class CoursesDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi acest curs?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.deleteConfirmation', {
+          objectType: this.translateService.instant('message.course')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -121,7 +137,13 @@ export class CoursesDialogComponent implements OnInit {
         this.courseService.delete(course.id).subscribe(
           () => {
             this.deleteCourseFromList(course);
-            this.notificationHelper.openNotification('Cursul a fost sters cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.course'),
+                action: this.translateService.instant('message.sg.deleted')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -158,7 +180,7 @@ export class CoursesDialogComponent implements OnInit {
   downloadTemplate(): void {
     this.courseService.downloadTemplateApiUrl().subscribe(
       (result) => {
-        saveAs(result, 'Cursuri.xls');
+        saveAs(result, this.translateService.instant('course.fileName'));
       },
       (error) => {
         this.cancel();
@@ -176,7 +198,14 @@ export class CoursesDialogComponent implements OnInit {
         (result) => {
           this.courses.data = result.courses;
           this.refresh();
-          this.notificationHelper.openNotification(`Au fost adaugate cu succes ${result.added} cursuri.`, 'success');
+          this.notificationHelper.openNotification(
+            this.translateService.instant('message.pl.successfully', {
+              nr: result.added,
+              objectsType: this.translateService.instant('message.courses'),
+              action: this.translateService.instant('message.pl.added')
+            }),
+            'success'
+          );
         },
         (error) => {
           this.notificationHelper.notifyWithError(error);
@@ -203,8 +232,11 @@ export class CoursesDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi ' + this.selectedCourses.length + ' cursuri?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.multipleDeleteConfirmation', {
+          nr: this.selectedCourses.length,
+          objectsType: this.translateService.instant('message.courses')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -217,7 +249,14 @@ export class CoursesDialogComponent implements OnInit {
             } else {
               this.selectedCourses.forEach((course) => this.deleteCourseFromList(course));
             }
-            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedCourses.length} cursuri.`, 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.pl.successfully', {
+                nr: this.selectedCourses.length,
+                objectsType: this.translateService.instant('message.courses'),
+                action: this.translateService.instant('message.pl.deleted')
+              }),
+              'success'
+            );
             this.selectedCourses = [];
             this.refresh();
           },
@@ -251,8 +290,15 @@ export class CoursesDialogComponent implements OnInit {
   exportCourses(): void {
     this.courseService.exportCourses(this.selectedCourses).subscribe(
       (result) => {
-        saveAs(result, 'Cursuri.xls');
-        this.notificationHelper.openNotification(`Au fost exportate cu succes ${this.selectedCourses.length} cursuri.`, 'success');
+        saveAs(result, this.translateService.instant('course.fileName'));
+        this.notificationHelper.openNotification(
+          this.translateService.instant('message.pl.successfully', {
+            nr: this.selectedCourses.length,
+            objectsType: this.translateService.instant('message.courses'),
+            action: this.translateService.instant('message.pl.exported')
+          }),
+          'success'
+        );
       },
       (error) => {
         this.notificationHelper.notifyWithError(error);

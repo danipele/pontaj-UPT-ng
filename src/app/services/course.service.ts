@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ICourse } from '../models/course.model';
 import { HttpWrapper } from '../helpers/http-wrapper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class CourseService {
-  constructor(private httpWrapper: HttpWrapper) {}
+  constructor(private httpWrapper: HttpWrapper, private translateService: TranslateService) {}
 
   getAll(): Observable<any> {
     return this.httpWrapper.get(`http://localhost:8000/api/v1/courses`, this.httpWrapper.getAuthOptions());
@@ -40,6 +41,12 @@ export class CourseService {
   }
 
   getCourseDetails(course: ICourse): string {
-    return `${course.faculty} ∙ ${course.cycle} ∙ Anul ${course.student_year} ∙ Semestrul ${course.semester} ∙ ${course.description || ''}`;
+    return this.translateService.instant('course.details', {
+      faculty: course.faculty,
+      cycle: this.translateService.instant('course.cycles.' + course.cycle),
+      studentYear: course.student_year,
+      semester: course.semester,
+      description: course.description
+    });
   }
 }

@@ -10,6 +10,7 @@ import { indexOf } from 'lodash';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { saveAs } from 'file-saver';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-projects-dialog',
@@ -38,6 +39,7 @@ export class ProjectsDialogComponent implements OnInit {
     public dialog: MatDialog,
     public projectService: ProjectService,
     private notificationHelper: NotificationHelper,
+    private translateService: TranslateService,
     @Inject(MAT_DIALOG_DATA) public data: { emitter: EventEmitter<any> }
   ) {}
 
@@ -74,7 +76,13 @@ export class ProjectsDialogComponent implements OnInit {
           (projectsResult) => {
             this.projects.data = projectsResult;
             this.refresh();
-            this.notificationHelper.openNotification('Proiectul a fost adaugat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.project'),
+                action: this.translateService.instant('message.sg.added')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -96,7 +104,13 @@ export class ProjectsDialogComponent implements OnInit {
           (projectsResult) => {
             this.projects.data = projectsResult;
             this.refresh();
-            this.notificationHelper.openNotification('Proiectul a fost editat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.project'),
+                action: this.translateService.instant('message.sg.edited')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -111,8 +125,10 @@ export class ProjectsDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi acest proiect?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.deleteConfirmation', {
+          objectType: this.translateService.instant('message.project')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -121,7 +137,13 @@ export class ProjectsDialogComponent implements OnInit {
         this.projectService.delete(project.id).subscribe(
           () => {
             this.deleteProjectFromList(project);
-            this.notificationHelper.openNotification('Proiectul a fost sters cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.project'),
+                action: this.translateService.instant('message.sg.deleted')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.notificationHelper.notifyWithError(error);
@@ -158,7 +180,7 @@ export class ProjectsDialogComponent implements OnInit {
   downloadTemplate(): void {
     this.projectService.downloadTemplateApiUrl().subscribe(
       (result) => {
-        saveAs(result, 'Proiecte.xls');
+        saveAs(result, this.translateService.instant('project.fileName'));
       },
       (error) => {
         this.cancel();
@@ -176,7 +198,14 @@ export class ProjectsDialogComponent implements OnInit {
         (result) => {
           this.projects.data = result.projects;
           this.refresh();
-          this.notificationHelper.openNotification(`Au fost adaugate cu succes ${result.added} proiecte.`, 'success');
+          this.notificationHelper.openNotification(
+            this.translateService.instant('message.pl.successfully', {
+              nr: result.added,
+              objectsType: this.translateService.instant('message.projects'),
+              action: this.translateService.instant('message.pl.added')
+            }),
+            'success'
+          );
         },
         (error) => {
           this.notificationHelper.notifyWithError(error);
@@ -203,8 +232,11 @@ export class ProjectsDialogComponent implements OnInit {
     const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
       width: '30%',
       data: {
-        message: 'Esti sigur ca vrei sa stergi ' + this.selectedProjects.length + ' proiecte?',
-        confirmationMessage: 'Sterge'
+        message: this.translateService.instant('message.multipleDeleteConfirmation', {
+          nr: this.selectedProjects.length,
+          objectsType: this.translateService.instant('message.courses')
+        }),
+        confirmationMessage: this.translateService.instant('action.delete')
       }
     });
 
@@ -217,7 +249,14 @@ export class ProjectsDialogComponent implements OnInit {
             } else {
               this.selectedProjects.forEach((project) => this.deleteProjectFromList(project));
             }
-            this.notificationHelper.openNotification(`Au fost sterse cu succes ${this.selectedProjects.length} proiecte.`, 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.pl.successfully', {
+                nr: this.selectedProjects.length,
+                objectsType: this.translateService.instant('message.projects'),
+                action: this.translateService.instant('message.pl.deleted')
+              }),
+              'success'
+            );
             this.selectedProjects = [];
             this.refresh();
           },
@@ -251,8 +290,15 @@ export class ProjectsDialogComponent implements OnInit {
   exportProjects(): void {
     this.projectService.exportProjects(this.selectedProjects).subscribe(
       (result) => {
-        saveAs(result, 'Proiecte.xls');
-        this.notificationHelper.openNotification(`Au fost exportate cu succes ${this.selectedProjects.length} proiecte.`, 'success');
+        saveAs(result, this.translateService.instant('project.filename'));
+        this.notificationHelper.openNotification(
+          this.translateService.instant('message.pl.successfully', {
+            nr: this.selectedProjects.length,
+            objectsType: this.translateService.instant('message.projects'),
+            action: this.translateService.instant('message.pl.exported')
+          }),
+          'success'
+        );
       },
       (error) => {
         this.notificationHelper.notifyWithError(error);

@@ -27,8 +27,7 @@ export class EventDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private calendarEventsHelper: CalendarEventsHelper,
     private courseService: CourseService,
-    private projectService: ProjectService,
-    private eventService: EventService
+    private projectService: ProjectService
   ) {}
 
   ngOnInit(): void {}
@@ -62,13 +61,13 @@ export class EventDialogComponent implements OnInit {
 
   getIconsColor(): string {
     switch (this.data.event.activity) {
-      case 'Activitate didactica':
+      case 'courseHour':
         return 'rgb(183, 4, 4)';
-      case 'Proiect':
+      case 'project':
         return 'rgb(29, 119, 29)';
-      case 'Alta activitate':
+      case 'otherActivity':
         return 'rgb(51, 195, 178)';
-      case 'Concediu':
+      case 'holidays':
         return 'rgb(90, 37, 236)';
     }
     return '';

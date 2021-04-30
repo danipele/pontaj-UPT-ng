@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IUser } from '../../models/user.model';
 import { FormControl, FormGroup } from '@angular/forms';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Data {
   user: IUser;
@@ -15,7 +16,11 @@ interface Data {
 export class PersonalInformationDialogComponent implements OnInit {
   formGroup: FormGroup;
 
-  constructor(public dialogRef: MatDialogRef<PersonalInformationDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: Data) {
+  constructor(
+    public dialogRef: MatDialogRef<PersonalInformationDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Data,
+    private translateService: TranslateService
+  ) {
     this.formGroup = new FormGroup({
       firstName: new FormControl(),
       lastName: new FormControl()
@@ -41,5 +46,9 @@ export class PersonalInformationDialogComponent implements OnInit {
 
   notAllFieldsAreFilled(): boolean {
     return !this.formGroup.controls.firstName.value || !this.formGroup.controls.lastName.value;
+  }
+
+  displayUserType(): string {
+    return this.translateService.instant('user.' + this.data.user.type);
   }
 }

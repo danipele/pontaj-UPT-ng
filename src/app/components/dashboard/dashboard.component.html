@@ -9,47 +9,59 @@
       class="info-btn"
       matTooltip="{{
         filterParams.all
-          ? 'Toate evenimentele'
-          : 'Informatii despre ' +
-            (this.isDaily() ? 'ziua' : 'saptamana') +
-            ' actuala: &#13;' +
+          ? ('events.allEvents' | translate)
+          : ('dashboard.info.infoAbout'
+              | translate: { dateType: this.isDaily() ? ('dashboard.info.day' | translate) : ('dashboard.info.week' | translate) }) +
+            '&#13;' +
             this.date.toLocaleDateString() +
             (this.isWeekly() ? ' - ' + this.getEndDateForWeekly().toLocaleDateString() : '')
       }}
         &#13;
-        Evenimente: {{ this.events.length }}
-        Ore inregistrate: {{ this.getNrOfHours() }}
+        {{ ('dashboard.info.events' | translate) + this.events.length }}
+        {{ ('dashboard.info.recordedHours' | translate) + this.getNrOfHours() }}
         {{
         isEmployee()
-          ? '&#13;
-         Activitatate didactica: ' +
-            getNrOfActivityTypeEvents('Activitate didactica') +
+          ? '&#13;' +
+            ('event.activity.courseHour' | translate) +
+            ': ' +
+            getNrOfActivityTypeEvents('courseHour') +
             ' (' +
-            getNrOfHoursForActivityTypeEvents('Activitate didactica') +
-            ' ore)
-         Proiect: ' +
-            getNrOfActivityTypeEvents('Proiect') +
+            getNrOfHoursForActivityTypeEvents('courseHour') +
+            ('hours' | translate) +
+            ')&#13;' +
+            ('event.activity.project' | translate) +
+            ': ' +
+            getNrOfActivityTypeEvents('project') +
             ' (' +
-            getNrOfHoursForActivityTypeEvents('Proiect') +
-            ' ore)
-         Concediu: ' +
-            getNrOfActivityTypeEvents('Concediu') +
-            ' zile
-         Alta activitate: ' +
-            getNrOfActivityTypeEvents('Alta activitate') +
+            getNrOfHoursForActivityTypeEvents('project') +
+            ('hours' | translate) +
+            ')&#13;' +
+            ('event.activity.holidays' | translate) +
+            ': ' +
+            getNrOfActivityTypeEvents('holidays') +
+            ('dashboard.info.days' | translate) +
+            '&#13;' +
+            ('event.activity.otherActivity' | translate) +
+            ': ' +
+            getNrOfActivityTypeEvents('otherActivity') +
             ' (' +
-            getNrOfHoursForActivityTypeEvents('Alta activitate') +
-            ' ore)
-         &#13;Norma de baza: ' +
-            getNrOfTypeEvents('norma de baza') +
+            getNrOfHoursForActivityTypeEvents('otherActivity') +
+            ('hours' | translate) +
+            ')&#13;&#13;' +
+            ('event.type.basicNorm' | translate) +
+            ': ' +
+            getNrOfTypeEvents('basic norm') +
             ' (' +
-            getNrOfHoursForTypeEvents('norma de baza') +
-            ' ore)
-         Plata cu ora: ' +
-            getNrOfTypeEvents('plata cu ora') +
+            getNrOfHoursForTypeEvents('basic norm') +
+            ('hours' | translate) +
+            ')&#13;' +
+            ('event.type.hourlyPayment' | translate) +
+            ': ' +
+            getNrOfTypeEvents('hourly payment') +
             ' (' +
-            getNrOfHoursForTypeEvents('plata cu ora') +
-            ' ore)'
+            getNrOfHoursForTypeEvents('hourly payment') +
+            ('hours' | translate) +
+            ')'
           : ''
       }}"
       matTooltipPosition="left"
@@ -194,8 +206,12 @@
     [class.allDayEvent]="weekEvent.event.allDay"
   >
     <div class="activity-event">
-      {{ weekEvent.event.activity == 'Proiect' ? weekEvent.event.activity : weekEvent.event.subactivity }}
-      <span *ngIf="weekEvent.event.type === 'plata cu ora' && isEmployee()"> - Plata cu ora</span>
+      {{
+        weekEvent.event.activity == 'project'
+          ? ('event.activity.' + weekEvent.event.activity | translate)
+          : ('event.subactivity.' + weekEvent.event.subactivity | translate)
+      }}
+      <span *ngIf="weekEvent.event.type === 'hourly payment' && isEmployee()"> - {{ 'event.type.hourlyPayment' | translate }}</span>
     </div>
     <div class="activity-event" *ngIf="weekEvent.event.start.getHours() !== 0 || weekEvent.event.end.getHours() !== 0">
       {{ weekEvent.event.start | date: 'HH:mm' | titlecase }} -

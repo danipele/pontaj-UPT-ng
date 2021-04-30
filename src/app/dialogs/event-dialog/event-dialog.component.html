@@ -1,12 +1,12 @@
 <div class="header-container">
   <div
     class="activity-container"
-    [class.activity-course]="data.event.activity === 'Activitate didactica'"
-    [class.activity-project]="data.event.activity === 'Proiect'"
-    [class.activity-other-activity]="data.event.activity === 'Alta activitate'"
-    [class.activity-holiday]="data.event.activity === 'Concediu'"
+    [class.activity-course]="data.event.activity === 'courseHour'"
+    [class.activity-project]="data.event.activity === 'project'"
+    [class.activity-other-activity]="data.event.activity === 'otherActivity'"
+    [class.activity-holiday]="data.event.activity === 'holidays'"
   >
-    <span>{{ data.event.activity }}</span>
+    <span>{{ 'event.activity.' + data.event.activity | translate }}</span>
   </div>
 </div>
 <div class="body-container">
@@ -20,8 +20,7 @@
       </div>
       <div class="hour-date">
         <span
-          >{{ data.event.start | date: 'HH:mm' | titlecase }} -
-          {{ data.event.end.getHours() === 0 ? '24:00' : (data.event.end | date: 'HH:mm' | titlecase) }}</span
+          >{{ data.event.start | date: 'HH:mm' }} - {{ data.event.end.getHours() === 0 ? '24:00' : (data.event.end | date: 'HH:mm') }}</span
         >
       </div>
     </div>
@@ -32,7 +31,11 @@
     </div>
     <div class="col-md-10 text-container">
       <span
-        ><b>{{ data.event.subactivity || data.event.activity }}</b></span
+        ><b>{{
+          data.event.subactivity
+            ? ('event.subactivity.' + data.event.subactivity | translate)
+            : ('event.activity.' + data.event.activity | translate)
+        }}</b></span
       >
     </div>
   </div>
@@ -59,7 +62,7 @@
 <div class="modal-footer">
   <button
     mat-fab
-    title="Sterge"
+    title="{{ 'action.delete' | translate }}"
     class="action-button"
     aria-label="Delete"
     (click)="deleteEvent()"
@@ -69,7 +72,7 @@
   </button>
   <button
     mat-fab
-    title="Editeaza"
+    title="{{ 'action.edit' | translate }}"
     class="action-button"
     aria-label="Edit"
     (click)="editEvent()"
@@ -80,7 +83,7 @@
 
   <button
     mat-fab
-    title="Copiaza"
+    title="{{ 'action.copy' | translate }}"
     class="action-button"
     aria-label="Copy"
     (click)="copyEvent()"

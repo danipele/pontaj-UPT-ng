@@ -7,7 +7,7 @@
 <div class="modal-body">
   <div>
     <mat-form-field appearance="fill">
-      <mat-label>Alege ziua</mat-label>
+      <mat-label>{{ 'calendar.chooseDay' | translate }}</mat-label>
       <input matInput [matDatepicker]="picker" [(ngModel)]="data.date" (dateChange)="dateChanged()" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -15,7 +15,7 @@
   </div>
   <div>
     <mat-form-field appearance="fill" class="hour-field">
-      <mat-label>Ora de inceput</mat-label>
+      <mat-label>{{ 'startHour' | translate }}</mat-label>
       <mat-select [(ngModel)]="startHour" name="startHour" [disabled]="allDay">
         <mat-option *ngFor="let hour of startHours()" [value]="hour.value">
           {{ hour.displayValue }}
@@ -24,7 +24,7 @@
     </mat-form-field>
     <span class="hours-delimiter" [class.grey-delimiter]="allDay">-</span>
     <mat-form-field appearance="fill" class="hour-field">
-      <mat-label>Ora de sfarsit</mat-label>
+      <mat-label>{{ 'endHour' | translate }}</mat-label>
       <mat-select [(ngModel)]="endHour" name="endHour" [disabled]="allDay">
         <mat-option *ngFor="let hour of endHours()" [value]="hour.value">
           {{ hour.displayValue }}
@@ -34,23 +34,23 @@
   </div>
   <div class="choose-activity">
     <h6>
-      <span>Alege o activitate</span>
+      <span>{{ 'event.activity.choose' | translate }}</span>
     </h6>
   </div>
   <div>
     <mat-form-field appearance="fill" class="activity-field">
-      <mat-label>Tipul activitatii</mat-label>
+      <mat-label>{{ 'event.activity.type' | translate }}</mat-label>
       <mat-select [(ngModel)]="activity" name="activity" (selectionChange)="activitySelected()">
         <mat-option *ngFor="let activity of activities" [value]="activity">
-          {{ activity }}
+          {{ 'event.activity.' + activity | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="sub-activity-field" *ngIf="activity != undefined && activity != 'Proiect'">
-      <mat-label>Subtipul activitatii</mat-label>
+    <mat-form-field appearance="fill" class="sub-activity-field" *ngIf="activity != undefined && activity != 'project'">
+      <mat-label>{{ 'event.activity.subtype' | translate }}</mat-label>
       <mat-select [(ngModel)]="subactivity" name="subactivity" (selectionChange)="subactivitySelected()">
         <mat-option *ngFor="let subactivity of subactivities" [value]="subactivity">
-          {{ subactivity }}
+          {{ 'event.subactivity.' + subactivity | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -59,41 +59,42 @@
     <mat-form-field
       appearance="fill"
       class="entity-field"
-      *ngIf="(activity === 'Activitate didactica' && subactivity != undefined) || activity === 'Proiect'"
+      *ngIf="(activity === 'courseHour' && subactivity != undefined) || activity === 'project'"
     >
-      <mat-label>{{ activity }}</mat-label>
+      <mat-label>{{ 'event.activity.' + activity | translate }}</mat-label>
       <mat-select [(ngModel)]="entity" name="entity" (selectionChange)="entitySelected()">
         <mat-option *ngFor="let entity of entities" [value]="entity">
           {{ entity.name }}
         </mat-option>
         <mat-option *ngIf="entities.length === 0" (click)="addNewEntity()">
-          <mat-icon>add_circle_outline</mat-icon> Adauga un nou {{ activity === 'Activitate didactica' ? 'curs' : 'proiect' }}
+          <mat-icon>add_circle_outline</mat-icon>
+          {{ activity === 'courseHour' ? ('course' + '.addNew' | translate) : ('project' + '.addNew' | translate) }}
         </mat-option>
       </mat-select>
     </mat-form-field>
   </div>
   <div class="choose-activity">
     <h6>
-      <span>Descrierea activitatii desfasurate</span>
+      <span>{{ 'event.performedActivityDescription' | translate }}</span>
     </h6>
   </div>
   <div>
     <mat-form-field class="description-field">
-      <mat-label>Descriere</mat-label>
+      <mat-label>{{ 'description' | translate }}</mat-label>
       <textarea matInput class="description-textarea" [(ngModel)]="description"></textarea>
     </mat-form-field>
   </div>
   <div *ngIf="!isEditMode()">
     <mat-form-field appearance="fill" class="activity-field">
-      <mat-label>Recurenta</mat-label>
+      <mat-label>{{ 'event.recurrence.recurrent' | translate }}</mat-label>
       <mat-select [(ngModel)]="recurrent" name="recurrent" (selectionChange)="setRecurrentDate()">
         <mat-option *ngFor="let recurrent of recurrentValues()" [value]="recurrent">
-          {{ recurrent }}
+          {{ 'event.recurrence.' + recurrent | translate }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill" class="recurrent-end-date" *ngIf="recurrentSelected()">
-      <mat-label>Pana in</mat-label>
+      <mat-label>{{ 'event.recurrence.until' | translate }}</mat-label>
       <input matInput [readonly]="true" [value]="recurrentEnding" />
       <input
         [matDatepicker]="picker"
@@ -114,7 +115,11 @@
         (monthSelected)="monthSelected($event, picker)"
       ></mat-datepicker>
     </mat-form-field>
-    <span class="reset-recurrent" (click)="resetRecurrent()" *ngIf="recurrentSelected()"><u>Reseteaza recurenta</u></span>
+    <span class="reset-recurrent" (click)="resetRecurrent()" *ngIf="recurrentSelected()"
+      ><u>
+        {{ 'event.recurrence.resetRecurrence' | translate }}
+      </u></span
+    >
   </div>
   <div *ngIf="!isEditMode()">
     <mat-checkbox
@@ -124,7 +129,7 @@
       (change)="setWeekendsToo($event.checked)"
       *ngIf="!isWeeklyRecurrent()"
     >
-      Include si zilele de weekend
+      {{ 'event.recurrence.includeWeekends' | translate }}
     </mat-checkbox>
   </div>
 </div>
@@ -142,6 +147,6 @@
     [mat-dialog-close]="sendData()"
     cdkFocusInitial
   >
-    Confirm
+    {{ 'action.confirm' | translate }}
   </button>
 </div>

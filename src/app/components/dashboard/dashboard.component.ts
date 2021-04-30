@@ -14,6 +14,7 @@ import { EventService } from '../../services/event.service';
 import { CopyEventDialogComponent } from '../../dialogs/copy-event-dialog/copy-event-dialog.component';
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { IProject } from '../../models/project.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -45,9 +46,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private calendarEventsHelper: CalendarEventsHelper,
     private cookieService: CookieService,
     private eventService: EventService,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {
-    this.viewType = 'Saptamanal';
+    this.viewType = 'weekly';
     this.date = moment().startOf('week').toDate();
     this.events = [];
     this.viewMode = 'calendar';
@@ -58,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userService.getAuthenticatedUser().subscribe(
       (user) => {
-        if (user.type === 'Admin') {
+        if (user.type === 'admin') {
           this.router.navigate(['/admin']);
         } else {
           this.setEvents();
@@ -68,7 +70,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (error.status === 401) {
           this.calendarEventsHelper.deleteEvents();
           this.router.navigate(['/login']);
-          this.notificationHelper.openNotification('Trebuie sa te loghezi pentru a intra in cont.', 'success');
+          this.notificationHelper.openNotification(this.translateService.instant('login.needToLoginMessage'), 'success');
         }
         this.notificationHelper.notifyWithError(error);
       }
@@ -76,15 +78,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   isWeekly(): boolean {
-    return this.viewType === 'Saptamanal';
+    return this.viewType === 'weekly';
   }
 
   isDaily(): boolean {
-    return this.viewType === 'Zilnic';
+    return this.viewType === 'daily';
   }
 
   setWeekly(): void {
-    this.viewType = 'Saptamanal';
+    this.viewType = 'weekly';
     this.date = moment(this.date).startOf('week').toDate();
     this.filterParams.all = false;
     this.filterParams.for = 'week';
@@ -133,7 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setDay(event: any): void {
-    this.viewType = 'Zilnic';
+    this.viewType = 'daily';
     this.date = event.day.date;
     this.setDayEvents();
   }
@@ -174,9 +176,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
       (result) => {
         let message: string;
         if (result.successfully) {
-          message = `Au fost create cu succes ${result.successfully + 1} evenimente!`;
+          message = this.translateService.instant('message.pl.successfully', {
+            nr: result.successfully,
+            objectsType: this.translateService.instant('message.events'),
+            action: this.translateService.instant('message.pl.created')
+          });
         } else {
-          message = `Evenimentul a fost ${result.mode === 'add' ? 'adaugat' : 'editat'} cu succes!`;
+          message = this.translateService.instant('message.sg.successfully', {
+            objectType: this.translateService.instant('message.art.event'),
+            action: this.translateService.instant('message.sg.' + (result.mode === 'add' ? 'created' : 'edited'))
+          });
         }
         this.events = result.events;
         this.notificationHelper.openNotification(message, 'success');
@@ -191,14 +200,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (JSON.parse(localStorage.getItem('user') as string).type !== 'Admin') {
+    if (JSON.parse(localStorage.getItem('user') as string).type !== 'admin') {
       this.cookieService.remove('auth_token');
     }
   }
 
   isToday(date: Date): boolean {
-    const today = new Date();
-    return today.getDate() === date.getDate() && today.getMonth() === date.getMonth() && today.getFullYear() === date.getFullYear();
+    const today = moment(new Date());
+    const selectedDay = moment(date);
+    return selectedDay.isSame(today, 'date');
   }
 
   isWeekend(date: Date): boolean {
@@ -278,7 +288,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   getNrOfHoursOnDay(date: Date): number {
     let hours = 0;
     this.events
-      .filter((event) => event.type !== 'concediu')
+      .filter((event) => event.type !== 'holidays')
       .forEach((event) => {
         const start = event.start;
         const end = event.end;
@@ -379,10 +389,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
           (copyResult) => {
             this.events = this.calendarEventsHelper.addEvents(copyResult.events);
             if (copyResult.successfully === 0) {
-              this.notificationHelper.openNotification(`Nu a putut fi copiat niciun eveniment`, 'error');
+              this.notificationHelper.openNotification(
+                this.translateService.instant('message.couldNotCopyEvent', {
+                  action: this.translateService.instant('message.sg.' + (result.move ? 'moved' : 'copied'))
+                }),
+                'error'
+              );
             } else {
               this.notificationHelper.openNotification(
-                `Au fost ${result.move ? 'mutate' : 'copiate'} cu succes ${copyResult.successfully} evenimente!`,
+                this.translateService.instant('message.pl.successfully', {
+                  nr: copyResult.successfully,
+                  objectsType: this.translateService.instant('message.events'),
+                  action: this.translateService.instant('message.pl.' + (result.move ? 'moved' : 'copied'))
+                }),
                 'success'
               );
             }
@@ -455,7 +474,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   isEmployee(): boolean {
-    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+    return JSON.parse(localStorage.getItem('user') as string).type === 'employee';
   }
 
   copyEvent(event: IEvent): void {
@@ -467,14 +486,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
         restrictedStartHour: (event.entity as IProject)?.restricted_start_hour,
         restrictedEndHour: (event.entity as IProject)?.restricted_end_hour,
         type: event.type,
-        isAvailableForWeekend: COLLABORATOR_SUBACTIVITIES.includes(event.subactivity) || event.type === 'proiect'
+        isAvailableForWeekend: COLLABORATOR_SUBACTIVITIES.includes(event.subactivity) || event.type === 'project'
       }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         const start = new Date(result.date);
-        if (event.type === 'concediu') {
+        if (event.type === 'holidays') {
           start.setHours(0);
         } else {
           start.setHours(result.startHour);
@@ -490,9 +509,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
             (copyResult) => {
               this.events = this.calendarEventsHelper.addEvents(copyResult.events);
               if (copyResult.successfully === 0) {
-                this.notificationHelper.openNotification(`Evenimentul nu a putut fi copiat!`, 'error');
+                this.notificationHelper.openNotification(this.translateService.instant('message.copyEventFailed'), 'error');
               } else {
-                this.notificationHelper.openNotification(`Au fost create cu succes ${copyResult.successfully} evenimente!`, 'success');
+                this.notificationHelper.openNotification(
+                  this.translateService.instant('message.pl.successfully', {
+                    nr: copyResult.successfully,
+                    objectsType: this.translateService.instant('message.events'),
+                    action: this.translateService.instant('message.pl.copied')
+                  }),
+                  'success'
+                );
               }
             },
             (error) => this.notificationHelper.notifyWithError(error)

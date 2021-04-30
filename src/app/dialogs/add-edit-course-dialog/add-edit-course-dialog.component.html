@@ -1,60 +1,60 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span> Adauga curs </span>
+    <span>{{ 'course.add' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
   <div>
     <h6>
-      <span>Numele cursului</span>
+      <span>{{ 'course.name' | translate }}</span>
     </h6>
   </div>
   <form [formGroup]="formGroup" role="form" name="addCourseForm">
     <div>
       <mat-form-field class="full-width">
-        <mat-label>Nume</mat-label>
+        <mat-label>{{ 'name' | translate }}</mat-label>
         <input matInput formControlName="courseName" />
       </mat-form-field>
     </div>
     <div class="header-margin-top">
       <h6>
-        <span>Pentru studentii</span>
+        <span>{{ 'course.forStudents' | translate }}</span>
       </h6>
     </div>
     <div class="row">
       <div class="col-md-2">
         <div>
-          <span>Din anul</span>
+          <span>{{ 'course.fromYear' | translate }}</span>
         </div>
         <div>
           <mat-form-field class="form-year-width small-margin-top">
-            <mat-label>An de studiu</mat-label>
+            <mat-label>{{ 'course.yearOfStudy' | translate }}</mat-label>
             <input type="number" min="1" max="10" matInput formControlName="courseStudentYear" />
           </mat-form-field>
         </div>
       </div>
       <div class="col-md-2">
         <div>
-          <span>Semestrul</span>
+          <span>{{ 'course.semester' | translate }}</span>
         </div>
         <div>
           <mat-form-field class="form-year-width small-margin-top">
-            <mat-label>Semestrul</mat-label>
+            <mat-label>{{ 'course.semester' | translate }}</mat-label>
             <input type="number" min="1" max="2" matInput formControlName="courseSemester" />
           </mat-form-field>
         </div>
       </div>
       <div class="col-md-2">
         <div>
-          <span>Ciclul</span>
+          <span>{{ 'course.cycle' | translate }}</span>
         </div>
         <div>
           <mat-form-field class="form-year-width small-margin-top">
-            <mat-label>Ciclul</mat-label>
+            <mat-label>{{ 'course.cycle' | translate }}</mat-label>
             <mat-select formControlName="courseCycle">
               <mat-option *ngFor="let cycle of CYCLES" [value]="cycle">
-                {{ cycle }}
+                {{ 'course.cycles.' + cycle | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -62,11 +62,11 @@
       </div>
       <div class="col-md-6">
         <div>
-          <span>De la facultatea</span>
+          <span>{{ 'course.fromFaculty' | translate }}</span>
         </div>
         <div>
           <mat-form-field class="small-margin-top full-width">
-            <mat-label>Facultate</mat-label>
+            <mat-label>{{ 'course.faculty' | translate }}</mat-label>
             <input matInput formControlName="courseFaculty" />
           </mat-form-field>
         </div>
@@ -74,12 +74,12 @@
     </div>
     <div class="header-margin-top">
       <h6>
-        <span>Descrierea cursului</span>
+        <span>{{ 'course.description' | translate }}</span>
       </h6>
     </div>
     <div>
       <mat-form-field class="full-width">
-        <mat-label>Descriere</mat-label>
+        <mat-label>{{ 'description' | translate }}</mat-label>
         <textarea matInput formControlName="courseDescription" class="description-textarea"></textarea>
       </mat-form-field>
     </div>
@@ -94,6 +94,6 @@
     [mat-dialog-close]="sendCourse()"
     cdkFocusInitial
   >
-    Salveaza
+    {{ 'action.save' | translate }}
   </button>
 </div>

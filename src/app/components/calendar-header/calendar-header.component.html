@@ -5,7 +5,7 @@
     [disabled]="mode === 'list'"
     (click)="executeChangeMode()"
   >
-    Lista
+    {{ 'calendar.list' | translate }}
   </button>
   <button
     mat-raised-button
@@ -13,14 +13,14 @@
     [disabled]="mode === 'calendar'"
     (click)="executeChangeMode()"
   >
-    Calendar
+    {{ 'calendar.calendar' | translate }}
   </button>
 
   <button mat-raised-button class="upt-secondary-btn switch-modes-btn first-mode-btn" [disabled]="!isWeekly" (click)="executeSetDaily()">
-    Zilnic
+    {{ 'calendar.daily' | translate }}
   </button>
   <button mat-raised-button class="upt-secondary-btn switch-modes-btn second-mode-btn" [disabled]="isWeekly" (click)="executeSetWeekly()">
-    Saptamanal
+    {{ 'calendar.weekly' | translate }}
   </button>
 
   <button mat-flat-button class="upt-secondary-btn action-button" (click)="executeAddEvent()">
@@ -32,7 +32,7 @@
 
   <div class="current-date">
     <mat-form-field appearance="fill" class="date-picker-field" *ngIf="isWeekly">
-      <mat-label>Alege saptamana</mat-label>
+      <mat-label>{{ 'calendar.chooseWeek' | translate }}</mat-label>
       <mat-date-range-input [rangePicker]="picker">
         <input matStartDate [value]="date" (dateChange)="goToSelectedDay($event)" />
         <input matEndDate [value]="endWeekDay" />
@@ -41,7 +41,7 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
     <mat-form-field appearance="fill" class="date-picker-field" *ngIf="!isWeekly">
-      <mat-label>Alege ziua</mat-label>
+      <mat-label>{{ 'calendar.chooseDay' | translate }}</mat-label>
       <input matInput [matDatepicker]="picker" [value]="date" (dateChange)="goToSelectedDay($event)" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -49,14 +49,14 @@
   </div>
 
   <button mat-raised-button class="upt-btn go-to-previous" (click)="executeGoBackwards()">
-    <span>Inapoi</span>
+    <span>{{ 'calendar.back' | translate }}</span>
   </button>
 
   <button mat-raised-button class="upt-primary-btn go-to-today-btn" (click)="executeGoToToday()" [disabled]="isTodayVisible">
-    <span>Du-te la Astazi</span>
+    <span>{{ 'calendar.goToToday' | translate }}</span>
   </button>
 
   <button mat-raised-button class="upt-btn go-to-next" (click)="executeGoForwards()">
-    <span>Inainte</span>
+    <span>{{ 'calendar.forward' | translate }}</span>
   </button>
 </div>

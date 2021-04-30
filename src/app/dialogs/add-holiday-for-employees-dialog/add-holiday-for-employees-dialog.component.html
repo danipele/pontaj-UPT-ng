@@ -1,13 +1,13 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>Adauga concediu de odihna</span>
+    <span>{{ 'admin.chooseVacation' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
 <div class="modal-body">
   <div>
     <mat-form-field appearance="fill">
-      <mat-label>Alege perioada</mat-label>
+      <mat-label>{{ 'admin.choosePeriod' | translate }}</mat-label>
       <mat-date-range-input [rangePicker]="picker">
         <input matStartDate [(ngModel)]="startDate" />
         <input matEndDate [(ngModel)]="endDate" />
@@ -18,7 +18,7 @@
   </div>
   <div>
     <mat-form-field class="description-field">
-      <mat-label>Descriere</mat-label>
+      <mat-label>{{ 'description' | translate }}</mat-label>
       <textarea matInput class="description-textarea" [(ngModel)]="description"></textarea>
     </mat-form-field>
   </div>
@@ -31,6 +31,6 @@
     [mat-dialog-close]="sendData()"
     cdkFocusInitial
   >
-    Confirm
+    {{ 'action.confirm' | translate }}
   </button>
 </div>

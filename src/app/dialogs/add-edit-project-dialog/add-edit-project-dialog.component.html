@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span> Adauga proiect </span>
+    <span>{{ 'project.add' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
@@ -8,45 +8,45 @@
   <form [formGroup]="formGroup" role="form" name="addProjectForm">
     <div>
       <h6>
-        <span>Numele proiectului</span>
+        <span>{{ 'project.name' | translate }}</span>
       </h6>
     </div>
     <div>
       <mat-form-field class="full-width">
-        <mat-label>Nume</mat-label>
+        <mat-label>{{ 'name' | translate }}</mat-label>
         <input matInput formControlName="projectName" />
       </mat-form-field>
     </div>
     <div class="row">
       <div class="col-md-5">
         <div>
-          <span>Nr. de ore pe luna</span>
+          <span>{{ 'project.nrOfHoursPerMonth' | translate }}</span>
         </div>
         <div>
           <mat-form-field>
-            <mat-label>Ore pe luna</mat-label>
+            <mat-label>{{ 'project.hoursPerMonth' | translate }}</mat-label>
             <input type="number" min="0" matInput formControlName="projectHoursPerMonth" />
           </mat-form-field>
         </div>
       </div>
       <div class="col-md-3">
         <div>
-          <span>Restrictie ora de inceput</span>
+          <span>{{ 'project.startHourRestriction' | translate }}</span>
         </div>
         <div>
           <mat-form-field>
-            <mat-label>Ora de inceput</mat-label>
+            <mat-label>{{ 'startHour' | translate }}</mat-label>
             <input type="number" min="0" max="23" matInput formControlName="projectRestrictedStartHour" />
           </mat-form-field>
         </div>
       </div>
       <div class="col-md-3">
         <div>
-          <span>Restrictie ora de sfarsit</span>
+          <span>{{ 'project.endHourRestriction' | translate }}</span>
         </div>
         <div>
           <mat-form-field>
-            <mat-label>Ora de sfarsit</mat-label>
+            <mat-label>{{ 'endHour' | translate }}</mat-label>
             <input type="number" min="1" max="24" matInput formControlName="projectRestrictedEndHour" />
           </mat-form-field>
         </div>
@@ -54,12 +54,12 @@
     </div>
     <div class="header-margin-top">
       <h6>
-        <span>Descrierea proiectului</span>
+        <span>{{ 'project.description' | translate }}</span>
       </h6>
     </div>
     <div>
       <mat-form-field class="full-width">
-        <mat-label>Descriere</mat-label>
+        <mat-label>{{ 'description' | translate }}</mat-label>
         <textarea matInput formControlName="projectDescription" class="description-textarea"></textarea>
       </mat-form-field>
     </div>
@@ -74,6 +74,6 @@
     [mat-dialog-close]="sendProject()"
     cdkFocusInitial
   >
-    Salveaza
+    {{ 'action.save' | translate }}
   </button>
 </div>

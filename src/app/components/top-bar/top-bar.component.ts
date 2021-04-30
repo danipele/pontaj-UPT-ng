@@ -10,6 +10,7 @@ import { SettingsDialogComponent } from '../../dialogs/settings-dialog/settings-
 import { CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-top-bar',
@@ -26,7 +27,8 @@ export class TopBarComponent implements OnInit {
     private userService: UserService,
     private cookieService: CookieService,
     private calendarEventsHelper: CalendarEventsHelper,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {}
 
   ngOnInit(): void {}
@@ -79,7 +81,7 @@ export class TopBarComponent implements OnInit {
           this.userService.updateCurrentUser(result).subscribe(
             (updateResult) => {
               localStorage.setItem('user', JSON.stringify(updateResult));
-              this.notificationHelper.openNotification('Informatiile personale au fost actualizate cu succes!', 'success');
+              this.notificationHelper.openNotification(this.translateService.instant('message.personalInfoSuccess'), 'success');
             },
             (error) => this.notificationHelper.notifyWithError(error)
           );
@@ -96,10 +98,10 @@ export class TopBarComponent implements OnInit {
   }
 
   isEmployee(): boolean {
-    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+    return JSON.parse(localStorage.getItem('user') as string).type === 'employee';
   }
 
   isNotAdmin(): boolean {
-    return JSON.parse(localStorage.getItem('user') as string).type !== 'Admin';
+    return JSON.parse(localStorage.getItem('user') as string).type !== 'admin';
   }
 }

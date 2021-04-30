@@ -1,10 +1,26 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span> Setari </span>
+    <span>{{ 'user.settings' | translate }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
-<div class="modal-body"></div>
+<div class="modal-body">
+  <div>
+    <h6>
+      {{ 'user.language' | translate }}
+    </h6>
+  </div>
+  <div>
+    <mat-form-field appearance="fill">
+      <mat-label>{{ 'user.language' | translate }}</mat-label>
+      <mat-select [(ngModel)]="language" name="language">
+        <mat-option *ngFor="let language of languages" [value]="language">
+          {{ 'user.languages.' + language | translate }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
 <div class="modal-footer">
-  <button mat-raised-button class="upt-btn" (click)="save()" cdkFocusInitial>Salveaza</button>
+  <button mat-raised-button class="upt-btn" (click)="save()" cdkFocusInitial>{{ 'action.save' | translate }}</button>
 </div>

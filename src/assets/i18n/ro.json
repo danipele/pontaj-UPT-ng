@@ -1,0 +1,256 @@
+{
+  "name": "Nume",
+  "description": "Descriere",
+  "startHour": "Ora de inceput",
+  "endHour": "Ora de sfarsit",
+  "nr": "Nr. crt.",
+  "userType": "Tipul utilizatorului",
+  "hours": " ore",
+  "login": {
+    "loginLabel": "Autentificare cu email UPT",
+    "emailAddress": "Adresa de email",
+    "password": "Parola",
+    "login": "Autentificare",
+    "resetPassword": "Reseteaza parola",
+    "signUp": "Creeaza cont",
+    "sendEmailLabel": "Trimite email de resetare a parolei",
+    "back": "Inapoi",
+    "signUpLabel": "Creeaza un cont",
+    "firstName": "Prenume",
+    "lastName": "Nume",
+    "type": "Tipul",
+    "create": "Creeaza",
+    "needToLoginMessage": "Trebuie sa va autentificati cu contul dumneavoastra pentru a continua.",
+    "successMessage": "Esti autentificat cu succes.",
+    "resetEmailSentMessage": "Un email de resetare a parolei a fost trimis cu succes pe adresa de email: {{email}}."
+  },
+  "user": {
+    "collaborator": "Colaborator",
+    "employee": "Angajat",
+    "admin": "Administrator",
+    "personalInfo": "Informatii personale",
+    "settings": "Setari",
+    "logout": "Iesi din cont",
+    "language": "Limba",
+    "languages": {
+      "en": "Engleza",
+      "ro": "Romana"
+    }
+  },
+  "admin": {
+    "createAdminAccount": "Creeaza cont de administrator",
+    "addVacations": "Adauga concedii de odihna pentru angajati",
+    "couldNotAddVacationMessage": "Nu a putut fi adaugata nicio zi de concediu.",
+    "addedVacationMessage": "S-au adaugat {{days}} zile de concediu pentru toti angajatii.",
+    "chooseVacation": "Alege concediu de odihna",
+    "choosePeriod": "Alege perioada",
+    "add": "Adauga un nou administrator"
+  },
+  "calendar": {
+    "list": "Lista",
+    "calendar": "Calendar",
+    "daily": "Zilnic",
+    "weekly": "Saptamanal",
+    "chooseWeek": "Alege saptamana",
+    "chooseDay": "Alege ziua",
+    "back": "Inapoi",
+    "forward": "Inainte",
+    "goToToday": "Du-te la Astazi"
+  },
+  "dashboard": {
+    "info": {
+      "infoAbout": "Informatii despre {{dateType}} actuala:",
+      "day": "ziua",
+      "week": "saptamana",
+      "events": "Evenimente: ",
+      "recordedHours": "Ore inregistrate: ",
+      "days": " zile"
+    }
+  },
+  "event": {
+    "activity": {
+      "choose": "Alege o activitate",
+      "courseHour": "Activitate didactica",
+      "project": "Proiect",
+      "otherActivity": "Alta activitate",
+      "holidays": "Concediu",
+      "subtype": "Subtipul activitatii",
+      "type": "Tipul activitatii"
+    },
+    "type": {
+      "basicNorm": "Norma de baza",
+      "hourlyPayment": "Plata cu ora"
+    },
+    "filter": {
+      "subactivity": "Filtreaza dupa subtipul activitatii",
+      "activity": "Filtreaza dupa tipul activitatii",
+      "date": "Filtreaza dupa data",
+      "course": "Filtreaza dupa curs",
+      "project": "Filtreaza dupa proiect",
+      "apply": "Aplica filtru",
+      "delete": "Sterge filtru"
+    },
+    "table": {
+      "date": "Ziua",
+      "hours": "Ore"
+    },
+    "allEvents": "Toate evenimentele",
+    "eventsFromLabel": "Evenimentele din aceasta {{dateType}}",
+    "day": "zi",
+    "week": "saptamana",
+    "add": "Adauga un eveniment",
+    "edit": "Editeaza evenimentul",
+    "performedActivityDescription": "Descrierea activitatii desfasurate",
+    "recurrence": {
+      "recurrent": "Recurenta",
+      "resetRecurrence": "Reseteaza recurenta",
+      "until": "Pana in",
+      "includeWeekends": "Include si zilele de weekend",
+      "daily": "Zilnic",
+      "weekly": "Saptamanal",
+      "everyOtherWeek": "La doua saptamani",
+      "monthly": "Lunar",
+      "yearly": "Anual"
+    },
+    "copy": {
+      "event": "Copiaza evenimentul",
+      "events": "Copiaza evenimente",
+      "wantToCopy": "Ce doriti sa copiati?",
+      "allEvents": "Copiaza toate evenimentele din {{dateType}}",
+      "in": "In {{dateType}}",
+      "move": "Muta evenimentele",
+      "day": "Zi",
+      "week": "Saptamana"
+    },
+    "subactivity": {
+      "course": "Curs",
+      "seminar": "Seminar",
+      "laboratory": "Laborator",
+      "projectHour": "Ora de proiect",
+      "evaluation": "Evaluare",
+      "consultations": "Consultatii",
+      "teachingActivityPreparation": "Pregatire pentru activitatea didactica",
+      "doctoralStudentsGuidance": "Indrumare doctoranzi",
+      "unpaidInvolvementInSociety": "Implicare neremunerată în problematica societății",
+      "cooperationManagement": "Gestiune cooperari",
+      "internalDelegationDays": "Zile delegatie (Deplasare interna)",
+      "externalDelegationDays": "Zile delegatie (Deplasare externa)",
+      "departureWithScholarship": "Plecati cu bursa",
+      "otherActivities": "Alte activitati",
+      "researchDocumentation": "Documentare pentru cercetare",
+      "projectFinancingOpportunitiesDocumentation": "Documentare oportunitati de finantare proiecte",
+      "researchProjectsElaboration": "Elaborare proiecte de cercetare",
+      "researchProjectsExecution": "Executarea proiecte de cercetare",
+      "vacation": "Concediu de odihna",
+      "sickLeave": "Concediu medical",
+      "unpaidLeave": "Concediu fara salariu",
+      "childGrowthLeave": "Concediu crestere copil",
+      "maternityLeave": "Concediu de maternitate",
+      "unmotivatedAbsences": "Absente nemotivate"
+    },
+    "allDay": "Toata ziua"
+  },
+  "message": {
+    "events": "evenimente",
+    "courses": "cursuri",
+    "projects": "proiecte",
+    "pl": {
+      "successfully": "Au fost {{action}} cu succes {{nr}} {{objectsType}}.",
+      "created": "create",
+      "deleted": "sterse",
+      "copied": "copiate",
+      "moved": "mutate",
+      "exported": "exportate"
+    },
+    "art": {
+      "event": "Evenimentul",
+      "course": "Cursul",
+      "project": "Proiectul"
+    },
+    "event": "eveniment",
+    "course": "curs",
+    "project": "proiect",
+    "sg": {
+      "successfully": "{{objectType}} a fost {{action}} cu succes.",
+      "added": "adaugat",
+      "created": "creat",
+      "deleted": "sters",
+      "edited": "editat",
+      "copied": "copiat",
+      "moved": "mutat"
+    },
+    "couldNotCopyEvent": "Nu a putut fi {{action}} niciun eveniment.",
+    "copyEventFailed": "Evenimentul nu a putut fi copiat.",
+    "deleteConfirmation": "Sunteti sigur ca doriti sa stergeti acest {{objectType}}?",
+    "multipleDeleteConfirmation": "Sunteti sigur ca doriti sa stergeti {{nr}} {{objectsType}}?",
+    "personalInfoSuccess": "Informatiile personale au fost actualizate cu succes.",
+    "eventType": {
+      "recordedProjectHours": "Aveti pontate {{hours}} ore pe proiectul {{projectName}} pentru luna.",
+      "hoursLeft": " Mai aveti {{hours}} ore ramase.",
+      "monthlyNormProject": "Ati depasit deja norma lunara de {{hours}} ore.",
+      "noNormProject": " Nu aveti norma lunara de ore pe acest proiect.",
+      "recordedBasicNorm": "Aveti pontate {{hours}} ore din norma de baza in data de {{date}}.",
+      "recordedHourlyPayment": "Aveti pontate {{hours}} ore in regim plata cu ora in data de {{date}}.",
+      "recordedBasicAndHourly": "Aveti deja pontate 8 ore din norma de baza si {{hours}} ore in regim de plata cu ora in data de {{date}}.",
+      "onlyHourlyPaidHours": "Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra in plata cu ora."
+    },
+    "holidaysBadDay": "Concediul se poate lua doar pe o zi intreaga. Exista deja {{events}} evenimente in data de {{date}}. Va rugam selectati alta data.",
+    "error": "Actiune nereusita. Mai incearca o data!"
+  },
+  "action": {
+    "delete": "Sterge",
+    "edit": "Editeaza",
+    "copy": "Copiaza",
+    "save": "Salveaza",
+    "confirm": "Confirma",
+    "cancel": "Renunta",
+    "downloadTemplate": "Descarca template",
+    "importFile": "Importa fisier"
+  },
+  "course": {
+    "my": "Cursurile mele",
+    "add": "Adauga curs",
+    "name": "Numele cursului",
+    "forStudents": "Pentru studentii",
+    "fromYear": "Din anul",
+    "yearOfStudy": "An de studiu",
+    "semester": "Semestrul",
+    "cycle": "Ciclul",
+    "fromFaculty": "De la facultatea",
+    "faculty": "Facultatea",
+    "description": "Descrierea cursului",
+    "cycles": {
+      "bachelor": "Licenta",
+      "master": "Master",
+      "phd": "Doctorat"
+    },
+    "addNew": "Adauga un curs nou",
+    "delete": "Sterge cursuri",
+    "export": "Exporta cursuri",
+    "import": "Importa cursuri",
+    "fileName": "Cursuri.xls",
+    "details": "{{faculty}} ∙ {{cycle}} ∙ Anul {{studentYear}} ∙ Semestrul {{semester}} ∙ {{description}}"
+  },
+  "project": {
+    "my": "Proiectele mele",
+    "add": "Adauga proiect",
+    "name": "Numele proiectului",
+    "nrOfHoursPerMonth": "Nr. de ore pe luna",
+    "hoursPerMonth": "Ore pe luna",
+    "startHourRestriction": "Restrictie ora de inceput",
+    "endHourRestriction": "Restrictie ora de sfarsit",
+    "description": "Descrierea proiectului",
+    "addNew": "Adauga un proiect nou",
+    "delete": "Sterge proiecte",
+    "export": "Exporta proiecte",
+    "import": "Importa proiecte",
+    "fileName": "Proiecte.xls",
+    "details": {
+      "hoursPerMonth": "{{hoursPerMonth}} ore pe luna ∙ ",
+      "hourRestrictions": "Restrictie ore de lucru pe proiect: {{startHour}}:00 - {{endHour}}:00 ∙ "
+    }
+  },
+  "report": {
+    "exportReports": "Exporta repoarte"
+  }
+}

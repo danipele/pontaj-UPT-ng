@@ -25,6 +25,7 @@ import { map } from 'rxjs/operators';
 import { Hour, HOURS, ValidStartHoursHelper } from '../../helpers/valid-start-hours-helper';
 import { NotificationHelper } from '../../helpers/notification-helper';
 import * as moment from 'moment';
+import { TranslateService } from '@ngx-translate/core';
 
 interface Data {
   date?: Date;
@@ -41,11 +42,11 @@ interface Data {
 }
 
 export enum RECURRENT {
-  DAILY = 'Zilnic',
-  WEEKLY = 'Saptamanal',
-  EVERY_OTHER_WEEK = 'La doua saptamani',
-  MONTHLY = 'Lunar',
-  YEARLY = 'Anual'
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  EVERY_OTHER_WEEK = 'everyOtherWeek',
+  MONTHLY = 'monthly',
+  YEARLY = 'yearly'
 }
 
 @Component({
@@ -69,7 +70,7 @@ export class AddEventDialogComponent {
 
   activities: string[] = [];
   subactivities: string[] = [];
-  dialogTitle = 'Adauga un eveniment';
+  dialogTitle = this.translateService.instant('event.add');
   id?: string | number | undefined;
   events: IEvent[] = [];
   recurrent?: RECURRENT;
@@ -81,7 +82,7 @@ export class AddEventDialogComponent {
 
   weeklyRecurrentDateFilter = (date: Date | null): boolean => {
     return this.setWeekFilter(date);
-  }
+  };
 
   constructor(
     public dialogRef: MatDialogRef<AddEventDialogComponent>,
@@ -92,7 +93,8 @@ export class AddEventDialogComponent {
     private projectService: ProjectService,
     private eventService: EventService,
     private validStartHoursHelper: ValidStartHoursHelper,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {
     if (data.date) {
       this.startHour = data.date.getHours();
@@ -108,7 +110,7 @@ export class AddEventDialogComponent {
       this.setSelectedProject(data.project);
     }
     if (this.data.event) {
-      this.dialogTitle = 'Editeaza eveniment';
+      this.dialogTitle = this.translateService.instant('event.edit');
 
       const event = this.data.event;
       this.data.date = event.start;
@@ -152,15 +154,15 @@ export class AddEventDialogComponent {
   }
 
   setSelectedCourse(data: { selected: ICourse; courses: ICourse[] }): void {
-    this.activity = 'Activitate didactica';
-    this.subactivities = this.type === 'plata cu ora' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
-    this.subactivity = 'Curs';
+    this.activity = 'courseHour';
+    this.subactivities = this.type === 'hourly payment' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
+    this.subactivity = 'course';
     this.entities = data.courses;
     this.entity = data.selected;
   }
 
   setSelectedProject(data: { selected: IProject; projects: IProject[] }): void {
-    this.activity = 'Proiect';
+    this.activity = 'project';
     this.entities = data.projects;
     this.entity = data.selected;
   }
@@ -177,7 +179,7 @@ export class AddEventDialogComponent {
     const startHour = this.data.event?.start.getHours() as number;
     const endHour = this.data.event?.end.getHours() === 0 ? 24 : (this.data.event?.end.getHours() as number);
     const isEditEvent = this.id && !this.data.course && !this.data.project;
-    if (this.events.length === 1 && this.events[0].allDay) {
+    if (this.events.filter((event) => event.allDay).length === 1) {
       return this.validStartHoursHelper.setAllHours(
         isEditEvent ? endHour - startHour : undefined,
         (this.entity as IProject)?.restricted_start_hour,
@@ -216,7 +218,7 @@ export class AddEventDialogComponent {
       }
     }
 
-    if (this.type === 'norma de baza') {
+    if (this.type === 'basic norm') {
       const availableBasicHours = 8 - this.getBasicHours();
       if (endHours.length > availableBasicHours) {
         endHours.splice(availableBasicHours);
@@ -256,7 +258,7 @@ export class AddEventDialogComponent {
 
   dateChanged(): void {
     this.getDayEvents();
-    this.allDay = this.activity === 'concediu';
+    this.allDay = this.activity === 'holidays';
   }
 
   activitySelected(subactivity?: string, entity?: ICourse | IProject): void {
@@ -267,22 +269,22 @@ export class AddEventDialogComponent {
     this.entity = undefined;
     this.subactivity = subactivity;
     switch (this.activity) {
-      case 'Activitate didactica': {
-        this.subactivities = this.type === 'plata cu ora' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
+      case 'courseHour': {
+        this.subactivities = this.type === 'hourly payment' ? COLLABORATOR_SUBACTIVITIES : COURSE_SUBACTIVITIES;
         this.allDay = false;
         break;
       }
-      case 'Proiect': {
+      case 'project': {
         this.getProjects(entity);
         this.allDay = false;
         break;
       }
-      case 'Concediu': {
+      case 'holidays': {
         this.subactivities = HOLIDAYS;
         this.allDay = true;
         break;
       }
-      case 'Alta activitate': {
+      case 'otherActivity': {
         this.subactivities = OTHER_SUBACTIVITIES;
         this.allDay = false;
         break;
@@ -331,7 +333,7 @@ export class AddEventDialogComponent {
 
   subactivitySelected(entity?: ICourse | IProject | undefined): void {
     this.entity = undefined;
-    if (this.activity === 'Activitate didactica') {
+    if (this.activity === 'courseHour') {
       this.getCourses(entity);
     }
     if (this.events) {
@@ -340,7 +342,7 @@ export class AddEventDialogComponent {
   }
 
   addNewEntity(): void {
-    if (this.activity === 'Activitate didactica') {
+    if (this.activity === 'courseHour') {
       this.addNewCourse();
     } else {
       this.addNewProject();
@@ -358,7 +360,13 @@ export class AddEventDialogComponent {
         this.courseService.add(result).subscribe(
           (coursesResult) => {
             this.getCourses(coursesResult[0]);
-            this.notificationHelper.openNotification('Cursul a fost adaugat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.course'),
+                action: this.translateService.instant('message.sg.added')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.cancel();
@@ -380,7 +388,13 @@ export class AddEventDialogComponent {
         this.projectService.add(result).subscribe(
           (projectsResult) => {
             this.getProjects(projectsResult[0]);
-            this.notificationHelper.openNotification('Proiectul a fost adaugat cu succes!', 'success');
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.sg.successfully', {
+                objectType: this.translateService.instant('message.art.project'),
+                action: this.translateService.instant('message.sg.added')
+              }),
+              'success'
+            );
           },
           (error) => {
             this.cancel();
@@ -394,8 +408,8 @@ export class AddEventDialogComponent {
   notAllFieldsAreFilled(): boolean {
     return (
       !this.activity ||
-      (this.activity !== 'Proiect' && !this.subactivity) ||
-      (this.activity !== 'Alta activitate' && this.activity !== 'Concediu' && !this.entity)
+      (this.activity !== 'project' && !this.subactivity) ||
+      (this.activity !== 'otherActivity' && this.activity !== 'holidays' && !this.entity)
     );
   }
 
@@ -495,19 +509,19 @@ export class AddEventDialogComponent {
   }
 
   isEmployee(): boolean {
-    return JSON.parse(localStorage.getItem('user') as string).type === 'Angajat';
+    return JSON.parse(localStorage.getItem('user') as string).type === 'employee';
   }
 
   setType(): void {
     if (!this.isEmployee()) {
-      this.type = 'plata cu ora';
+      this.type = 'hourly payment';
     } else {
       const hours = this.getBasicHours();
-      if (this.activity === 'Proiect') {
+      if (this.activity === 'project') {
         this.setProjectType();
-      } else if (this.activity === 'Concediu') {
+      } else if (this.activity === 'holidays') {
         this.typeMessage = undefined;
-        this.type = 'concediu';
+        this.type = 'holidays';
       } else if (hours < 8 && !this.isWeekend()) {
         this.setBasicType(hours);
       } else {
@@ -524,53 +538,58 @@ export class AddEventDialogComponent {
 
     this.eventService.projectHoursPerMonth({ date: this.data.date, project: this.entity.id }).subscribe((hours) => {
       const entity = this.entity as IProject;
-      this.type = 'proiect';
-      this.typeMessage = `Aveti pontate ${hours} ore pe proiectul ${entity.name} pentru luna ${this.data.date?.toLocaleString('ro-RO', {
-        month: 'long'
-      })} ${this.data.date?.getFullYear()}.`;
+      this.type = 'project';
+      this.typeMessage = this.translateService.instant('message.eventType.recordedProjectHours', {
+        hours,
+        projectName: entity.name,
+        month: (this.data.date as Date).toLocaleString('ro-RO', { month: 'long' }) + ' ' + this.data.date?.getFullYear()
+      });
       if (entity.hours_per_month) {
         if (entity.hours_per_month - hours >= 0) {
-          this.typeMessage += ` Mai aveti ${entity.hours_per_month - hours} ore ramase.`;
+          this.typeMessage += this.translateService.instant('message.eventType.hoursLeft', { hours: entity.hours_per_month - hours });
         } else {
-          this.typeMessage += ` Ati depasit deja norma lunara de ${entity.hours_per_month}.`;
+          this.typeMessage += this.translateService.instant('message.eventType.monthlyNormProject', { hours: entity.hours_per_month });
         }
       } else {
-        this.typeMessage += ` Nu aveti norma lunara de ore pe acest proiect.`;
+        this.typeMessage += this.translateService.instant('message.eventType.noNormProject');
       }
     });
   }
 
   setBasicType(hours: number): void {
-    this.type = 'norma de baza';
-    this.typeMessage = `Aveti pontate ${hours} ore din norma de baza in data de ${this.data.date
-      ?.toLocaleDateString()
-      .replace(/\/(.*)\//, '.$1.')}.`;
-    this.typeMessage += ` Mai aveti ${8 - hours} ore ramase.`;
+    this.type = 'basicN nrm';
+    this.typeMessage = this.translateService.instant('message.eventType.recordedBasicNorm', {
+      hours,
+      date: this.data.date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')
+    });
+    this.typeMessage += this.translateService.instant('message.eventType.hoursLeft', { hours: 8 - hours });
   }
 
   setHourPay(): void {
-    this.type = 'plata cu ora';
+    this.type = 'hourly payment';
     if (this.isWeekend()) {
-      this.typeMessage = `Aveti pontate ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
-        ?.toLocaleDateString()
-        .replace(/\/(.*)\//, '.$1.')}.`;
+      this.typeMessage = this.translateService.instant('message.eventType.recordedHourlyPayment', {
+        hours: this.getHourPayHours(),
+        date: this.data.date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')
+      });
     } else {
-      this.typeMessage = `Aveti deja pontate 8 ore din norma de baza si ${this.getHourPayHours()} ore in regim de plata cu ora in data de ${this.data.date
-        ?.toLocaleDateString()
-        .replace(/\/(.*)\//, '.$1.')}.`;
-      this.typeMessage += ' Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra la plata cu ora.';
+      this.typeMessage = this.translateService.instant('message.eventType.recordedBasicAndHourly', {
+        hours: this.getHourPayHours(),
+        date: this.data.date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')
+      });
+      this.typeMessage += this.translateService.instant('message.eventType.onlyHourlyPaidHours');
     }
   }
 
   getBasicHours(): number {
     let events: IEvent[];
-    if (this.activity === 'Alta activitate' || this.activity === 'Activitate didactica') {
-      events = this.events.filter((event) => event.type === 'norma de baza');
+    if (this.activity === 'otherActivity' || this.activity === 'courseHour') {
+      events = this.events.filter((event) => event.type === 'basic norm');
 
       let sum = 0;
       events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
 
-      if (this.data.event && this.data.event.type === 'norma de baza') {
+      if (this.data.event && this.data.event.type === 'basic norm') {
         sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
       }
 
@@ -581,11 +600,11 @@ export class AddEventDialogComponent {
   }
 
   getHourPayHours(): number {
-    const events = this.events.filter((event) => event.type === 'plata cu ora');
+    const events = this.events.filter((event) => event.type === 'hourly payment');
     let sum = 0;
     events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
 
-    if (this.data.event && this.data.event.type === 'plata cu ora') {
+    if (this.data.event && this.data.event.type === 'hourly payment') {
       sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
     }
 
@@ -604,11 +623,11 @@ export class AddEventDialogComponent {
 
   setActivitiesForBasic(): void {
     if (this.getBasicHours() === 8) {
-      const index = this.activities.indexOf('Alta activitate');
+      const index = this.activities.indexOf('otherActivity');
       if (index !== -1) {
         this.activities.splice(index, 1);
       }
-      if (this.activity === 'Activitate didactica') {
+      if (this.activity === 'courseHour') {
         this.subactivities = COLLABORATOR_SUBACTIVITIES;
       }
     }
@@ -622,20 +641,20 @@ export class AddEventDialogComponent {
     this.activities = [];
     if (this.isEmployee()) {
       if (this.events.filter((event) => event.allDay).length === 1) {
-        this.activities = ['Proiect'];
-        this.activity = 'Proiect';
+        this.activities = ['project'];
+        this.activity = 'project';
         this.getProjects();
       } else if (this.isWeekend()) {
         WEEKEND_ACTIVITIES.forEach((activity) => this.activities.push(activity));
-        this.type = 'plata cu ora';
-      } else if (this.events.filter((event) => event.type !== 'proiect').length > 0) {
+        this.type = 'hourly payment';
+      } else if (this.events.filter((event) => event.type !== 'project').length > 0) {
         NO_HOLIDAY_ACTIVITIES.forEach((activity) => this.activities.push(activity));
       } else {
         ACTIVITIES.forEach((activity) => this.activities.push(activity));
       }
     } else {
-      this.activities = ['Activitate didactica'];
-      this.activity = 'Activitate didactica';
+      this.activities = ['courseHour'];
+      this.activity = 'courseHour';
       this.subactivities = COLLABORATOR_SUBACTIVITIES;
     }
   }
