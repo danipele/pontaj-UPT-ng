@@ -33,7 +33,11 @@ export class CourseService {
   }
 
   importCourses(formData: FormData): Observable<any> {
-    return this.httpWrapper.post(`http://localhost:8000/api/v1/courses/import_courses`, formData, this.httpWrapper.getImportOptions());
+    return this.httpWrapper.post(
+      `http://localhost:8000/api/v1/courses/import_courses?locale=${this.translateService.currentLang}`,
+      formData,
+      this.httpWrapper.getImportOptions()
+    );
   }
 
   exportCourses(courses: ICourse[]): Observable<any> {

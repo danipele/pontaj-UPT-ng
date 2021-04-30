@@ -47,8 +47,11 @@ export class HttpWrapper {
     return throwError(error);
   }
 
-  post(url: string, params: {}, options: {}): Observable<any> {
-    return this.http.post(url, { ...params, locale: this.translateService.currentLang }, options).pipe(
+  post(url: string, params: any, options: {}): Observable<any> {
+    if (!(params instanceof FormData)) {
+      params = { ...params, locale: this.translateService.currentLang };
+    }
+    return this.http.post(url, params, options).pipe(
       map((result: any) => result),
       catchError((error) => this.handleHttpErrors(error))
     );

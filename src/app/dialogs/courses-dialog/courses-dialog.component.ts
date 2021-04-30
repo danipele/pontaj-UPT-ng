@@ -196,16 +196,20 @@ export class CoursesDialogComponent implements OnInit {
       formData.append('courses_file', file);
       this.courseService.importCourses(formData).subscribe(
         (result) => {
-          this.courses.data = result.courses;
-          this.refresh();
-          this.notificationHelper.openNotification(
-            this.translateService.instant('message.pl.successfully', {
-              nr: result.added,
-              objectsType: this.translateService.instant('message.courses'),
-              action: this.translateService.instant('message.pl.added')
-            }),
-            'success'
-          );
+          if (result.success) {
+            this.courses.data = result.courses;
+            this.refresh();
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.pl.successfully', {
+                nr: result.added,
+                objectsType: this.translateService.instant('message.courses'),
+                action: this.translateService.instant('message.pl.added')
+              }),
+              'success'
+            );
+          } else {
+            this.notificationHelper.openNotification(result.message, 'error');
+          }
         },
         (error) => {
           this.notificationHelper.notifyWithError(error);

@@ -196,16 +196,20 @@ export class ProjectsDialogComponent implements OnInit {
       formData.append('projects_file', file);
       this.projectService.importProjects(formData).subscribe(
         (result) => {
-          this.projects.data = result.projects;
-          this.refresh();
-          this.notificationHelper.openNotification(
-            this.translateService.instant('message.pl.successfully', {
-              nr: result.added,
-              objectsType: this.translateService.instant('message.projects'),
-              action: this.translateService.instant('message.pl.added')
-            }),
-            'success'
-          );
+          if (result.success) {
+            this.projects.data = result.projects;
+            this.refresh();
+            this.notificationHelper.openNotification(
+              this.translateService.instant('message.pl.successfully', {
+                nr: result.added,
+                objectsType: this.translateService.instant('message.projects'),
+                action: this.translateService.instant('message.pl.added')
+              }),
+              'success'
+            );
+          } else {
+            this.notificationHelper.openNotification(result.message, 'error');
+          }
         },
         (error) => {
           this.notificationHelper.notifyWithError(error);

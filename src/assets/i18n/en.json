@@ -229,7 +229,7 @@
     "delete": "Delete courses",
     "export": "Export courses",
     "import": "Import courses",
-    "fileName": "Courses.xls",
+    "filename": "Courses.xls",
     "details": "{{faculty}} ∙ {{cycle}} ∙ Year {{studentYear}} ∙ Semester {{semester}} ∙ {{description}}"
   },
   "project": {
@@ -245,7 +245,7 @@
     "delete": "Delete projects",
     "export": "Export projects",
     "import": "Import projects",
-    "fileName": "Projects.xls",
+    "filename": "Projects.xls",
     "details": {
       "hoursPerMonth": "{{hoursPerMonth}} hours per month ∙ ",
       "hourRestrictions": "Working hour restrictions for project: {{startHour}}:00 - {{endHour}}:00 ∙ "

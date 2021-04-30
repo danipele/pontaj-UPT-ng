@@ -34,7 +34,11 @@ export class ProjectService {
   }
 
   importProjects(formData: FormData): Observable<any> {
-    return this.httpWrapper.post(`http://localhost:8000/api/v1/projects/import_projects`, formData, this.httpWrapper.getImportOptions());
+    return this.httpWrapper.post(
+      `http://localhost:8000/api/v1/projects/import_projects?locale=${this.translateService.currentLang}`,
+      formData,
+      this.httpWrapper.getImportOptions()
+    );
   }
 
   exportProjects(projects: IProject[]): Observable<any> {

@@ -229,7 +229,7 @@
     "delete": "Sterge cursuri",
     "export": "Exporta cursuri",
     "import": "Importa cursuri",
-    "fileName": "Cursuri.xls",
+    "filename": "Cursuri.xls",
     "details": "{{faculty}} ∙ {{cycle}} ∙ Anul {{studentYear}} ∙ Semestrul {{semester}} ∙ {{description}}"
   },
   "project": {
@@ -245,7 +245,7 @@
     "delete": "Sterge proiecte",
     "export": "Exporta proiecte",
     "import": "Importa proiecte",
-    "fileName": "Proiecte.xls",
+    "filename": "Proiecte.xls",
     "details": {
       "hoursPerMonth": "{{hoursPerMonth}} ore pe luna ∙ ",
       "hourRestrictions": "Restrictie ore de lucru pe proiect: {{startHour}}:00 - {{endHour}}:00 ∙ "
