@@ -32,7 +32,7 @@ export class UserService {
     this.loginService.signup(params).subscribe(
       (result) => {
         if (result.success === true) {
-          if (JSON.parse(localStorage.getItem('user') as string).type === 'Admin') {
+          if (JSON.parse(localStorage.getItem('user') as string).type === 'admin') {
             this.router.navigate(['/admin']);
           } else {
             this.router.navigate(['/login']);

@@ -642,9 +642,13 @@ export class AddEventDialogComponent {
     this.activities = [];
     if (this.isEmployee()) {
       if (this.events.filter((event) => event.allDay).length === 1) {
-        this.activities = ['project'];
-        this.activity = 'project';
-        this.getProjects();
+        if (this.id) {
+          this.activities = [this.data.event?.activity as string];
+        } else {
+          this.activities = ['project'];
+          this.activity = 'project';
+          this.getProjects();
+        }
       } else if (this.isWeekend()) {
         WEEKEND_ACTIVITIES.forEach((activity) => this.activities.push(activity));
         this.type = 'hourly payment';
