@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IEvent } from '../../models/event.model';
+import { COLLABORATOR_SUBACTIVITIES, IEvent } from '../../models/event.model';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ICourse } from '../../models/course.model';
 import { IProject } from '../../models/project.model';
@@ -8,6 +8,7 @@ import { CourseService } from '../../services/course.service';
 import { ProjectService } from '../../services/project.service';
 import { AddEventDialogComponent } from '../add-event-dialog/add-event-dialog.component';
 import { LanguageHelper } from '../../helpers/language-helper';
+import { EventDescriptionHelper } from '../../helpers/event-description-helper';
 
 interface Data {
   event: IEvent;
@@ -28,7 +29,8 @@ export class EventDialogComponent implements OnInit {
     private calendarEventsHelper: CalendarEventsHelper,
     private courseService: CourseService,
     private projectService: ProjectService,
-    private languageHelper: LanguageHelper
+    private languageHelper: LanguageHelper,
+    private eventDescriptionHelper: EventDescriptionHelper
   ) {}
 
   ngOnInit(): void {}
@@ -95,5 +97,13 @@ export class EventDialogComponent implements OnInit {
 
   getLocaleFromLanguage(): string {
     return this.languageHelper.getLocaleFromLanguage();
+  }
+
+  getDescription(): string {
+    if (COLLABORATOR_SUBACTIVITIES.includes(this.data.event.subactivity as string)) {
+      return this.eventDescriptionHelper.setEventDescriptionText(this.data.event.description as string);
+    } else {
+      return this.data.event.description as string;
+    }
   }
 }

@@ -24,6 +24,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
+import { EventDescriptionHelper } from '../../helpers/event-description-helper';
 
 @Component({
   selector: 'app-events-list',
@@ -89,7 +90,8 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
     public courseService: CourseService,
     public projectService: ProjectService,
     private notificationHelper: NotificationHelper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private eventDescriptionHelper: EventDescriptionHelper
   ) {
     if (this.isEmployee()) {
       this.activities = ACTIVITIES;
@@ -333,5 +335,13 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
 
   setDisplayEvents(): void {
     this.displayEvents = new MatTableDataSource<IEvent>(this.events.data);
+  }
+
+  getDescription(event: IEvent): string {
+    if (COLLABORATOR_SUBACTIVITIES.includes(event.subactivity as string)) {
+      return this.eventDescriptionHelper.setEventDescriptionText(event.description as string);
+    } else {
+      return event.description as string;
+    }
   }
 }

@@ -46,7 +46,7 @@
       </ng-container>
       <ng-container matColumnDef="cycle">
         <th mat-header-cell *matHeaderCellDef>{{ 'course.cycle' | translate }}</th>
-        <td mat-cell *matCellDef="let course">{{ course.cycle }}</td>
+        <td mat-cell *matCellDef="let course">{{ 'course.cycles.' + course.cycle | translate }}</td>
       </ng-container>
       <ng-container matColumnDef="faculty">
         <th mat-header-cell *matHeaderCellDef>{{ 'course.faculty' | translate }}</th>

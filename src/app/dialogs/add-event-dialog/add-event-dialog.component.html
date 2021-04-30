@@ -78,11 +78,46 @@
       <span>{{ 'event.performedActivityDescription' | translate }}</span>
     </h6>
   </div>
-  <div>
+  <div *ngIf="!isCollaboratorSubactivity()">
     <mat-form-field class="description-field">
       <mat-label>{{ 'description' | translate }}</mat-label>
       <textarea matInput class="description-textarea" [(ngModel)]="description"></textarea>
     </mat-form-field>
+  </div>
+  <div *ngIf="isCollaboratorSubactivity()">
+    <div>
+      <mat-form-field class="collaborator-description-field">
+        <mat-label>{{ 'event.collaborator.materials' | translate }}</mat-label>
+        <textarea
+          matInput
+          class="collaborator-description-textarea"
+          [(ngModel)]="collaboratorDescription.materials"
+          placeholder="{{ 'event.collaborator.materialsExtended' | translate }}"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="collaborator-description-field">
+        <mat-label>{{ 'event.collaborator.onlineSession' | translate }}</mat-label>
+        <textarea
+          matInput
+          class="collaborator-description-textarea"
+          [(ngModel)]="collaboratorDescription.onlineSession"
+          placeholder="{{ 'event.collaborator.onlineSessionExtended' | translate }}"
+        ></textarea>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-form-field class="collaborator-description-field">
+        <mat-label>{{ 'event.collaborator.otherModalities' | translate }}</mat-label>
+        <textarea
+          matInput
+          class="collaborator-description-textarea"
+          [(ngModel)]="collaboratorDescription.otherModalities"
+          placeholder="{{ 'event.collaborator.otherModalitiesExtended' | translate }}"
+        ></textarea>
+      </mat-form-field>
+    </div>
   </div>
   <div *ngIf="!isEditMode()">
     <mat-form-field appearance="fill" class="activity-field">

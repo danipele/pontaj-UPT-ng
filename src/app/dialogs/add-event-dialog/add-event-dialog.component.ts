@@ -27,6 +27,7 @@ import { NotificationHelper } from '../../helpers/notification-helper';
 import * as moment from 'moment';
 import { TranslateService } from '@ngx-translate/core';
 import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
+import { EventDescriptionHelper } from '../../helpers/event-description-helper';
 
 interface Data {
   date?: Date;
@@ -68,6 +69,11 @@ export class AddEventDialogComponent {
   entities: ICourse[] | IProject[] = [];
   entity: ICourse | IProject | undefined;
   description: string | undefined = '';
+  collaboratorDescription = {
+    materials: '',
+    onlineSession: '',
+    otherModalities: ''
+  };
 
   activities: string[] = [];
   subactivities: string[] = [];
@@ -95,7 +101,8 @@ export class AddEventDialogComponent {
     private eventService: EventService,
     private validStartHoursHelper: ValidStartHoursHelper,
     private notificationHelper: NotificationHelper,
-    private translateService: TranslateService
+    private translateService: TranslateService,
+    private eventDescriptionHelper: EventDescriptionHelper
   ) {
     if (data.date) {
       this.startHour = data.date.getHours();
@@ -126,7 +133,11 @@ export class AddEventDialogComponent {
       this.activitySelected(event.subactivity, event.entity);
       this.subactivitySelected(event.entity);
 
-      this.description = event.description;
+      if (COLLABORATOR_SUBACTIVITIES.includes(this.subactivity as string)) {
+        this.collaboratorDescription = this.eventDescriptionHelper.setEventDescription(this.data.event.description as string);
+      } else {
+        this.description = event.description;
+      }
       this.id = event.id;
     }
     this.getDayEvents();
@@ -248,7 +259,7 @@ export class AddEventDialogComponent {
       activity: this.activity,
       subactivity: this.subactivity,
       entity: this.entity,
-      description: this.description,
+      description: this.description || this.eventDescriptionHelper.setCollaboratorDescription(this.collaboratorDescription),
       id: this.id,
       recurrent: this.recurrent,
       recurrentDate: this.recurrentEndingDate,
@@ -410,7 +421,11 @@ export class AddEventDialogComponent {
     return (
       !this.activity ||
       (this.activity !== 'project' && !this.subactivity) ||
-      (this.activity !== 'otherActivity' && this.activity !== 'holidays' && !this.entity)
+      (this.activity !== 'otherActivity' && this.activity !== 'holidays' && !this.entity) ||
+      (COLLABORATOR_SUBACTIVITIES.includes(this.subactivity as string) &&
+        (!this.collaboratorDescription.materials ||
+          !this.collaboratorDescription.onlineSession ||
+          !this.collaboratorDescription.otherModalities))
     );
   }
 
@@ -661,6 +676,14 @@ export class AddEventDialogComponent {
       this.activities = ['courseHour'];
       this.activity = 'courseHour';
       this.subactivities = COLLABORATOR_SUBACTIVITIES;
+    }
+  }
+
+  isCollaboratorSubactivity(): boolean {
+    if (this.subactivity) {
+      return COLLABORATOR_SUBACTIVITIES.includes(this.subactivity);
+    } else {
+      return false;
     }
   }
 }

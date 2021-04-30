@@ -131,7 +131,6 @@
       "consultations": "Consultations",
       "teachingActivityPreparation": "Teaching activity preparation",
       "doctoralStudentsGuidance": "Doctoral students guidance",
-      "unpaidInvolvementInSociety": "Unpaid involvement in society",
       "cooperationManagement": "Cooperation management",
       "internalDelegationDays": "Internal delegation days",
       "externalDelegationDays": "External delegation days",
@@ -140,7 +139,6 @@
       "researchDocumentation": "Research documentation",
       "projectFinancingOpportunitiesDocumentation": "Project financing opportunities documentation",
       "researchProjectsElaboration": "Research projects elaboration",
-      "researchProjectsExecution": "Research projects execution",
       "vacation": "Vacation",
       "sickLeave": "Sick leave",
       "unpaidLeave": "Unpaid leave",
@@ -148,7 +146,18 @@
       "maternityLeave": "Maternity leave",
       "unmotivatedAbsences": "Unmotivated absences"
     },
-    "allDay": "All day"
+    "allDay": "All day",
+    "collaborator": {
+      "materials": "About communication with students",
+      "materialsExtended": "Created materials/Mode of communication with students/Communication date",
+      "materialsText": "Communication materials",
+      "onlineSession": "About the online session",
+      "onlineSessionExtended": "Nr. of groups/Online platform",
+      "onlineSessionText": "Online session",
+      "otherModalities": "About other communication modalities",
+      "otherModalitiesExtended": "Other communication way/Communication date",
+      "otherModalitiesText": "Other communication modalities"
+    }
   },
   "message": {
     "events": "events",
@@ -160,7 +169,8 @@
       "deleted": "deleted",
       "copied": "copied",
       "moved": "moved",
-      "exported": "exported"
+      "exported": "exported",
+      "added": "added"
     },
     "art": {
       "event": "event",

@@ -131,7 +131,6 @@
       "consultations": "Consultatii",
       "teachingActivityPreparation": "Pregatire pentru activitatea didactica",
       "doctoralStudentsGuidance": "Indrumare doctoranzi",
-      "unpaidInvolvementInSociety": "Implicare neremunerată în problematica societății",
       "cooperationManagement": "Gestiune cooperari",
       "internalDelegationDays": "Zile delegatie (Deplasare interna)",
       "externalDelegationDays": "Zile delegatie (Deplasare externa)",
@@ -140,7 +139,6 @@
       "researchDocumentation": "Documentare pentru cercetare",
       "projectFinancingOpportunitiesDocumentation": "Documentare oportunitati de finantare proiecte",
       "researchProjectsElaboration": "Elaborare proiecte de cercetare",
-      "researchProjectsExecution": "Executarea proiecte de cercetare",
       "vacation": "Concediu de odihna",
       "sickLeave": "Concediu medical",
       "unpaidLeave": "Concediu fara salariu",
@@ -148,7 +146,18 @@
       "maternityLeave": "Concediu de maternitate",
       "unmotivatedAbsences": "Absente nemotivate"
     },
-    "allDay": "Toata ziua"
+    "allDay": "Toata ziua",
+    "collaborator": {
+      "materials": "Despre comunicarea cu studentii",
+      "materialsExtended": "Materiale create/Modalitatea comunicarii cu studenții/Data comunicarii",
+      "materialsText": "Materiale pentru comunicare",
+      "onlineSession": "Despre sesiunea online",
+      "onlineSessionExtended": "Nr. de grupe/Platforma online",
+      "onlineSessionText": "Sesiunea online",
+      "otherModalities": "Despre alte modalitati de comunicare",
+      "otherModalitiesExtended": "Alte cai de comunicare/Data comunicarii",
+      "otherModalitiesText": "Alte modalitati de comunicare"
+    }
   },
   "message": {
     "events": "evenimente",
@@ -160,7 +169,8 @@
       "deleted": "sterse",
       "copied": "copiate",
       "moved": "mutate",
-      "exported": "exportate"
+      "exported": "exportate",
+      "added": "adaugate"
     },
     "art": {
       "event": "Evenimentul",

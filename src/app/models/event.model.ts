@@ -31,7 +31,6 @@ export const COURSE_SUBACTIVITIES: string[] = [
 ];
 export const OTHER_SUBACTIVITIES: string[] = [
   'doctoralStudentsGuidance',
-  'unpaidInvolvementInSociety',
   'cooperationManagement',
   'internalDelegationDays',
   'externalDelegationDays',
@@ -39,7 +38,6 @@ export const OTHER_SUBACTIVITIES: string[] = [
   'researchDocumentation',
   'projectFinancingOpportunitiesDocumentation',
   'researchProjectsElaboration',
-  'researchProjectsExecution',
   'otherActivities'
 ];
 export const HOLIDAYS: string[] = ['vacation', 'sickLeave', 'childGrowthLeave', 'maternityLeave', 'unpaidLeave', 'unmotivatedAbsences'];

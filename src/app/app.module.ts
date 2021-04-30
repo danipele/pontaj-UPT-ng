@@ -64,6 +64,7 @@ import { AddHolidayForEmployeesDialogComponent } from './dialogs/add-holiday-for
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageHelper } from './helpers/language-helper';
+import { EventDescriptionHelper } from './helpers/event-description-helper';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -147,6 +148,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     { provide: NotificationHelper, useClass: NotificationHelper },
     { provide: MatSnackBar, useClass: MatSnackBar },
     { provide: LanguageHelper, useClass: LanguageHelper },
+    { provide: EventDescriptionHelper, useClass: EventDescriptionHelper },
     { provide: LOCALE_ID, useValue: 'ro-RO' }
   ],
   bootstrap: [AppComponent],
