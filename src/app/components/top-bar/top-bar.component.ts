@@ -11,6 +11,9 @@ import { CookieService } from 'ngx-cookie';
 import { CalendarEventsHelper } from '../../helpers/calendar-events-helper';
 import { NotificationHelper } from '../../helpers/notification-helper';
 import { TranslateService } from '@ngx-translate/core';
+import { IProject } from '../../models/project.model';
+import { ProjectService } from '../../services/project.service';
+import { DownloadReportDialogComponent } from '../../dialogs/download-report-dialog/download-report-dialog.component';
 
 @Component({
   selector: 'app-top-bar',
@@ -19,6 +22,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class TopBarComponent implements OnInit {
   @Output() setEvents = new EventEmitter<any>();
+  projects: IProject[];
 
   constructor(
     private loginService: LoginService,
@@ -28,10 +32,24 @@ export class TopBarComponent implements OnInit {
     private cookieService: CookieService,
     private calendarEventsHelper: CalendarEventsHelper,
     private notificationHelper: NotificationHelper,
-    private translateService: TranslateService
-  ) {}
+    private translateService: TranslateService,
+    private projectService: ProjectService
+  ) {
+    this.getProjects();
+  }
 
   ngOnInit(): void {}
+
+  getProjects(): void {
+    this.projectService.getAll().subscribe(
+      (result) => {
+        this.projects = result;
+      },
+      (error) => {
+        this.notificationHelper.notifyWithError(error);
+      }
+    );
+  }
 
   logout(): void {
     this.loginService.logout().subscribe(
@@ -103,5 +121,15 @@ export class TopBarComponent implements OnInit {
 
   isNotAdmin(): boolean {
     return JSON.parse(localStorage.getItem('user') as string).type !== 'admin';
+  }
+
+  openDownloadReportDialog(project: IProject): void {
+    this.dialog.open(DownloadReportDialogComponent, {
+      width: '40%',
+      data: {
+        reportType: 'projectReport',
+        project
+      }
+    });
   }
 }

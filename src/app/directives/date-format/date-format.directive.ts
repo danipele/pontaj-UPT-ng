@@ -1,31 +1,34 @@
 import { Directive, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { RECURRENT } from 'src/app/dialogs/add-event-dialog/add-event-dialog.component';
 
 @Directive({
   selector: '[appDateFormat]'
 })
 export class DateFormatDirective implements OnInit, OnChanges {
-  @Input() recurrent?: RECURRENT;
-  @Output() recurrentValue = new EventEmitter<string>();
-  @Input() recurrentDate: Date;
+  @Input() dateType?: string;
+  @Output() setDateValue = new EventEmitter<string>();
+  @Input() date: Date;
 
   constructor() {}
 
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    setTimeout(() => this.formatDate());
+    setTimeout(() => {
+      if (this.date) {
+        this.formatDate();
+      }
+    });
   }
 
   formatDate(): void {
     let formattedValue = '';
-    if (this.recurrent === RECURRENT.YEARLY) {
-      formattedValue = this.recurrentDate.toLocaleDateString().substring(6);
-    } else if (this.recurrent === RECURRENT.MONTHLY) {
-      formattedValue = this.recurrentDate.toLocaleDateString().substring(3);
+    if (this.dateType === 'yearly') {
+      formattedValue = this.date.toLocaleDateString().substring(6);
+    } else if (this.dateType === 'monthly') {
+      formattedValue = this.date.toLocaleDateString().substring(3);
     } else {
-      formattedValue = this.recurrentDate.toLocaleDateString();
+      formattedValue = this.date.toLocaleDateString();
     }
-    this.recurrentValue.emit(formattedValue);
+    this.setDateValue.emit(formattedValue);
   }
 }

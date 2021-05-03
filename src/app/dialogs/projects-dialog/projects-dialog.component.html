@@ -109,7 +109,7 @@
   <button mat-raised-button class="upt-primary-btn" (click)="exportProjects()" [hidden]="selectedProjects.length === 0">
     {{ 'project.export' | translate }}
   </button>
-  <button mat-button [matMenuTriggerFor]="menu" #importMenuTrigger class="upt-btn">{{ 'project.import' | translate }}</button>
+  <button mat-button [matMenuTriggerFor]="menu" class="upt-btn">{{ 'project.import' | translate }}</button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="downloadTemplate()" class="upt-secondary-btn">{{ 'action.downloadTemplate' | translate }}</button>
     <button mat-menu-item (click)="file.click()" class="upt-secondary-btn">{{ 'action.importFile' | translate }}</button>

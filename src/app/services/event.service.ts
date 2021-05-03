@@ -41,4 +41,8 @@ export class EventService {
   projectHoursPerMonth(params: {}): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/project_hours`, params, this.httpWrapper.getAuthOptions());
   }
+
+  downloadReport(params: {}): Observable<any> {
+    return this.httpWrapper.post(`http://localhost:8000/api/v1/events/download_report`, params, this.httpWrapper.getDownloadOptions());
+  }
 }

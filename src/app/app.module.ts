@@ -65,6 +65,7 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { LanguageHelper } from './helpers/language-helper';
 import { EventDescriptionHelper } from './helpers/event-description-helper';
+import { DownloadReportDialogComponent } from './dialogs/download-report-dialog/download-report-dialog.component';
 registerLocaleData(localeRo);
 
 export function momentAdapterFactory(): DateAdapter {
@@ -98,7 +99,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     CopyEventDialogComponent,
     AdminComponent,
     CreateAdminUserDialogComponent,
-    AddHolidayForEmployeesDialogComponent
+    AddHolidayForEmployeesDialogComponent,
+    DownloadReportDialogComponent
   ],
   imports: [
     BrowserModule,

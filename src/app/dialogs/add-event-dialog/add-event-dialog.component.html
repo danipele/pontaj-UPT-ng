@@ -135,9 +135,9 @@
         [matDatepicker]="picker"
         hidden
         appDateFormat
-        [recurrent]="recurrent"
-        (recurrentValue)="setRecurrentEnding($event)"
-        [recurrentDate]="recurrentEndingDate"
+        [dateType]="recurrent"
+        (setDateValue)="setRecurrentEnding($event)"
+        [date]="recurrentEndingDate"
         [min]="getMinDate()"
         (dateChange)="daySelected($event, picker)"
         [matDatepickerFilter]="weeklyRecurrentDateFilter"

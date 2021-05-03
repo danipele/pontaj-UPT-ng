@@ -1,0 +1,20 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span>{{ 'report.downloadReport' | translate: { reportType: reportTitle() } }}</span>
+  </h5>
+  <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
+</div>
+<div class="modal-body">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ 'report.chooseMonth' | translate }}</mat-label>
+    <input matInput [readonly]="true" [value]="dateValue" />
+    <input [matDatepicker]="picker" hidden appDateFormat [dateType]="dateType()" (setDateValue)="setDateValue($event)" [date]="date" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker startView="multi-year" (monthSelected)="monthSelected($event, picker)"></mat-datepicker>
+  </mat-form-field>
+</div>
+<div class="modal-footer">
+  <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" (click)="downloadReport()" cdkFocusInitial>
+    {{ 'action.download' | translate }}
+  </button>
+</div>

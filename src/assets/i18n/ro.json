@@ -216,7 +216,8 @@
     "confirm": "Confirma",
     "cancel": "Renunta",
     "downloadTemplate": "Descarca template",
-    "importFile": "Importa fisier"
+    "importFile": "Importa fisier",
+    "download": "Descarca"
   },
   "course": {
     "my": "Cursurile mele",
@@ -262,6 +263,9 @@
     }
   },
   "report": {
-    "exportReports": "Exporta repoarte"
+    "exportReports": "Exporta rapoarte",
+    "projectReport": "Raport de proiect",
+    "downloadReport": "Descarca raport - {{reportType}}",
+    "chooseMonth": "Choose month"
   }
 }

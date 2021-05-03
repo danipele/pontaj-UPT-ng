@@ -68,7 +68,7 @@ export class CalendarEventsHelper {
         .pipe(
           map((eventsResult: any) => {
             if (eventsResult.successfully) {
-              return { events: this.addEvents(eventsResult.events), mode: 'add', successfully: eventsResult.successfully };
+              return { events: this.addEvents(eventsResult.events), mode: 'add', successfully: eventsResult.successfully + 1 };
             } else {
               return { events: this.addEvents(eventsResult), mode: 'add' };
             }

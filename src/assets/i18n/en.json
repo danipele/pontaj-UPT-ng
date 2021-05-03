@@ -216,7 +216,8 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "downloadTemplate": "Download template",
-    "importFile": "Import file"
+    "importFile": "Import file",
+    "download": "Download"
   },
   "course": {
     "my": "My courses",
@@ -262,6 +263,9 @@
     }
   },
   "report": {
-    "exportReports": "Export reports"
+    "exportReports": "Export reports",
+    "projectReport": "Project report",
+    "downloadReport": "Download report - {{reportType}}",
+    "chooseMonth": "Choose month"
   }
 }

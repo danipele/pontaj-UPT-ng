@@ -10,9 +10,25 @@
   <button mat-flat-button class="upt-btn top-bar-btn" (click)="openProjectsDialog()" *ngIf="isEmployee()">
     {{ 'project.my' | translate }}
   </button>
-  <button mat-flat-button class="upt-btn top-bar-btn" *ngIf="isNotAdmin()">
+  <button mat-flat-button [matMenuTriggerFor]="reportMenu" class="upt-btn top-bar-btn" *ngIf="isNotAdmin()">
     {{ 'report.exportReports' | translate }}
   </button>
+  <mat-menu #reportMenu="matMenu">
+    <button mat-menu-item [matMenuTriggerFor]="projectMenu" class="upt-secondary-btn report-btn">
+      {{ 'report.projectReport' | translate }}
+    </button>
+    <mat-menu #projectMenu="matMenu">
+      <button
+        *ngFor="let project of projects"
+        mat-menu-item
+        class="upt-secondary-btn report-btn"
+        (click)="openDownloadReportDialog(project)"
+      >
+        {{ project.name }}
+      </button>
+    </mat-menu>
+  </mat-menu>
+
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="account" class="account">
     <mat-icon class="user_icon">person_pin</mat-icon>
   </button>
