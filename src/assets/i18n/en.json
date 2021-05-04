@@ -51,6 +51,7 @@
     "calendar": "Calendar",
     "daily": "Daily",
     "weekly": "Weekly",
+    "monthly": "Monthly",
     "chooseWeek": "Choose week",
     "chooseDay": "Choose day",
     "back": "Back",
@@ -217,7 +218,7 @@
     "cancel": "Cancel",
     "downloadTemplate": "Download template",
     "importFile": "Import file",
-    "download": "Download"
+    "export": "Export"
   },
   "course": {
     "my": "My courses",
@@ -265,7 +266,10 @@
   "report": {
     "exportReports": "Export reports",
     "projectReport": "Project report",
-    "downloadReport": "Download report - {{reportType}}",
-    "chooseMonth": "Choose month"
+    "exportReport": "Export report - {{reportType}}",
+    "chooseMonth": "Choose month",
+    "teacherReport": "Teacher report",
+    "onlineReport": "Online sessions report",
+    "teacherReportMonthlyName": "Timekeeping_teacher"
   }
 }

@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h5 class="modal-title">
-    <span>{{ 'report.downloadReport' | translate: { reportType: reportTitle() } }}</span>
+    <span>{{ 'report.exportReport' | translate: { reportType: reportTitle() } }}</span>
   </h5>
   <button mat-flat-button class="close-dialog-btn" (click)="cancel()">&times;</button>
 </div>
@@ -15,6 +15,6 @@
 </div>
 <div class="modal-footer">
   <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" (click)="downloadReport()" cdkFocusInitial>
-    {{ 'action.download' | translate }}
+    {{ 'action.export' | translate }}
   </button>
 </div>

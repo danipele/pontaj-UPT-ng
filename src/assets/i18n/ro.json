@@ -51,6 +51,7 @@
     "calendar": "Calendar",
     "daily": "Zilnic",
     "weekly": "Saptamanal",
+    "monthly": "Lunar",
     "chooseWeek": "Alege saptamana",
     "chooseDay": "Alege ziua",
     "back": "Inapoi",
@@ -217,7 +218,7 @@
     "cancel": "Renunta",
     "downloadTemplate": "Descarca template",
     "importFile": "Importa fisier",
-    "download": "Descarca"
+    "export": "Exporta"
   },
   "course": {
     "my": "Cursurile mele",
@@ -265,7 +266,10 @@
   "report": {
     "exportReports": "Exporta rapoarte",
     "projectReport": "Raport de proiect",
-    "downloadReport": "Descarca raport - {{reportType}}",
-    "chooseMonth": "Choose month"
+    "exportReport": "Exporta raport - {{reportType}}",
+    "chooseMonth": "Alege luna",
+    "teacherReport": "Raport cadru didactic",
+    "onlineReport": "Raport sesiuni online",
+    "teacherReportMonthlyName": "Pontaj_cadre_didactice"
   }
 }

@@ -14,7 +14,7 @@
     {{ 'report.exportReports' | translate }}
   </button>
   <mat-menu #reportMenu="matMenu">
-    <button mat-menu-item [matMenuTriggerFor]="projectMenu" class="upt-secondary-btn report-btn">
+    <button mat-menu-item [matMenuTriggerFor]="projectMenu" class="upt-secondary-btn report-btn" *ngIf="isEmployee()">
       {{ 'report.projectReport' | translate }}
     </button>
     <mat-menu #projectMenu="matMenu">
@@ -22,11 +22,25 @@
         *ngFor="let project of projects"
         mat-menu-item
         class="upt-secondary-btn report-btn"
-        (click)="openDownloadReportDialog(project)"
+        (click)="openDownloadProjectReportDialog(project)"
       >
         {{ project.name }}
       </button>
     </mat-menu>
+    <button mat-menu-item [matMenuTriggerFor]="teacherMenu" class="upt-secondary-btn report-btn">
+      {{ 'report.teacherReport' | translate }}
+    </button>
+    <mat-menu #teacherMenu="matMenu">
+      <button mat-menu-item class="upt-secondary-btn report-btn" (click)="openDownloadTeacherReportDialog('monthly')" *ngIf="isEmployee()">
+        {{ 'calendar.monthly' | translate }}
+      </button>
+      <button mat-menu-item class="upt-secondary-btn report-btn" (click)="openDownloadTeacherReportDialog('weekly')">
+        {{ 'calendar.weekly' | translate }}
+      </button>
+    </mat-menu>
+    <button mat-menu-item class="upt-secondary-btn report-btn">
+      {{ 'report.onlineReport' | translate }}
+    </button>
   </mat-menu>
 
   <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="account" class="account">

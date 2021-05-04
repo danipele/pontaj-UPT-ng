@@ -9,6 +9,7 @@ import { saveAs } from 'file-saver';
 interface Data {
   reportType: string;
   project: IProject;
+  period: string;
 }
 
 @Component({
@@ -33,6 +34,8 @@ export class DownloadReportDialogComponent implements OnInit {
     const reportType = this.translateService.instant('report.' + this.data.reportType);
     if (this.data.project) {
       return `${reportType}: ${this.data.project.name}`;
+    } else if (this.data.period) {
+      return `${reportType}: ${this.translateService.instant('calendar.' + this.data.period)}`;
     } else {
       return reportType;
     }
@@ -51,12 +54,11 @@ export class DownloadReportDialogComponent implements OnInit {
     if (this.data.project) {
       params = { ...params, project: this.data.project.id };
     }
+    if (this.data.period) {
+      params = { ...params, period: this.data.period };
+    }
     this.eventService.downloadReport(params).subscribe((result) => {
-      const language = this.translateService.currentLang;
-      const user = JSON.parse(localStorage.getItem('user') as string);
-      const filename = `${user.last_name} ${user.first_name}_${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
-        month: 'long'
-      })} ${this.date.getFullYear()}.xls`;
+      const filename = this.setFilename();
       saveAs(result, filename);
       this.cancel();
     });
@@ -73,5 +75,31 @@ export class DownloadReportDialogComponent implements OnInit {
   monthSelected(event: any, picker: MatDatepicker<Date>): void {
     this.date = event;
     picker.close();
+  }
+
+  setFilename(): string {
+    const language = this.translateService.currentLang;
+    const user = JSON.parse(localStorage.getItem('user') as string);
+
+    switch (this.data.reportType) {
+      case 'projectReport': {
+        return `${user.last_name} ${user.first_name}_${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
+          month: 'long'
+        })} ${this.date.getFullYear()}.xls`;
+      }
+      case 'teacherReport': {
+        if (this.data.period === 'monthly') {
+          return `${user.last_name}_${user.first_name}_${this.translateService.instant('report.teacherReportMonthlyName')}_1-${new Date(
+            this.date.getFullYear(),
+            this.date.getMonth() + 1,
+            0
+          ).getDate()}_${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
+            month: 'long'
+          })}-${this.date.getFullYear()}.xls`;
+        }
+      }
+    }
+
+    return 'raport fara nume.xls';
   }
 }

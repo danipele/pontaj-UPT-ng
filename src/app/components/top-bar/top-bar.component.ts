@@ -123,12 +123,22 @@ export class TopBarComponent implements OnInit {
     return JSON.parse(localStorage.getItem('user') as string).type !== 'admin';
   }
 
-  openDownloadReportDialog(project: IProject): void {
+  openDownloadProjectReportDialog(project: IProject): void {
     this.dialog.open(DownloadReportDialogComponent, {
       width: '40%',
       data: {
         reportType: 'projectReport',
         project
+      }
+    });
+  }
+
+  openDownloadTeacherReportDialog(period: string): void {
+    this.dialog.open(DownloadReportDialogComponent, {
+      width: '40%',
+      data: {
+        reportType: 'teacherReport',
+        period
       }
     });
   }
