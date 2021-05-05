@@ -334,7 +334,11 @@ export class EventsListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   setDisplayEvents(): void {
-    this.displayEvents = new MatTableDataSource<IEvent>(this.events.data);
+    const events = this.page === 1 ? [] : this.displayEvents.data;
+    for (let i = 20 * (this.page - 1); i < 20 * this.page && i < this.events.data.length; i++) {
+      events.push(this.events.data[i]);
+    }
+    this.displayEvents = new MatTableDataSource<IEvent>(events);
   }
 
   getDescription(event: IEvent): string {

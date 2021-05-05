@@ -259,7 +259,9 @@ export class AddEventDialogComponent {
       activity: this.activity,
       subactivity: this.subactivity,
       entity: this.entity,
-      description: this.description || this.eventDescriptionHelper.setCollaboratorDescription(this.collaboratorDescription),
+      description: COLLABORATOR_SUBACTIVITIES.includes(this.subactivity as string)
+        ? this.eventDescriptionHelper.setCollaboratorDescription(this.collaboratorDescription)
+        : this.description,
       id: this.id,
       recurrent: this.recurrent,
       recurrentDate: this.recurrentEndingDate,
@@ -573,7 +575,7 @@ export class AddEventDialogComponent {
   }
 
   setBasicType(hours: number): void {
-    this.type = 'basicN nrm';
+    this.type = 'basic norm';
     this.typeMessage = this.translateService.instant('message.eventType.recordedBasicNorm', {
       hours,
       date: this.data.date?.toLocaleDateString().replace(/\/(.*)\//, '.$1.')
