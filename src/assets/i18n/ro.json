@@ -207,6 +207,7 @@
     },
     "holidaysBadDay": "Concediul se poate lua doar pe o zi intreaga. Exista deja {{events}} evenimente in data de {{date}}. Va rugam selectati alta data.",
     "error": "Actiune nereusita. Mai incearca o data!",
+    "expiredSession": "Sesiunea a expirat. Trebuie sa va autentificati din nou pentru a continua.",
     "language": "Limba a fost schimbata cu succes."
   },
   "action": {
@@ -271,6 +272,13 @@
     "teacherReport": "Raport cadru didactic",
     "onlineReport": "Raport sesiuni online",
     "teacherReportMonthlyName": "Pontaj_cadre_didactice",
-    "annexes": "Anexele 1A si 1B"
+    "annexes": "Anexele 1A si 1B",
+    "messages": {
+      "projectReport": "Raportul de proiect pentru proiectul {{project}} pentru luna {{date}} a fost exportat cu success.",
+      "teacherReport": "Raportul de cadru didactic {{period}} pentru luna {{date}} a fost exportat cu succes.",
+      "onlineReport": "Raporul de sesiuni online pentru luna {{date}} a fost exportat cu succes.",
+      "weekly": "saptamanal",
+      "monthly": "lunar"
+    }
   }
 }

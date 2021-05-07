@@ -20,7 +20,7 @@ export class NotificationHelper {
     if (error.status === 500) {
       this.openNotification(this.translateService.instant('message.error'), 'error');
     } else if (error.status === 401) {
-      // do nothing
+      this.openNotification(this.translateService.instant('message.expiredSession'), 'error');
     } else {
       this.openNotification(error.message, 'error');
     }

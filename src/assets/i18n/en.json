@@ -207,6 +207,7 @@
     },
     "holidaysBadDay": "You can take holidays only for a whole day. There already are {{events}} events for date {{date}}. Please select another date.",
     "error": "Something went wrong. Try again!",
+    "expiredSession": "Session expired. You must login again to continue..",
     "language": "Language was successfully changed."
   },
   "action": {
@@ -271,6 +272,13 @@
     "teacherReport": "Teacher report",
     "onlineReport": "Online sessions report",
     "teacherReportMonthlyName": "Timekeeping_teacher",
-    "annexes": "1A and 1B annexes"
+    "annexes": "1A and 1B annexes",
+    "messages": {
+      "projectReport": "A project report for project {{project}} for month {{date}} was successfully exported.",
+      "teacherReport": "A {{period}} teacher report for month {{date}} was successfully exported.",
+      "onlineReport": "An online session report for month {{date}} was successfully exported.",
+      "weekly": "weekly",
+      "monthly": "monthly"
+    }
   }
 }

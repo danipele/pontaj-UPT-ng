@@ -5,6 +5,7 @@ import { MatDatepicker } from '@angular/material/datepicker';
 import { EventService } from '../../services/event.service';
 import { IProject } from '../../models/project.model';
 import { saveAs } from 'file-saver';
+import { NotificationHelper } from '../../helpers/notification-helper';
 
 interface Data {
   reportType: string;
@@ -25,7 +26,8 @@ export class DownloadReportDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<DownloadReportDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data,
     private translateService: TranslateService,
-    private eventService: EventService
+    private eventService: EventService,
+    private notificationHelper: NotificationHelper
   ) {}
 
   ngOnInit(): void {}
@@ -57,11 +59,50 @@ export class DownloadReportDialogComponent implements OnInit {
     if (this.data.period) {
       params = { ...params, period: this.data.period };
     }
-    this.eventService.downloadReport(params).subscribe((result) => {
-      const filename = this.setFilename();
-      saveAs(result, filename);
-      this.cancel();
-    });
+    this.eventService.downloadReport(params).subscribe(
+      (result) => {
+        const filename = this.setFilename();
+        saveAs(result, filename);
+        this.notificationHelper.openNotification(this.notificationMessage(), 'success');
+        this.cancel();
+      },
+      (error) => {
+        this.notificationHelper.notifyWithError(error);
+        this.cancel();
+      }
+    );
+  }
+
+  notificationMessage(): string {
+    const language = this.translateService.currentLang;
+
+    switch (this.data.reportType) {
+      case 'projectReport': {
+        return this.translateService.instant('report.messages.projectReport', {
+          project: this.data.project.name,
+          date: `${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
+            month: 'long'
+          })} ${this.date.getFullYear()}`
+        });
+      }
+      case 'teacherReport': {
+        return this.translateService.instant('report.messages.teacherReport', {
+          period: this.translateService.instant('report.messages.' + this.data.period),
+          date: `${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
+            month: 'long'
+          })} ${this.date.getFullYear()}`
+        });
+      }
+      case 'onlineReport': {
+        return this.translateService.instant('report.messages.onlineReport', {
+          date: `${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
+            month: 'long'
+          })} ${this.date.getFullYear()}`
+        });
+      }
+    }
+
+    return '';
   }
 
   dateType(): string {
