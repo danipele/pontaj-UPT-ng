@@ -96,7 +96,20 @@ export class DownloadReportDialogComponent implements OnInit {
           ).getDate()}_${this.date.toLocaleString(language + '-' + language.toUpperCase(), {
             month: 'long'
           })}-${this.date.getFullYear()}.xls`;
+        } else {
+          let name = `${this.translateService.instant('hours')}-${this.date.getFullYear()}.${this.date.getMonth()}-`;
+          if (user.type === 'employee') {
+            name += 'TIT+CMDD-';
+          } else {
+            name += 'PO-extern-';
+          }
+          return `${name}${user.last_name}-${user.first_name}.xls`.substr(1);
         }
+      }
+      case 'onlineReport': {
+        return `${user.last_name}, ${user.first_name} ${this.translateService.instant(
+          'report.annexes'
+        )} ${this.date.getFullYear()}-${this.date.getMonth()}.xls`;
       }
     }
 

@@ -142,4 +142,13 @@ export class TopBarComponent implements OnInit {
       }
     });
   }
+
+  openDownloadOnlineReportDialog(): void {
+    this.dialog.open(DownloadReportDialogComponent, {
+      width: '40%',
+      data: {
+        reportType: 'onlineReport'
+      }
+    });
+  }
 }
