@@ -196,14 +196,14 @@
     "multipleDeleteConfirmation": "Sunteti sigur ca doriti sa stergeti {{nr}} {{objectsType}}?",
     "personalInfoSuccess": "Informatiile personale au fost actualizate cu succes.",
     "eventType": {
-      "recordedProjectHours": "Aveti pontate {{hours}} ore pe proiectul {{projectName}} pentru luna.",
+      "recordedProjectHours": "Aveti pontate {{hours}} ore pe proiectul {{projectName}} pentru luna {{month}}.",
       "hoursLeft": " Mai aveti {{hours}} ore ramase.",
       "monthlyNormProject": "Ati depasit deja norma lunara de {{hours}} ore.",
       "noNormProject": " Nu aveti norma lunara de ore pe acest proiect.",
       "recordedBasicNorm": "Aveti pontate {{hours}} ore din norma de baza in data de {{date}}.",
       "recordedHourlyPayment": "Aveti pontate {{hours}} ore in regim plata cu ora in data de {{date}}.",
       "recordedBasicAndHourly": "Aveti deja pontate 8 ore din norma de baza si {{hours}} ore in regim de plata cu ora in data de {{date}}.",
-      "onlyHourlyPaidHours": "Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra in plata cu ora."
+      "onlyHourlyPaidHours": " Toate orele ce le veti adauga de acum inainte in aceasta zi vor intra in plata cu ora."
     },
     "holidaysBadDay": "Concediul se poate lua doar pe o zi intreaga. Exista deja {{events}} evenimente in data de {{date}}. Va rugam selectati alta data.",
     "error": "Actiune nereusita. Mai incearca o data!",

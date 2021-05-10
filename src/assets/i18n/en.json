@@ -203,7 +203,7 @@
       "recordedBasicNorm": "You have registered {{hours}} hours from basic norm for date {{date}}.",
       "recordedHourlyPayment": "You have registered {{hours}} hours in hourly payment regime for date {{date}}.",
       "recordedBasicAndHourly": "You have registered 8 hours from basic norm and {{hours}} hours in hourly payment regime for date {{date}}.",
-      "onlyHourlyPaidHours": "From now on, all the hours you will add for this day will be in hourly payment regime."
+      "onlyHourlyPaidHours": " From now on, all the hours you will add for this day will be in hourly payment regime."
     },
     "holidaysBadDay": "You can take holidays only for a whole day. There already are {{events}} events for date {{date}}. Please select another date.",
     "error": "Something went wrong. Try again!",

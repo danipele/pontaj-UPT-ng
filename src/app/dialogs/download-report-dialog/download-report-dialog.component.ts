@@ -6,6 +6,9 @@ import { EventService } from '../../services/event.service';
 import { IProject } from '../../models/project.model';
 import { saveAs } from 'file-saver';
 import { NotificationHelper } from '../../helpers/notification-helper';
+import { DateAdapter, MAT_DATE_LOCALE } from '@angular/material/core';
+import { LanguageHelper, LocaleIdFactory } from '../../helpers/language-helper';
+import { CustomDateAdapter } from '../../helpers/custom-date-adapter';
 
 interface Data {
   reportType: string;
@@ -16,7 +19,11 @@ interface Data {
 @Component({
   selector: 'app-download-report-dialog',
   templateUrl: './download-report-dialog.component.html',
-  styleUrls: ['./download-report-dialog.component.sass']
+  styleUrls: ['./download-report-dialog.component.sass'],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useFactory: LocaleIdFactory, deps: [LanguageHelper] },
+    { provide: DateAdapter, useClass: CustomDateAdapter }
+  ]
 })
 export class DownloadReportDialogComponent implements OnInit {
   dateValue = '';

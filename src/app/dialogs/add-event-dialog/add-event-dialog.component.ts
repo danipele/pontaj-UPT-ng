@@ -556,11 +556,16 @@ export class AddEventDialogComponent {
 
     this.eventService.projectHoursPerMonth({ date: this.data.date, project: this.entity.id }).subscribe((hours) => {
       const entity = this.entity as IProject;
+      const language = this.translateService.currentLang;
+
       this.type = 'project';
       this.typeMessage = this.translateService.instant('message.eventType.recordedProjectHours', {
         hours,
         projectName: entity.name,
-        month: (this.data.date as Date).toLocaleString('ro-RO', { month: 'long' }) + ' ' + this.data.date?.getFullYear()
+        month:
+          (this.data.date as Date).toLocaleString(language + '-' + language.toUpperCase(), { month: 'long' }) +
+          ' ' +
+          this.data.date?.getFullYear()
       });
       if (entity.hours_per_month) {
         if (entity.hours_per_month - hours >= 0) {
@@ -601,20 +606,16 @@ export class AddEventDialogComponent {
 
   getBasicHours(): number {
     let events: IEvent[];
-    if (this.activity === 'otherActivity' || this.activity === 'courseHour') {
-      events = this.events.filter((event) => event.type === 'basic norm');
+    events = this.events.filter((event) => event.type === 'basic norm');
 
-      let sum = 0;
-      events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
+    let sum = 0;
+    events.forEach((event) => (sum += (event.end.getHours() === 0 ? 24 : event.end.getHours()) - event.start.getHours()));
 
-      if (this.data.event && this.data.event.type === 'basic norm') {
-        sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
-      }
-
-      return sum;
+    if (this.data.event && this.data.event.type === 'basic norm') {
+      sum -= (this.data.event.end.getHours() === 0 ? 24 : this.data.event.end.getHours()) - this.data.event.start.getHours();
     }
 
-    return 0;
+    return sum;
   }
 
   getHourPayHours(): number {
