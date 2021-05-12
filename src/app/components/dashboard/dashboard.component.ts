@@ -129,10 +129,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   setDayEvents(): void {
+    this.filterParams.for = 'day';
     this.calendarEventsHelper.getUserEventsForCurrentDay(this.date, this.filterParams).then((events) => (this.events = events));
   }
 
   setWeekEvents(): void {
+    this.filterParams.for = 'week';
     this.calendarEventsHelper.getUserEventsForCurrentWeek(this.date, this.filterParams).then((events) => (this.events = events));
   }
 
@@ -305,11 +307,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.viewMode === 'list') {
       this.viewMode = 'calendar';
       this.initCalendarFilters();
+      this.setEvents();
     } else {
       this.viewMode = 'list';
       this.initListFilter();
     }
-    this.setEvents();
   }
 
   initCalendarFilters(): void {

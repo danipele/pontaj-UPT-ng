@@ -37,7 +37,11 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         }
       },
-      (error) => this.notificationHelper.notifyWithError(error)
+      (error) => {
+        if (error.status !== 401) {
+          this.notificationHelper.openNotification(error.message, 'error');
+        }
+      }
     );
   }
 
