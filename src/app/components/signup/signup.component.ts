@@ -13,21 +13,23 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class SignupComponent implements OnInit {
   TYPES: string[] = ['collaborator', 'employee'];
+  DIDACTIC_DEGREES: string[] = ['', 'phd', 'assistant', 'lecturer', 'associate', 'professor'];
   formGroup: FormGroup;
 
   constructor(
     private loginService: LoginService,
     private router: Router,
     private userService: UserService,
-    private notificationHelper: NotificationHelper,
-    private translateService: TranslateService
+    private notificationHelper: NotificationHelper
   ) {
     this.formGroup = new FormGroup({
       userEmail: new FormControl(),
       userPassword: new FormControl(),
       firstName: new FormControl(),
       lastName: new FormControl(),
-      type: new FormControl()
+      type: new FormControl(),
+      department: new FormControl(),
+      didacticDegree: new FormControl()
     });
   }
 
@@ -38,7 +40,11 @@ export class SignupComponent implements OnInit {
           this.router.navigate(['/dashboard']);
         }
       },
-      (error) => this.notificationHelper.notifyWithError(error)
+      (error) => {
+        if (error.status !== 401) {
+          this.notificationHelper.openNotification(error.message, 'error');
+        }
+      }
     );
   }
 
@@ -48,7 +54,9 @@ export class SignupComponent implements OnInit {
       password: this.formGroup.controls.userPassword.value,
       first_name: this.formGroup.controls.firstName.value,
       last_name: this.formGroup.controls.lastName.value,
-      type: this.formGroup.controls.type.value
+      type: this.formGroup.controls.type.value,
+      department: this.formGroup.controls.department.value,
+      didactic_degree: this.formGroup.controls.didacticDegree.value
     };
 
     this.userService.createUser(params);

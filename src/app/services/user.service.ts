@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { NotificationHelper } from '../helpers/notification-helper';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class UserService {
@@ -13,7 +14,8 @@ export class UserService {
     private http: HttpClient,
     private loginService: LoginService,
     private router: Router,
-    private notificationHelper: NotificationHelper
+    private notificationHelper: NotificationHelper,
+    private translateService: TranslateService
   ) {}
 
   resetPassword(email: string): Observable<any> {
@@ -42,7 +44,13 @@ export class UserService {
           this.notificationHelper.openNotification(result.error, 'error');
         }
       },
-      (error) => this.notificationHelper.notifyWithError(error)
+      (error) => {
+        if (error.status === 422) {
+          this.notificationHelper.openNotification(this.translateService.instant('message.emailAlreadyExists'), 'error');
+        } else {
+          this.notificationHelper.notifyWithError(error);
+        }
+      }
     );
   }
 

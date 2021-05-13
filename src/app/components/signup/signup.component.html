@@ -21,10 +21,22 @@
             <input matInput id="lastName" name="lastName" formControlName="lastName" required="required" />
           </mat-form-field>
           <mat-form-field class="form-field">
+            <mat-label for="department">{{ 'login.department' | translate }}</mat-label>
+            <input matInput id="department" name="department" formControlName="department" />
+          </mat-form-field>
+          <mat-form-field class="form-field">
             <mat-label>{{ 'login.type' | translate }}</mat-label>
             <mat-select formControlName="type">
               <mat-option *ngFor="let type of TYPES" [value]="type">
                 {{ 'user.' + type | translate }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="form-field" *ngIf="this.formGroup.controls.type.value === 'employee'">
+            <mat-label>{{ 'login.didacticDegree' | translate }}</mat-label>
+            <mat-select formControlName="didacticDegree">
+              <mat-option *ngFor="let didacticDegree of DIDACTIC_DEGREES" [value]="didacticDegree">
+                {{ 'user.didacticDegrees.' + didacticDegree | translate }}
               </mat-option>
             </mat-select>
           </mat-form-field>

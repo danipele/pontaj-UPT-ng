@@ -22,7 +22,9 @@
     "create": "Creeaza",
     "needToLoginMessage": "Trebuie sa va autentificati cu contul dumneavoastra pentru a continua.",
     "successMessage": "Esti autentificat cu succes.",
-    "resetEmailSentMessage": "Un email de resetare a parolei a fost trimis cu succes pe adresa de email: {{email}}."
+    "resetEmailSentMessage": "Un email de resetare a parolei a fost trimis cu succes pe adresa de email: {{email}}.",
+    "department": "Departament",
+    "didacticDegree": "Grad didactic"
   },
   "user": {
     "collaborator": "Colaborator",
@@ -35,6 +37,14 @@
     "languages": {
       "en": "Engleza",
       "ro": "Romana"
+    },
+    "didacticDegrees": {
+      "": "",
+      "phd": "Doctorand",
+      "assistant": "Asistent",
+      "lecturer": "Sef de lucrari",
+      "associate": "Conferentiar",
+      "professor": "Profesor"
     }
   },
   "admin": {
@@ -208,7 +218,8 @@
     "holidaysBadDay": "Concediul se poate lua doar pe o zi intreaga. Exista deja {{events}} evenimente in data de {{date}}. Va rugam selectati alta data.",
     "error": "Actiune nereusita. Mai incearca o data!",
     "expiredSession": "Sesiunea a expirat. Trebuie sa va autentificati din nou pentru a continua.",
-    "language": "Limba a fost schimbata cu succes."
+    "language": "Limba a fost schimbata cu succes.",
+    "emailAlreadyExists": "Un utilizator cu aceasta adresa de email deja exista"
   },
   "action": {
     "delete": "Sterge",

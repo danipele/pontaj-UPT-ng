@@ -15,6 +15,7 @@ interface Data {
 })
 export class PersonalInformationDialogComponent implements OnInit {
   formGroup: FormGroup;
+  DIDACTIC_DEGREES: string[] = ['', 'phd', 'assistant', 'lecturer', 'associate', 'professor'];
 
   constructor(
     public dialogRef: MatDialogRef<PersonalInformationDialogComponent>,
@@ -23,11 +24,15 @@ export class PersonalInformationDialogComponent implements OnInit {
   ) {
     this.formGroup = new FormGroup({
       firstName: new FormControl(),
-      lastName: new FormControl()
+      lastName: new FormControl(),
+      department: new FormControl(),
+      didacticDegree: new FormControl()
     });
     if (data) {
       this.formGroup.controls.firstName.setValue(data.user.first_name);
       this.formGroup.controls.lastName.setValue(data.user.last_name);
+      this.formGroup.controls.department.setValue(data.user.department);
+      this.formGroup.controls.didacticDegree.setValue(data.user.didactic_degree);
     }
   }
 
@@ -36,7 +41,9 @@ export class PersonalInformationDialogComponent implements OnInit {
   sendData(): {} {
     return {
       first_name: this.formGroup.controls.firstName.value,
-      last_name: this.formGroup.controls.lastName.value
+      last_name: this.formGroup.controls.lastName.value,
+      department: this.formGroup.controls.department.value,
+      didactic_degree: this.formGroup.controls.didacticDegree.value
     };
   }
 
@@ -50,5 +57,9 @@ export class PersonalInformationDialogComponent implements OnInit {
 
   displayUserType(): string {
     return this.translateService.instant('user.' + this.data.user.type);
+  }
+
+  isEmployee(): boolean {
+    return JSON.parse(localStorage.getItem('user') as string).type === 'employee';
   }
 }

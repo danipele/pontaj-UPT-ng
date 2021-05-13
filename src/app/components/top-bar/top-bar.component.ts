@@ -95,7 +95,12 @@ export class TopBarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        if (user.first_name !== result.firstName || user.last_name !== result.lastName) {
+        if (
+          user.first_name !== result.firstName ||
+          user.last_name !== result.lastName ||
+          user.department !== result.department ||
+          user.didactic_degree !== result.didactic_degree
+        ) {
           this.userService.updateCurrentUser(result).subscribe(
             (updateResult) => {
               localStorage.setItem('user', JSON.stringify(updateResult));

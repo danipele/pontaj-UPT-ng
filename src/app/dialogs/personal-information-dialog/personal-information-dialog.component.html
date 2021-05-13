@@ -32,6 +32,22 @@
         <input matInput [value]="displayUserType()" disabled />
       </mat-form-field>
     </div>
+    <div class="margin-top">
+      <mat-form-field class="field-width">
+        <mat-label>{{ 'login.department' | translate }}</mat-label>
+        <input matInput placeholder="{{ 'login.department' | translate }}" formControlName="department" />
+      </mat-form-field>
+    </div>
+    <div class="margin-top">
+      <mat-form-field class="field-width">
+        <mat-label>{{ 'login.didacticDegree' | translate }}</mat-label>
+        <mat-select formControlName="didacticDegree">
+          <mat-option *ngFor="let didacticDegree of DIDACTIC_DEGREES" [value]="didacticDegree">
+            {{ 'user.didacticDegrees.' + didacticDegree | translate }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </form>
 </div>
 <div class="modal-footer">

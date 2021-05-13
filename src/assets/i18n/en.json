@@ -22,7 +22,9 @@
     "create": "Create",
     "needToLoginMessage": "You must login with your account to continue.",
     "successMessage": "Successfully logged in.",
-    "resetEmailSentMessage": "A reset password email was successfully sent to email address: {{email}}."
+    "resetEmailSentMessage": "A reset password email was successfully sent to email address: {{email}}.",
+    "department": "Department",
+    "didacticDegree": "Didactic degree"
   },
   "user": {
     "collaborator": "Collaborator",
@@ -35,6 +37,14 @@
     "languages": {
       "en": "English",
       "ro": "Romanian"
+    },
+    "didacticDegrees": {
+      "": "",
+      "phd": "PhD",
+      "assistant": "Assistant",
+      "lecturer": "Lecturer",
+      "associate": "Associate",
+      "professor": "Professor"
     }
   },
   "admin": {
@@ -208,7 +218,8 @@
     "holidaysBadDay": "You can take holidays only for a whole day. There already are {{events}} events for date {{date}}. Please select another date.",
     "error": "Something went wrong. Try again!",
     "expiredSession": "Session expired. You must login again to continue..",
-    "language": "Language was successfully changed."
+    "language": "Language was successfully changed.",
+    "emailAlreadyExists": "A user with this email already exists"
   },
   "action": {
     "delete": "Delete",

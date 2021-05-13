@@ -5,4 +5,6 @@ export interface IUser {
   first_name?: string;
   last_name?: string;
   type?: string;
+  department?: string;
+  didactic_degree?: string;
 }
