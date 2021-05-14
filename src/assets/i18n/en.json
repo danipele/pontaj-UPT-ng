@@ -289,7 +289,9 @@
       "teacherReport": "A {{period}} teacher report for month {{date}} was successfully exported.",
       "onlineReport": "An online session report for month {{date}} was successfully exported.",
       "weekly": "weekly",
-      "monthly": "monthly"
+      "monthly": "monthly",
+      "weeklyStatusWarning": "{{nrDays}} days from this month have less than 8 hours from basic norm and need to be completed.",
+      "weeklyStatusNoWarning": "The basic norm for all days from this month is complete"
     },
     "financingContract": "Financing contract",
     "projectManager": "Project manager",

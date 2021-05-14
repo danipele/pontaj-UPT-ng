@@ -289,7 +289,9 @@
       "teacherReport": "Raportul de cadru didactic {{period}} pentru luna {{date}} a fost exportat cu succes.",
       "onlineReport": "Raporul de sesiuni online pentru luna {{date}} a fost exportat cu succes.",
       "weekly": "saptamanal",
-      "monthly": "lunar"
+      "monthly": "lunar",
+      "weeklyStatusWarning": "{{nrDays}} zile din aceasta luna au mai putin de 8 ore din norma de baza si trebuiesc completate.",
+      "weeklyStatusNoWarning": "Norma de baza pentru toate zilele din aceasta luna este completa"
     },
     "financingContract": "Contract de finantare",
     "projectManager": "Manager de proiect",

@@ -45,4 +45,8 @@ export class EventService {
   downloadReport(params: {}): Observable<any> {
     return this.httpWrapper.post(`http://localhost:8000/api/v1/events/download_report`, params, this.httpWrapper.getDownloadOptions());
   }
+
+  weeklyReportStatus(params: {}): Observable<any> {
+    return this.httpWrapper.post(`http://localhost:8000/api/v1/events/weekly_report_status`, params, this.httpWrapper.getAuthOptions());
+  }
 }

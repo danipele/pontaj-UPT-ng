@@ -34,6 +34,12 @@
   </div>
 </div>
 <div class="modal-footer">
+  <div class="weekly-status-message-container row" *ngIf="weeklyStatusMessage">
+    <div class="col-xs-1"><mat-icon>info</mat-icon></div>
+    <div class="col-sm-10 weekly-status-message-grid">
+      <span class="weekly-status-message">{{ weeklyStatusMessage }}</span>
+    </div>
+  </div>
   <button mat-raised-button [disabled]="notAllFieldsAreFilled()" class="upt-btn" (click)="downloadReport()" cdkFocusInitial>
     {{ 'action.export' | translate }}
   </button>

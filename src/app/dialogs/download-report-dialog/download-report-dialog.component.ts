@@ -31,6 +31,7 @@ export class DownloadReportDialogComponent implements OnInit {
   financingContract = '';
   projectManager = '';
   departmentDirector = '';
+  weeklyStatusMessage = '';
 
   constructor(
     public dialogRef: MatDialogRef<DownloadReportDialogComponent>,
@@ -141,6 +142,15 @@ export class DownloadReportDialogComponent implements OnInit {
   monthSelected(event: any, picker: MatDatepicker<Date>): void {
     this.date = event;
     picker.close();
+    if (this.data.reportType === 'teacherReport' && this.data.period === 'weekly') {
+      this.eventService.weeklyReportStatus({ date: event }).subscribe((warningDays) => {
+        if (warningDays === 0) {
+          this.weeklyStatusMessage = this.translateService.instant('report.messages.weeklyStatusNoWarning');
+        } else {
+          this.weeklyStatusMessage = this.translateService.instant('report.messages.weeklyStatusWarning', { nrDays: warningDays });
+        }
+      });
+    }
   }
 
   setFilename(): string {
