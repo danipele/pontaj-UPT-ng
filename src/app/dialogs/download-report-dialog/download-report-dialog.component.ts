@@ -28,6 +28,9 @@ interface Data {
 export class DownloadReportDialogComponent implements OnInit {
   dateValue = '';
   date: Date;
+  financingContract = '';
+  projectManager = '';
+  departmentDirector = '';
 
   constructor(
     public dialogRef: MatDialogRef<DownloadReportDialogComponent>,
@@ -59,14 +62,29 @@ export class DownloadReportDialogComponent implements OnInit {
   }
 
   downloadReport(): void {
-    let params: any = { type: this.data.reportType, date: this.date };
-    if (this.data.project) {
-      params = { ...params, project: this.data.project.id };
+    const params: any = { type: this.data.reportType, date: this.date };
+    let additionalParams: any = {};
+
+    switch (this.data.reportType) {
+      case 'projectReport': {
+        additionalParams = {
+          project: this.data.project.id,
+          financing_contract: this.financingContract,
+          project_manager: this.projectManager
+        };
+        break;
+      }
+      case 'teacherReport': {
+        additionalParams = { period: this.data.period };
+        break;
+      }
+      case 'onlineReport': {
+        additionalParams = { department_director: this.departmentDirector };
+        break;
+      }
     }
-    if (this.data.period) {
-      params = { ...params, period: this.data.period };
-    }
-    this.eventService.downloadReport(params).subscribe(
+
+    this.eventService.downloadReport({ ...params, ...additionalParams }).subscribe(
       (result) => {
         const filename = this.setFilename();
         saveAs(result, filename);

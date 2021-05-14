@@ -290,6 +290,9 @@
       "onlineReport": "Raporul de sesiuni online pentru luna {{date}} a fost exportat cu succes.",
       "weekly": "saptamanal",
       "monthly": "lunar"
-    }
+    },
+    "financingContract": "Contract de finantare",
+    "projectManager": "Manager de proiect",
+    "departmentDirector": "Director de departament"
   }
 }

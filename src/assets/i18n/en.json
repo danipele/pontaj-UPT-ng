@@ -290,6 +290,9 @@
       "onlineReport": "An online session report for month {{date}} was successfully exported.",
       "weekly": "weekly",
       "monthly": "monthly"
-    }
+    },
+    "financingContract": "Financing contract",
+    "projectManager": "Project manager",
+    "departmentDirector": "Department director"
   }
 }

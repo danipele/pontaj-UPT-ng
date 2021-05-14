@@ -38,7 +38,7 @@
         <input matInput placeholder="{{ 'login.department' | translate }}" formControlName="department" />
       </mat-form-field>
     </div>
-    <div class="margin-top">
+    <div class="margin-top" *ngIf="isEmployee()">
       <mat-form-field class="field-width">
         <mat-label>{{ 'login.didacticDegree' | translate }}</mat-label>
         <mat-select formControlName="didacticDegree">
